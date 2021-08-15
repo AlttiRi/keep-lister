@@ -1,5 +1,5 @@
 import {ref, computed, reactive, watch} from "vue";
-import {sleep} from "./util.js";
+import {compare, sleep} from "./util.js";
 
 const dummy = {
     name: "",
@@ -36,39 +36,28 @@ export function back() {
     }
 }
 
+export const sort = ref(1);
+function comparator(pre, cur) {
+    if (sort.value) {
+        return compare(pre.name, cur.name);
+    }
+    return 0;
+}
 
 export const folders = computed(() => selected.value.folders || []);
 export const files = computed(() => selected.value.files || []);
 export const symlinks = computed(() => selected.value.symlinks || []);
 export const entries = computed(() => [
-    ...folders.value.map(value => ({type: "folder", ...value})),
-    ...files.value.map(value => ({type: "file", name: value})),
-    ...symlinks.value.map(value => ({type: "symlink", name: value})),
+    ...folders.value.map(value => ({type: "folder", ...value})).sort(comparator),
+    ...files.value.map(value => ({type: "file", name: value})).sort(comparator),
+    ...symlinks.value.map(value => ({type: "symlink", name: value})).sort(comparator),
 ]);
 
 export const empty = computed(() => !(folders.value?.length || files.value?.length || symlinks.value?.length));
 
-export const sortedEntries = computed(() => {
-    return entries.value;
-    // todo
-    // return entries.value.sort((pre, cur) => {
-    //
-    //
-    //     pre = pre.name;
-    //     cur = cur.name;
-    //
-    //     if (pre < cur && pre.length < cur.length) {
-    //         return 1
-    //     }
-    //     if (pre > cur && pre.length > cur.length) {
-    //         return -1
-    //     }
-    //     return 0;
-    // });
-});
 
 export const search = ref("");
-export const searchResult = ref([""]);
+export const searchResult = ref([]);
 export const searchResultLimited = computed(() => {
     return searchResult.value.slice(0, 1000);
 });
@@ -80,11 +69,15 @@ export const list = computed(() => {
     return entries.value;
 });
 
-
-watch(search, async (oldV, newV) => {
+watch(search, async (newValue, oldValue) => {
+    if (!newValue) {
+        searchResult.value = [];
+        return;
+    }
+    console.log({newValue, oldValue});
     const time = performance.now();
-    searchResult.value = await justFind(json.value, search.value);
-    console.log(performance.now() - time, search.value, searchResult.value.length);
+    searchResult.value = (await justFind(json.value, newValue)).sort(comparator);
+    console.log(performance.now() - time, newValue, searchResult.value.length);
 });
 
 async function justFind(folder, word) {

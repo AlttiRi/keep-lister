@@ -21,10 +21,7 @@ export function sleep(ms) {
 }
 
 export const shuffle = () => Math.random() >= 0.5 ? -1 : 1;
-export function comparator(pre, cur) {
-    const {compare} = new Intl.Collator(undefined, {
-        numeric: true,
-        sensitivity: "accent",
-    });
-    return compare(pre, cur);
-}
+export const {compare} = new Intl.Collator(undefined, {
+    numeric: true,
+    sensitivity: "accent",
+});

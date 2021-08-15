@@ -1,6 +1,7 @@
 <template>
   <tr class="row"
        @click="onClick"
+       @mousedown="onMousedown"
   >
       <td class="icon">{{icon}}</td>
       <td class="name">{{entry.name}}</td>
@@ -38,38 +39,43 @@ export default {
       }
     }
 
-    return {entry, icon, onClick};
+    function onMousedown(event) {
+      const MIDDLE_BUTTON = 2;
+      if (event.which === MIDDLE_BUTTON && entry.value.type === "folder") {
+        console.log("MIDDLE_BUTTON on a folder");
+      }
+    }
+
+    return {entry, icon, onClick, onMousedown};
   }
 }
 </script>
 
-<style scoped>
-
-tr {
+<style lang="scss" scoped>
+tr.row {
   width: 100%;
-}
-td {
-  max-width: 0;
-}
-
-
-.icon {
-  width: 2.5%;
-  min-width: 22px;
-}
-.name {
-  width: 95%;
-}
-.type {
-  width: 15%;
-}
-
-.row * {
+  &:hover {
+    background-color: aliceblue;
+  }
+  * {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-}
-.icon, .type {
-  user-select: none;
+  }
+  td {
+    max-width: 0;
+    &.icon {
+      width: 2.5%;
+      min-width: 22px;
+      user-select: none;
+    }
+    &.name {
+      width: 95%;
+    }
+    &.type {
+      width: 15%;
+      user-select: none;
+    }
+  }
 }
 </style>
