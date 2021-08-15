@@ -25,3 +25,14 @@ export const {compare} = new Intl.Collator(undefined, {
     numeric: true,
     sensitivity: "accent",
 });
+
+const videoExtensions = ["mp4", "webm", "mkv", "avi"];
+export function isVideo(filename) {
+    const {ext} = filename.match(/(?<ext>[^\.]+)$/).groups;
+    return videoExtensions.includes(ext);
+}
+const imageExtensions = ["png", "jpg", "jpeg", "gif", "tiff", "webp"];
+export function isImage(filename) {
+    const {ext} = filename.match(/(?<ext>[^\.]+)$/).groups;
+    return imageExtensions.includes(ext);
+}

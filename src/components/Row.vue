@@ -14,6 +14,7 @@ import {toRefs, computed} from "vue";
 import {
   openFolder,
 } from "../store.js";
+import {isImage, isVideo} from "../util.js";
 
 export default {
   name: "Row",
@@ -24,6 +25,11 @@ export default {
       if (entry.value.type === "folder") {
         return "📁";
       } else if (entry.value.type === "file") {
+        if (isVideo(entry.value.name)) {
+          return "🎦";
+        } else if (isImage(entry.value.name)) {
+          return "🖼";
+        }
         return "📄";
       } else if (entry.value.type === "symlink") {
         return "🔗";
