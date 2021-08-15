@@ -1,13 +1,12 @@
 <template>
   <div class="main">
 
-    <div class="switch"></div>
-    <Tabs/>
-
+    <div     class="switch"></div>
+    <Tabs    class="tabs"/>
     <Address class="address"/>
-    <Search/>
+    <Search  class="search"/>
     <Content class="content"/>
-
+    <Status  class="status"/>
   </div>
 </template>
 
@@ -16,6 +15,7 @@ import Content from "./Content.vue";
 import Address from "./Address.vue";
 import Search from "./Search.vue";
 import Tabs from "./Tabs.vue";
+import Status from "./Status.vue";
 
 import {onMounted} from "vue";
 import {setJson} from "../store.js";
@@ -28,7 +28,8 @@ export default {
     Content,
     Address,
     Search,
-    Tabs
+    Tabs,
+    Status,
   },
   setup(props) {
     onMounted(async () => {
@@ -51,7 +52,8 @@ export default {
   grid-template-columns: 7em 2fr 1fr;
   grid-template-rows:    2em 1fr;
   grid-template-areas: "switch address search "
-                       "tabs   content content";
+                       "tabs   content content"
+                       "status status  status ";
   width: 1280px;
   max-width: 100%;
 }
@@ -78,5 +80,10 @@ export default {
 .main > .content {
   grid-area: content;
   background-color: #f5f5f5;
+}
+
+.main > .status {
+  grid-area: status;
+  background-color: cornsilk;
 }
 </style>

@@ -55,11 +55,11 @@ export const entries = computed(() => [
 
 export const empty = computed(() => !(folders.value?.length || files.value?.length || symlinks.value?.length));
 
-
+const limit = 1000;
 export const search = ref("");
 export const searchResult = ref([]);
 export const searchResultLimited = computed(() => {
-    return searchResult.value.slice(0, 1000);
+    return searchResult.value.slice(0, limit);
 });
 
 export const list = computed(() => {
@@ -67,6 +67,13 @@ export const list = computed(() => {
         return searchResultLimited.value;
     }
     return entries.value;
+});
+
+export const count = computed(() => {
+    if (searchResult.value.length > limit) {
+        return searchResult.value.length;
+    }
+    return list.value.length
 });
 
 watch(search, async (newValue, oldValue) => {
