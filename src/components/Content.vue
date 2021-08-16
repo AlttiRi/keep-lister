@@ -12,7 +12,7 @@
 import Row from "./Row.vue";
 import {
   back,
-  list
+  list, listLimited
 } from "../store.js";
 
 export default {
@@ -25,7 +25,7 @@ export default {
       event.preventDefault();
       back();
     }
-    return {onContextMenu, list};
+    return {onContextMenu, listLimited, list};
   }
 }
 

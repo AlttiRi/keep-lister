@@ -38,8 +38,8 @@ export default {
 
     function onClick(event) {
       if (entry.value.type === "folder") {
-        console.log("openFolder");
-        openFolder(entry.value.name);
+        console.log("openFolder", entry.value);
+        openFolder(entry.value);
       } else {
         console.log(entry.value);
       }

@@ -1,42 +1,39 @@
 import {ref, computed, reactive, watch} from "vue";
 import {compare, sleep} from "./util.js";
 
-const dummy = {
+const jsonDummy = {
+    path: [""],
     name: "",
     folders: [],
     files: [],
     symlinks: []
 };
+const json = ref(jsonDummy);
 
-export const json = ref(dummy);
-export const scanPath = ref("");
+export const scanRootPath = ref([]);
 
-const selected = ref(json);
-const queue = reactive([]);
-export const openFolders = computed(() => {
-    if (!selected.value.name) {
-        return "";
-    }
-    return ["", ...queue.map(o => o.name), selected.value.name].join("\\");
-});
+export const openedFolder = ref(json);
+export const openedFolders = reactive([]);
 
 
 export function setJson(value) {
     json.value = value;
-    scanPath.value = value.path.join("\\");
+    scanRootPath.value = value.path;
+    openedFolders.push(value);
 }
 
-export function openFolder(name) {
-    queue.push(selected.value);
-    selected.value = selected.value.folders.find(folder => folder.name === name);
+export function openFolder(entry) {
+    openedFolders.push(entry);
+    openedFolder.value = openedFolder.value.folders.find(folder => folder.name === entry.name);
 }
 export function back() {
-    if (queue.length) {
-        selected.value = queue.pop();
+    if (openedFolders.length > 1) {
+        openedFolders.pop();
+        openedFolder.value = openedFolders[openedFolders.length - 1];
     }
 }
 
-export const sort = ref(1);
+export const sort = ref(true);
 function comparator(pre, cur) {
     if (sort.value) {
         return compare(pre.name, cur.name);
@@ -44,9 +41,9 @@ function comparator(pre, cur) {
     return 0;
 }
 
-export const folders = computed(() => selected.value.folders || []);
-export const files = computed(() => selected.value.files || []);
-export const symlinks = computed(() => selected.value.symlinks || []);
+export const folders = computed(() => openedFolder.value.folders || []);
+export const files = computed(() => openedFolder.value.files || []);
+export const symlinks = computed(() => openedFolder.value.symlinks || []);
 export const entries = computed(() => [
     ...folders.value.map(value => ({type: "folder", ...value})).sort(comparator),
     ...files.value.map(value => ({type: "file", name: value})).sort(comparator),
@@ -58,15 +55,15 @@ export const empty = computed(() => !(folders.value?.length || files.value?.leng
 const limit = 1000;
 export const search = ref("");
 export const searchResult = ref([]);
-export const searchResultLimited = computed(() => {
-    return searchResult.value.slice(0, limit);
-});
 
 export const list = computed(() => {
     if (search.value.length) {
-        return searchResultLimited.value;
+        return searchResult.value;
     }
     return entries.value;
+});
+export const listLimited = computed(() => {
+    return list.value.slice(0, limit);
 });
 
 export const count = computed(() => {
