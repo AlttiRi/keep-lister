@@ -86,12 +86,17 @@ async function performSearch() {
     const searchTime = performance.now() - time;
     debugMessages[0] = `Search time: ${searchTime.toFixed(2)} ms; ${searchResult.value.length} items; search: ${search.value}`;
 }
-watch(search, (newValue, oldValue) => {
+watch(search, async (newValue, oldValue) => {
     if (!newValue) {
         searchResult.value = [];
         return;
     }
-    performSearchDebounced();
+    // "no debounce by paste event"
+    if (newValue.length - oldValue.length > 1) {
+        await performSearch();
+    } else {
+        performSearchDebounced();
+    }
 });
 
 async function justFind(folder, word) {
@@ -105,7 +110,7 @@ async function justFind(folder, word) {
         }
         for (const _folder of (folder.folders || [])) {
             if (_folder.name.includes(word)) {
-                result.push({type: "folder", name: _folder.name});
+                result.push({type: "folder", ..._folder});
             }
             await find(_folder, word);
         }
