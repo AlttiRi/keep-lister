@@ -76,7 +76,7 @@ export const count = computed(() => {
     if (searchResult.value.length > limit) {
         return searchResult.value.length;
     }
-    return list.value.length
+    return list.value.length;
 });
 
 const performSearchDebounced = debounce(performSearch, 300);

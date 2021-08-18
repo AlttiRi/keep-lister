@@ -1,13 +1,17 @@
 <template>
   <div class="tabs">
-    <div class="tab">Select</div>
+    <FileSelect class="tab"/>
     <div class="tab">Tab 1</div>
   </div>
 </template>
 
 <script>
+import FileSelect from "./FileSelect.vue";
 export default {
-  name: "tabs"
+  name: "tabs",
+  components: {
+    FileSelect
+  },
 }
 </script>
 

@@ -3,7 +3,7 @@
        @contextmenu="onContextMenu"
   >
     <table class="grid">
-      <Row v-for="entry of list" :entry="entry"/>
+      <Row v-for="entry of listLimited" :entry="entry"/>
     </table>
   </div>
 </template>
