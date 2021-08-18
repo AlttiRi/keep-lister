@@ -7,6 +7,7 @@
     <Search     class="search"/>
     <Content    class="content"/>
     <Status     class="status"/>
+    <Debug      class="debug"/>
   </div>
 </template>
 
@@ -16,6 +17,7 @@ import AddressBar from "./AddressBar.vue";
 import Search from "./Search.vue";
 import Tabs from "./Tabs.vue";
 import Status from "./Status.vue";
+import Debug from "./Debug.vue";
 
 import {onMounted} from "vue";
 import {readJsonFile} from "../store.js";
@@ -30,6 +32,7 @@ export default {
     Search,
     Tabs,
     Status,
+    Debug,
   },
   setup(props) {
     onMounted(async () => {
@@ -53,7 +56,8 @@ export default {
   grid-template-rows:    2em 1fr;
   grid-template-areas: "switch address search "
                        "tabs   content content"
-                       "status status  status ";
+                       "status status  status "
+                       "debug  debug   debug  ";
   width: 1280px;
   max-width: 100%;
 }
@@ -85,5 +89,9 @@ export default {
 .main > .status {
   grid-area: status;
   background-color: cornsilk;
+}
+.main > .debug {
+  grid-area: debug;
+  background-color: bisque;
 }
 </style>

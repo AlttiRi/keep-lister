@@ -1,6 +1,7 @@
 import {ref, computed, reactive, watch} from "vue";
 import {compare, sleep} from "./util.js";
 
+export const debugMessages = reactive([""]);
 export const separator = "\\"; //todo store the path separator in json / or \
 
 const json = ref(null);
@@ -86,7 +87,9 @@ watch(search, async (newValue, oldValue) => {
     console.log({newValue, oldValue});
     const time = performance.now();
     searchResult.value = (await justFind(json.value, newValue)).sort(comparator);
-    console.log(performance.now() - time, newValue, searchResult.value.length);
+    const searchTime = performance.now() - time;
+    console.log(searchTime, newValue, searchResult.value.length);
+    debugMessages[0] = `Search time: ${searchTime.toFixed(2)} ms`;
 });
 
 async function justFind(folder, word) {
