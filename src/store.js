@@ -86,7 +86,7 @@ watch(search, async (newValue, oldValue) => {
     }
     console.log({newValue, oldValue});
     const time = performance.now();
-    searchResult.value = (await justFind(json.value, newValue)).sort(comparator);
+    searchResult.value = (await justFind(openedFolder.value, newValue)).sort(comparator);
     const searchTime = performance.now() - time;
     console.log(searchTime, newValue, searchResult.value.length);
     debugMessages[0] = `Search time: ${searchTime.toFixed(2)} ms`;
