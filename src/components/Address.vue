@@ -1,6 +1,7 @@
 <template>
 <div class="address">
-  <span class="scanPath" @click="onClick">{{root}}{{separator}}</span>
+  <span class="scanPath" @click="goToRoot">{{root}}</span>
+  {{sep}}
   <span class="openFolders">{{openFolders}}</span>
 </div>
 </template>
@@ -9,25 +10,28 @@
 import {
   scanRootPath,
   openedFolders,
-  openedFolder,
+  scanFolder,
+  separator, search,
 } from "../store.js";
 import {computed} from "vue";
-
-const separator = "\\"; //todo store the path separator in json / or \
 
 export default {
   name: "Address",
   setup() {
+    const sep = computed(() => {
+      return openedFolders.length ? separator : "";
+    });
     const root = computed(() => {
-      return scanRootPath.value.join(separator);
+      const scanPath = [...scanRootPath.value, scanFolder.value.name];
+      return scanPath.join(separator);
     });
     const openFolders = computed(() => {
       return openedFolders.map(entry => entry.name).join(separator);
     });
 
-    function onClick() {
-      openedFolder.value = openedFolders[0];
-      while (openedFolders.length !== 1) {
+    function goToRoot() {
+      search.value = "";
+      while (openedFolders.length) {
         console.log("pop", openedFolders.pop());
       }
     }
@@ -36,8 +40,9 @@ export default {
       root,
       openFolders,
       separator,
-      onClick,
-      openedFolders
+      goToRoot,
+      openedFolders,
+      sep,
     };
   }
 }

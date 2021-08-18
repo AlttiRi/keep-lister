@@ -1,35 +1,40 @@
 import {ref, computed, reactive, watch} from "vue";
 import {compare, sleep} from "./util.js";
 
-const jsonDummy = {
-    path: [""],
-    name: "",
-    folders: [],
-    files: [],
-    symlinks: []
-};
-const json = ref(jsonDummy);
+export const separator = "\\"; //todo store the path separator in json / or \
 
-export const scanRootPath = ref([]);
+const json = ref(null);
+export const scanRootPath = computed(() => {
+    return json.value?.path || [];
+});
+export const scanFolder = computed(() => {
+    return json.value || {
+        name: "",
+        folders: [],
+        files: [],
+        symlinks: [],
+    };
+});
 
-export const openedFolder = ref(json);
 export const openedFolders = reactive([]);
+export const openedFolder = computed(() => {
+    if (openedFolders.length) {
+        return openedFolders[openedFolders.length - 1];
+    }
+    return scanFolder.value;
+});
 
 
-export function setJson(value) {
-    json.value = value;
-    scanRootPath.value = value.path;
-    openedFolders.push(value);
+export function readJsonFile(object) {
+    json.value = object;
 }
 
 export function openFolder(entry) {
     openedFolders.push(entry);
-    openedFolder.value = openedFolder.value.folders.find(folder => folder.name === entry.name);
 }
 export function back() {
-    if (openedFolders.length > 1) {
+    if (openedFolders.length) {
         openedFolders.pop();
-        openedFolder.value = openedFolders[openedFolders.length - 1];
     }
 }
 
