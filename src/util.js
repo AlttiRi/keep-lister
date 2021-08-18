@@ -36,3 +36,17 @@ export function isImage(filename) {
     const {ext} = filename.match(/(?<ext>[^\.]+)$/).groups;
     return imageExtensions.includes(ext);
 }
+
+export function debounce(runnable, ms = 50) {
+    let timerId;
+    return function() {
+        // console.log({timerId});
+        if (timerId) {
+            clearTimeout(timerId);
+        }
+        timerId = setTimeout(() => {
+            runnable.apply(this, arguments);
+            timerId = null;
+        }, ms);
+    }
+}
