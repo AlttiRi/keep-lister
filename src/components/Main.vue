@@ -1,18 +1,18 @@
 <template>
   <div class="main">
 
-    <div     class="switch"></div>
-    <Tabs    class="tabs"/>
-    <Address class="address"/>
-    <Search  class="search"/>
-    <Content class="content"/>
-    <Status  class="status"/>
+    <div        class="switch"></div>
+    <Tabs       class="tabs"/>
+    <AddressBar class="address"/>
+    <Search     class="search"/>
+    <Content    class="content"/>
+    <Status     class="status"/>
   </div>
 </template>
 
 <script>
 import Content from "./Content.vue";
-import Address from "./Address.vue";
+import AddressBar from "./AddressBar.vue";
 import Search from "./Search.vue";
 import Tabs from "./Tabs.vue";
 import Status from "./Status.vue";
@@ -26,7 +26,7 @@ export default {
   name: "Main",
   components: {
     Content,
-    Address,
+    AddressBar,
     Search,
     Tabs,
     Status,

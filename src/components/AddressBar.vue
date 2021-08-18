@@ -2,7 +2,12 @@
 <div class="address">
   <span class="scanPath" @click="goToRoot">{{root}}</span>
   {{sep}}
-  <span class="openFolders">{{openFolders}}</span>
+  <AddressBar_Folder v-for="(folder, i) of openedFolders"
+                     :entry="folder"
+                     :index="i"
+                     :count="openedFolders.length"
+                     :separator="separator"
+  />
 </div>
 </template>
 
@@ -13,10 +18,14 @@ import {
   scanFolder,
   separator, search,
 } from "../store.js";
+import AddressBar_Folder from "./AddressBar_Folder.vue";
 import {computed} from "vue";
 
 export default {
   name: "Address",
+  components: {
+    AddressBar_Folder
+  },
   setup() {
     const sep = computed(() => {
       return openedFolders.length ? separator : "";
@@ -30,6 +39,7 @@ export default {
     });
 
     function goToRoot() {
+      console.log("folder", scanFolder.value);
       search.value = "";
       while (openedFolders.length) {
         console.log("pop", openedFolders.pop());
