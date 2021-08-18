@@ -6,6 +6,7 @@
 
 <script>
 import {computed, toRefs} from "vue";
+import {openedFolders} from "../store.js";
 
 export default {
   props: ["entry", "separator", "count", "index"],
@@ -17,7 +18,10 @@ export default {
     });
 
     function onClick() {
-      console.log("folder", entry.value);
+      console.log("folder", entry.value, index.value);
+      while (openedFolders.length - 1 !== index.value) {
+        console.log("pop", openedFolders.pop());
+      }
     }
 
     return {
