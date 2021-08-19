@@ -19,10 +19,7 @@ import Tabs from "./Tabs.vue";
 import Status from "./Status.vue";
 import Debug from "./Debug.vue";
 
-import {onMounted} from "vue";
-import {readJsonFile} from "../store.js";
-
-const filename = "[2021.08.13].json";
+import {localhostDebug} from "../localhost-debug.js";
 
 export default {
   name: "Main",
@@ -34,14 +31,8 @@ export default {
     Status,
     Debug,
   },
-  setup(props) {
-    onMounted(async () => {
-      const url = "./test-data/" + filename;
-      const response = await fetch(url);
-      const data = await response.json();
-      readJsonFile(data);
-    });
-    return {};
+  setup() {
+    localhostDebug();
   }
 }
 </script>
