@@ -64,11 +64,15 @@ export default {
   align-items: center;
   padding-left: 6px;
   .scanPath {
-    //box-sizing: border-box;
-    //padding: 1px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    height: 100%;
     border: 1px solid transparent;
     &:hover {
-      border: 1px solid #8ca0ff;
+      background-color: var(--blue-2);
+      border-top: 1px solid var(--gray-2);
+      border-bottom: 1px solid var(--blue-1);
     }
   }
 }

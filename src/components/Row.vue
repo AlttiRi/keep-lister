@@ -61,7 +61,7 @@ export default {
 tr.row {
   width: 100%;
   &:hover {
-    background-color: aliceblue;
+    background-color: var(--blue-2);
   }
   * {
     text-overflow: ellipsis;

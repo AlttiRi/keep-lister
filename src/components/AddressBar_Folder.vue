@@ -36,9 +36,15 @@ export default {
 <style lang="scss" scoped>
 
 .opened-folder {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
   border: 1px solid transparent;
+  height: 100%;
   &:hover {
-     border: 1px solid #8ca0ff;
-   }
+    background-color: var(--blue-2);
+    border-top: 1px solid var(--gray-2);
+    border-bottom: 1px solid var(--blue-1);
+  }
 }
 </style>
