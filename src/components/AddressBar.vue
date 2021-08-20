@@ -1,7 +1,8 @@
 <template>
 <div class="address">
-  <span class="scanPath" @click="goToRoot">{{root}}</span>
-  {{sep}}
+  <span class="scanPath" @click="goToRoot"
+  >{{root.slice(0, -1)}}<span class="sep">{{root.slice(-1)}}</span></span>
+  <span class="sep">{{sep}}</span>
   <AddressBar_Folder v-for="(folder, i) of openedFolders"
                      :entry="folder"
                      :index="i"
@@ -68,7 +69,8 @@ export default {
     align-items: center;
     cursor: pointer;
     height: 100%;
-    border: 1px solid transparent;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
     &:hover {
       background-color: var(--blue-2);
       border-top: 1px solid var(--gray-2);
@@ -78,5 +80,9 @@ export default {
       background: var(--blue-3);
     }
   }
+}
+.sep {
+  letter-spacing: 2px;
+  display: contents;
 }
 </style>

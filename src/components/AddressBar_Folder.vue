@@ -1,7 +1,8 @@
 <template>
   <span class="opened-folder"
         @click="onClick"
-  >{{entry.name}}</span>{{isLast ? "" : separator}}
+  >{{entry.name.slice(0, -1)}}<span class="sep">{{entry.name.slice(-1)}}</span></span>
+  <span class="sep">{{isLast ? "" : separator}}</span>
 </template>
 
 <script>
@@ -34,12 +35,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .opened-folder {
   cursor: pointer;
   display: flex;
   align-items: center;
   border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
   height: 100%;
   &:hover {
     background-color: var(--blue-2);
@@ -49,5 +51,9 @@ export default {
   &:active {
     background: var(--blue-3);
   }
+}
+.sep {
+  letter-spacing: 2px;
+  display: contents;
 }
 </style>
