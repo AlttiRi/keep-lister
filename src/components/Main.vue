@@ -17,9 +17,9 @@ import Tabs from "./Tabs.vue";
 import Status from "./Status.vue";
 import Debug from "./Debug.vue";
 
-import {localhostDebug} from "../localhost-debug.js";
+import {localhostDebugHelper} from "../localhost-debug.js";
 
-localhostDebug();
+localhostDebugHelper();
 </script>
 
 <style lang="scss" scoped>
