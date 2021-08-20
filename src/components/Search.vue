@@ -19,34 +19,40 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/** reset */
+input { padding: 0 0; }
+button { padding: 0 0; }
+
 .search {
   display: flex;
+  height: 100%;
   input {
+    height: 100%;
     flex-grow: 2;
     border: none;
     padding-left: 6px;
-    border-top: transparent solid 1px;
-    border-bottom: transparent solid 1px;
-    &:hover {
-      border-bottom: var(--blue-2) solid 1px;
-    }
-    &:focus {
+    border-bottom: var(--gray-2) solid 1px;
+    &:focus, &:hover {
       outline: none;
       border-bottom: var(--blue-1) solid 1px;
     }
   }
-  button, button:focus, button:active {
+  button {
+    box-sizing: content-box;
+    height: 100%;
+    padding: 0 6px;
     outline: none;
-    background: var(--blue-2);
-  }
-  button:hover {
-    background: var(--blue-1);
-  }
-  button, button:focus {
-    border: 1px solid transparent;
-  }
-  button:active {
-    border: 1px solid var(--gray-1);
+    border: none;
+    border-bottom: var(--gray-2) solid 1px;
+    border-left: var(--gray-2) solid 1px;
+    background-color: var(--gray-1);
+    &:hover {
+      border-bottom: var(--blue-1) solid 1px;
+      background: var(--blue-2);
+    }
+    &:active {
+      background: var(--blue-3);
+    }
   }
 }
 </style>

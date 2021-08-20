@@ -46,5 +46,8 @@ export default {
     border-top: 1px solid var(--gray-2);
     border-bottom: 1px solid var(--blue-1);
   }
+  &:active {
+    background: var(--blue-3);
+  }
 }
 </style>
