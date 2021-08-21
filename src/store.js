@@ -1,12 +1,12 @@
 import {ref, computed, reactive, watch} from "vue";
-import {compare, debounce, sleep} from "./util.js";
+import {compare, dateToDayDateString, debounce, sleep} from "./util.js";
 
 export const debugMessages = reactive([""]);
 export const separator = "\\"; //todo store the path separator in json / or \
 
 const json = ref(null);
 export const scanRootPath = computed(() => {
-    return json.value?.path || [];
+    return json.value?.meta.path || [];
 });
 export const scanFolder = computed(() => {
     return json.value || {
@@ -24,7 +24,20 @@ export const openedFolder = computed(() => {
     }
     return scanFolder.value;
 });
+watch(json, async (newValue, oldValue) => {
+    while (openedFolders.length) {
+        openedFolders.pop();
+    }
+    search.value = "";
 
+    const {files, folders, symlinks, errors, total, scanTime} = json.value.meta;
+    console.log(json.value);
+    if (json.value.meta.scanTime) {
+        debugMessages[0] =
+            `files: "${files}" folders: "${folders}", symlinks: "${symlinks}",` +
+            ` errors: "${errors}", total: "${total}", scanTime: "${dateToDayDateString(scanTime)}"`;
+    }
+});
 
 export function readJsonFile(object) {
     json.value = object;

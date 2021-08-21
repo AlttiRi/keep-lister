@@ -50,3 +50,23 @@ export function debounce(runnable, ms = 50) {
         }, ms);
     }
 }
+
+// "Sun, 10 Jan 2021 22:22:22 GMT" -> "2021.01.10"
+export function dateToDayDateString(dateValue, utc = true) {
+    const _date = new Date(dateValue);
+    function pad(str) {
+        return str.toString().padStart(2, "0");
+    }
+    const _utc = utc ? "UTC" : ""; // 2021.01.10 UTC support
+    const year  = _date[`get${_utc}FullYear`]();
+    const month = _date[`get${_utc}Month`]() + 1;
+    const date  = _date[`get${_utc}Date`]();
+
+    // if server error (or missed)
+    if (Number(_date) === 0) {
+        console.warn("date is 1970.01.01"); // todo use colored console.log
+        return ""; // new 2021.03.08
+    }
+
+    return year + "." + pad(month) + "." + pad(date);
+}

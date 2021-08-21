@@ -1,5 +1,6 @@
 <template>
-  <span>{{debugMessages}}</span>
+  <span v-if="debugMessages[0]">{{debugMessages[0]}}</span>
+  <span v-else>_</span>
 </template>
 
 <script>
