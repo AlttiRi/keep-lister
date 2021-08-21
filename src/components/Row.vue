@@ -34,6 +34,7 @@ export default {
       } else if (entry.value.type === "symlink") {
         return "🔗";
       }
+      return "👾";
     });
 
     function onClick(event) {

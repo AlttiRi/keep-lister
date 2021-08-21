@@ -92,12 +92,30 @@ export const count = computed(() => {
     return list.value.length;
 });
 
+//todo search by type
+// /type:folder/
+//todo check linked list perf for large search
 const performSearchDebounced = debounce(performSearch, 300);
 async function performSearch() {
-    const time = performance.now();
-    searchResult.value = (await justFind(openedFolder.value, search.value)).sort(comparator);
-    const searchTime = performance.now() - time;
-    debugMessages[0] = `Search time: ${searchTime.toFixed(2)} ms; ${searchResult.value.length} items; search: ${search.value}`;
+    let message = "";
+
+    const time1 = performance.now();
+    const result = await justFind(openedFolder.value, search.value);
+    const searchTime = performance.now() - time1;
+    message += `Search time: ${searchTime.toFixed(2)} ms; `;
+    debugMessages[0] = message;
+    await sleep();
+
+    const time2 = performance.now();
+    const sortedResult = result.sort(comparator);
+    const sortTime = performance.now() - time2;
+    message += `Sort time: ${sortTime.toFixed(2)} ms; `;
+    debugMessages[0] = message;
+    await sleep();
+
+    searchResult.value = sortedResult;
+    message += `${searchResult.value.length} items; search: ${search.value}`;
+    debugMessages[0] = message;
 }
 watch(search, async (newValue, oldValue) => {
     if (!newValue) {

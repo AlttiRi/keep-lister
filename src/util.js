@@ -1,4 +1,4 @@
-export const setImmediate = /*#__PURE__*/ (function() {
+export const setImmediate = globalThis.setImmediate || /*#__PURE__*/ (function() {
     const {port1, port2} = new MessageChannel();
     const queue = [];
 
