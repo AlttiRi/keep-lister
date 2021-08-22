@@ -1,7 +1,9 @@
 <template>
 <div class="address">
-  <span class="scanPath" @click="goToRoot"
-  >{{root.slice(0, -1)}}<span class="sep">{{root.slice(-1)}}</span></span>
+  <span class="scanPath" @click="goToRoot">
+    <span class="part"    >{{part1}}</span>
+    <span class="part sep">{{part2}}</span>
+  </span>
   <span class="sep">{{sep}}</span>
   <AddressBar_Folder v-for="(folder, i) of openedFolders"
                      :entry="folder"
@@ -38,6 +40,12 @@ export default {
     const openFolders = computed(() => {
       return openedFolders.map(entry => entry.name).join(separator);
     });
+    const part1 = computed(() => {
+      return root.value.slice(0, -1);
+    });
+    const part2 = computed(() => {
+      return root.value.slice(-1);
+    });
 
     function goToRoot() {
       console.log("folder", scanFolder.value);
@@ -54,6 +62,8 @@ export default {
       goToRoot,
       openedFolders,
       sep,
+      part1,
+      part2,
     };
   }
 }
@@ -61,6 +71,7 @@ export default {
 
 <style lang="scss" scoped>
 .address {
+  white-space: pre; // to display tailing spaces
   display: flex;
   align-items: center;
   padding-left: 6px;
@@ -81,8 +92,10 @@ export default {
     }
   }
 }
+.part, .sep {
+  display: contents;
+}
 .sep {
   letter-spacing: 2px;
-  display: contents;
 }
 </style>

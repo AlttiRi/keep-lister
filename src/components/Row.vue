@@ -78,6 +78,7 @@ tr.row {
     }
     &.name {
       width: 95%;
+      white-space: pre; // to display tailing spaces
     }
     &.type {
       width: 15%;

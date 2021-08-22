@@ -1,7 +1,9 @@
 <template>
   <span class="opened-folder"
-        @click="onClick"
-  >{{entry.name.slice(0, -1)}}<span class="sep">{{entry.name.slice(-1)}}</span></span>
+        @click="onClick">
+    <span class="part"    >{{part1}}</span>
+    <span class="sep part">{{part2}}</span>
+  </span>
   <span class="sep">{{isLast ? "" : separator}}</span>
 </template>
 
@@ -18,6 +20,13 @@ export default {
       return index.value + 1 === count.value;
     });
 
+    const part1 = computed(() => {
+      return entry.value.name.slice(0, -1);
+    });
+    const part2 = computed(() => {
+      return entry.value.name.slice(-1);
+    });
+
     function onClick() {
       console.log("folder", entry.value, index.value);
       while (openedFolders.length - 1 !== index.value) {
@@ -28,7 +37,9 @@ export default {
 
     return {
       isLast,
-      onClick
+      part1,
+      part2,
+      onClick,
     };
   }
 }
@@ -36,6 +47,7 @@ export default {
 
 <style lang="scss" scoped>
 .opened-folder {
+  white-space: pre; // to display tailing spaces
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -52,8 +64,10 @@ export default {
     background: var(--blue-3);
   }
 }
+.part, .sep {
+  display: contents;
+}
 .sep {
   letter-spacing: 2px;
-  display: contents;
 }
 </style>
