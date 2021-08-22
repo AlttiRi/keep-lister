@@ -1,10 +1,10 @@
 <template>
 <div class="address">
   <span class="scanPath" @click="goToRoot">
-    <span class="part"    >{{part1}}</span>
-    <span class="part sep">{{part2}}</span>
+    <span class="part"       >{{part1}}</span>
+    <span class="part spaced">{{part2}}</span>
   </span>
-  <span class="sep">{{sep}}</span>
+  <span class="spaced separator" v-if="openedFolders.length">{{separator}}</span>
   <AddressBar_Folder v-for="(folder, i) of openedFolders"
                      :entry="folder"
                      :index="i"
@@ -30,9 +30,6 @@ export default {
     AddressBar_Folder
   },
   setup() {
-    const sep = computed(() => {
-      return openedFolders.length ? separator : "";
-    });
     const root = computed(() => {
       const scanPath = [...scanRootPath.value, scanFolder.value.name];
       return scanPath.join(separator);
@@ -61,7 +58,6 @@ export default {
       separator,
       goToRoot,
       openedFolders,
-      sep,
       part1,
       part2,
     };
@@ -90,12 +86,12 @@ export default {
     &:active {
       background: var(--blue-3);
     }
+    .part {
+      display: contents;
+    }
   }
-}
-.part, .sep {
-  display: contents;
-}
-.sep {
-  letter-spacing: 2px;
+  .spaced {
+    letter-spacing: 2px;
+  }
 }
 </style>

@@ -1,10 +1,10 @@
 <template>
   <span class="opened-folder"
         @click="onClick">
-    <span class="part"    >{{part1}}</span>
-    <span class="sep part">{{part2}}</span>
+    <span class="part"       >{{part1}}</span>
+    <span class="part spaced">{{part2}}</span>
   </span>
-  <span class="sep">{{isLast ? "" : separator}}</span>
+  <span class="separator spaced" v-if="!isLast">{{separator}}</span>
 </template>
 
 <script>
@@ -16,10 +16,10 @@ export default {
   name: "AddressBar_Folder",
   setup(props) {
     const {index, count, entry} = toRefs(props);
+
     const isLast = computed(() => {
       return index.value + 1 === count.value;
     });
-
     const part1 = computed(() => {
       return entry.value.name.slice(0, -1);
     });
@@ -63,11 +63,11 @@ export default {
   &:active {
     background: var(--blue-3);
   }
+  .part {
+    display: contents;
+  }
 }
-.part, .sep {
-  display: contents;
-}
-.sep {
+.spaced {
   letter-spacing: 2px;
 }
 </style>
