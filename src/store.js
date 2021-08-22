@@ -75,7 +75,9 @@ export const entries = computed(() => [
 
 export const empty = computed(() => !(folders.value?.length || files.value?.length || symlinks.value?.length));
 
+/** @type {number} */
 const limit = 1000;
+/** @type {import("vue").Ref<string>} */
 export const search = ref("");
 export const searchResult = ref([]);
 

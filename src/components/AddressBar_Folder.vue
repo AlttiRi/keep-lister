@@ -9,10 +9,10 @@
 
 <script>
 import {computed, toRefs} from "vue";
-import {openedFolders, search} from "../store.js";
+import {openedFolders, search, separator} from "../store.js";
 
 export default {
-  props: ["index", "count", "entry", "separator"],
+  props: ["index", "count", "entry"],
   name: "AddressBar_Folder",
   setup(props) {
     const {index, count, entry} = toRefs(props);
@@ -40,6 +40,7 @@ export default {
       part1,
       part2,
       onClick,
+      separator,
     };
   }
 }
