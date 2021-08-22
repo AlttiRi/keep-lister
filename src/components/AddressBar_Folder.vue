@@ -12,7 +12,7 @@ import {computed, toRefs} from "vue";
 import {openedFolders, search} from "../store.js";
 
 export default {
-  props: ["entry", "separator", "count", "index"],
+  props: ["index", "count", "entry", "separator"],
   name: "AddressBar_Folder",
   setup(props) {
     const {index, count, entry} = toRefs(props);

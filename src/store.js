@@ -2,9 +2,13 @@ import {ref, computed, reactive, watch} from "vue";
 import {compare, dateToDayDateString, debounce, sleep} from "./util.js";
 
 export const debugMessages = reactive([""]);
-export const separator = "\\"; //todo store the path separator in json / or \
 
 const json = ref(null);
+/** @type {import("vue").ComputedRef<string>} */
+export const separator = computed(() => {
+    return json.value?.meta.separator || "/";
+});
+/** @type {import("vue").ComputedRef<string[]>} */
 export const scanRootPath = computed(() => {
     return json.value?.meta.path || [];
 });

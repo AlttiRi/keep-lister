@@ -4,7 +4,7 @@
     <span class="part"       >{{part1}}</span>
     <span class="part spaced">{{part2}}</span>
   </span>
-  <span class="spaced separator" v-if="openedFolders.length">{{separator}}</span>
+  <span class="spaced separator" v-if="openedFolders.length && root !== `/`">{{separator}}</span>
   <AddressBar_Folder v-for="(folder, i) of openedFolders"
                      :entry="folder"
                      :index="i"
@@ -19,7 +19,8 @@ import {
   scanRootPath,
   openedFolders,
   scanFolder,
-  separator, search,
+  separator,
+  search,
 } from "../store.js";
 import AddressBar_Folder from "./AddressBar_Folder.vue";
 import {computed} from "vue";
@@ -32,10 +33,14 @@ export default {
   setup() {
     const root = computed(() => {
       const scanPath = [...scanRootPath.value, scanFolder.value.name];
-      return scanPath.join(separator);
+      const str = scanPath.join(separator.value);
+      if (str.startsWith("//")) { // for unix
+        return str.slice(1);
+      }
+      return str;
     });
     const openFolders = computed(() => {
-      return openedFolders.map(entry => entry.name).join(separator);
+      return openedFolders.map(entry => entry.name).join(separator.value);
     });
     const part1 = computed(() => {
       return root.value.slice(0, -1);
