@@ -1,5 +1,5 @@
 import {onMounted} from "vue";
-import {readJsonFile} from "./store.js";
+import {setJson} from "./store.js";
 
 export function localhostDebugHelper() {
     // Already opened directory, no need to open with input
@@ -9,7 +9,7 @@ export function localhostDebugHelper() {
         if (filepath) {
             const response = await fetch(filepath);
             const data = await response.json();
-            readJsonFile(data);
+            setJson(data);
         }
     });
 }

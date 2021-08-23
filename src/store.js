@@ -4,6 +4,11 @@ import {compare, dateToDayDateString, debounce, sleep} from "./util.js";
 export const debugMessages = reactive([""]);
 
 const json = ref(null);
+export function setJson(object) {
+    globalThis.json = object;
+    json.value = object;
+}
+
 /** @type {import("vue").ComputedRef<string>} */
 export const separator = computed(() => {
     return json.value?.meta.separator || "/";
@@ -43,9 +48,6 @@ watch(json, async (newValue, oldValue) => {
     }
 });
 
-export function readJsonFile(object) {
-    json.value = object;
-}
 
 export function openFolder(entry) {
     openedFolders.push(entry);

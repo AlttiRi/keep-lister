@@ -9,14 +9,14 @@
 </template>
 
 <script>
-import {readJsonFile} from "../store.js";
+import {setJson} from "../store.js";
 
 export default {
   name: "FileSelect",
   setup() {
     async function onChange(event) {
       const jsonObj = JSON.parse(await event.target.files[0].text());
-      readJsonFile(jsonObj);
+      setJson(jsonObj);
       globalThis.json = jsonObj;
     }
     return {
