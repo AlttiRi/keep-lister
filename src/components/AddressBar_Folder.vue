@@ -48,7 +48,6 @@ export default {
 
 <style lang="scss" scoped>
 .opened-folder {
-  white-space: pre; // to display tailing spaces
   cursor: pointer;
   display: flex;
   align-items: center;
