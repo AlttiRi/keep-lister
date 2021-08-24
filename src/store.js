@@ -1,6 +1,7 @@
 import {ref, computed, reactive, watch} from "vue";
 import {compare, dateToDayDateString, debounce, sleep} from "./util.js";
 
+
 export const debugMessages = reactive([""]);
 
 const json = ref(null);
@@ -39,12 +40,12 @@ watch(json, async (newValue, oldValue) => {
     }
     search.value = "";
 
-    const {files, folders, symlinks, errors, total, scanTime} = json.value.meta;
+    const {files, folders, symlinks, errors, total, scanDate} = json.value.meta;
     console.log(json.value);
-    if (json.value.meta.scanTime) {
+    if (json.value.meta.scanDate) {
         debugMessages[0] =
             `files: "${files}" folders: "${folders}", symlinks: "${symlinks}",` +
-            ` errors: "${errors}", total: "${total}", scanTime: "${dateToDayDateString(scanTime)}"`;
+            ` errors: "${errors}", total: "${total}", scanDate: "${dateToDayDateString(scanDate)}"`;
     }
 });
 

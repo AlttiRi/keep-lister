@@ -245,7 +245,7 @@ export class FilesStructure {
             meta: {
                 path: scanPath,
                 separator: path.sep,
-                scanTime: Date.now(),
+                scanDate: Date.now(),
                 platform: os.platform()
             }
         };
