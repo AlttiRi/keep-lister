@@ -45,7 +45,7 @@ localhostDebugHelper();
   }
 
   height: 720px;
-  max-height: 100vh;
+  max-height: calc(100vh - 2px);
   width: 1280px;
   max-width: 100%;
 }
