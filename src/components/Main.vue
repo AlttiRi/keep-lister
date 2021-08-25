@@ -10,10 +10,10 @@
   </div>
 </template>
 <script setup>
-import Content from "./Content.vue";
+import Tabs from "./Tabs.vue";
 import AddressBar from "./AddressBar.vue";
 import Search from "./Search.vue";
-import Tabs from "./Tabs.vue";
+import Content from "./Content.vue";
 import Status from "./Status.vue";
 import Debug from "./Debug.vue";
 
