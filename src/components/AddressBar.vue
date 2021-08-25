@@ -20,9 +20,7 @@ import {openedFolders} from "../store.js";
 .address {
   display: flex;
   align-items: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: pre; /* to display tailing spaces */
+  white-space: pre-wrap; /* to display tailing spaces */
   padding-left: 6px;
 }
 </style>
