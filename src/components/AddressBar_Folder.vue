@@ -37,10 +37,10 @@ export default {
 
     return {
       isLast,
-      part1,
-      part2,
       onClick,
       separator,
+      part1,
+      part2,
     };
   }
 }
@@ -49,11 +49,11 @@ export default {
 <style lang="scss" scoped>
 .opened-folder {
   cursor: pointer;
+  height: 100%;
   display: flex;
   align-items: center;
   border-bottom: transparent solid 1px;
   box-sizing: border-box;
-  height: 100%;
   &:hover {
     background-color: var(--blue-2);
     border-bottom: 1px solid var(--blue-1);

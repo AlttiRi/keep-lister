@@ -54,13 +54,14 @@ export default {
 
 <style lang="scss" scoped>
 .scanPath {
-  display: flex;
-  align-items: center;
   cursor: pointer;
   height: 100%;
+  display: flex;
+  align-items: center;
   border-bottom: transparent solid 1px;
   box-sizing: border-box;
   &:hover {
+    background-color: var(--blue-2);
     border-bottom: 1px solid var(--blue-1);
   }
   &:active {
