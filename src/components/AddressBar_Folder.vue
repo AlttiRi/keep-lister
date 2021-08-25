@@ -51,13 +51,11 @@ export default {
   cursor: pointer;
   display: flex;
   align-items: center;
-  border: 1px solid transparent;
-  border-left: 0;
-  border-right: 0;
+  border-bottom: transparent solid 1px;
+  box-sizing: border-box;
   height: 100%;
   &:hover {
     background-color: var(--blue-2);
-    border-top: 1px solid var(--gray-2);
     border-bottom: 1px solid var(--blue-1);
   }
   &:active {

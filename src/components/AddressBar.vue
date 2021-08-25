@@ -20,7 +20,14 @@ import {openedFolders} from "../store.js";
 .address {
   display: flex;
   align-items: center;
-  white-space: pre-wrap; /* to display tailing spaces */
+  white-space: pre; /* to display tailing spaces */
+  overflow-x: scroll;
   padding-left: 6px;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background: transparent;
 }
 </style>

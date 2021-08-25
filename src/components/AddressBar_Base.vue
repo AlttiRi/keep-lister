@@ -58,11 +58,9 @@ export default {
   align-items: center;
   cursor: pointer;
   height: 100%;
-  border-top: 1px solid transparent;
-  border-bottom: 1px solid transparent;
+  border-bottom: transparent solid 1px;
+  box-sizing: border-box;
   &:hover {
-    background-color: var(--blue-2);
-    border-top: 1px solid var(--gray-2);
     border-bottom: 1px solid var(--blue-1);
   }
   &:active {

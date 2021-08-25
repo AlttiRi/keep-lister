@@ -31,20 +31,21 @@ button { padding: 0 0; }
     flex-grow: 2;
     border: none;
     padding-left: 6px;
-    border-bottom: var(--gray-2) solid 1px;
+    border-bottom: transparent solid 1px;
+    box-sizing: border-box;
     &:focus, &:hover {
       outline: none;
       border-bottom: var(--blue-1) solid 1px;
     }
   }
   button {
-    box-sizing: content-box;
     height: 100%;
     padding: 0 6px;
     outline: none;
     border: none;
-    border-bottom: var(--gray-2) solid 1px;
+    border-bottom: transparent solid 1px;
     border-left: var(--gray-2) solid 1px;
+    box-sizing: border-box;
     background-color: var(--gray-1);
     &:hover {
       border-bottom: var(--blue-1) solid 1px;
