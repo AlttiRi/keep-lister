@@ -5,14 +5,8 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import FileSelect from "./FileSelect.vue";
-export default {
-  name: "tabs",
-  components: {
-    FileSelect
-  },
-}
 </script>
 
 <style scoped>

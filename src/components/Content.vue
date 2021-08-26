@@ -8,28 +8,14 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import Row from "./Row.vue";
-import {
-  back,
-  list, listLimited
-} from "../store.js";
+import {back, listLimited} from "../store.js";
 
-export default {
-  name: "Content",
-  components: {
-    Row,
-  },
-  setup(props) {
-    function onContextMenu(event) {
-      event.preventDefault();
-      back();
-    }
-    return {onContextMenu, listLimited, list};
-  }
+function onContextMenu(event) {
+  event.preventDefault();
+  back();
 }
-
-
 </script>
 
 <style scoped>

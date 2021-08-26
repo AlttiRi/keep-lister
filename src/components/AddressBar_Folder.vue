@@ -9,42 +9,29 @@
   </span>
 </template>
 
-<script>
+<script setup>
 import {computed, toRefs} from "vue";
 import {openedFolders, search, separator} from "../store.js";
 
-export default {
-  props: ["index", "count", "entry"],
-  name: "AddressBar_Folder",
-  setup(props) {
-    const {index, count, entry} = toRefs(props);
+const props = defineProps(["index", "count", "entry"]);
+const {index, count, entry} = toRefs(props);
 
-    const isLast = computed(() => {
-      return index.value + 1 === count.value;
-    });
-    const part1 = computed(() => {
-      return entry.value.name.slice(0, -1);
-    });
-    const part2 = computed(() => {
-      return entry.value.name.slice(-1);
-    });
+const isLast = computed(() => {
+  return index.value + 1 === count.value;
+});
+const part1 = computed(() => {
+  return entry.value.name.slice(0, -1);
+});
+const part2 = computed(() => {
+  return entry.value.name.slice(-1);
+});
 
-    function onClick() {
-      console.log("folder", entry.value, index.value);
-      while (openedFolders.length - 1 !== index.value) {
-        console.log("pop", openedFolders.pop());
-      }
-      search.value = "";
-    }
-
-    return {
-      isLast,
-      onClick,
-      separator,
-      part1,
-      part2,
-    };
+function onClick() {
+  console.log("folder", entry.value, index.value);
+  while (openedFolders.length - 1 !== index.value) {
+    console.log("pop", openedFolders.pop());
   }
+  search.value = "";
 }
 </script>
 

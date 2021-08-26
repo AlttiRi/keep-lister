@@ -8,21 +8,13 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import {setJson} from "../store.js";
 
-export default {
-  name: "FileSelect",
-  setup() {
-    async function onChange(event) {
-      const jsonObj = JSON.parse(await event.target.files[0].text());
-      setJson(jsonObj);
-      globalThis.json = jsonObj;
-    }
-    return {
-      onChange
-    };
-  }
+async function onChange(event) {
+  const jsonObj = JSON.parse(await event.target.files[0].text());
+  setJson(jsonObj);
+  globalThis.json = jsonObj;
 }
 </script>
 

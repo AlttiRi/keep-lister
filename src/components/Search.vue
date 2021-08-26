@@ -5,16 +5,10 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import {search} from "../store.js";
-export default {
-  name: "Search",
-  setup() {
-    function clear() {
-      search.value = "";
-    }
-    return {search, clear};
-  }
+function clear() {
+  search.value = "";
 }
 </script>
 
