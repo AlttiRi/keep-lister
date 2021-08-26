@@ -1,9 +1,11 @@
 <template>
   <span class="scanPath" @click="goToRoot">
-    <span class="part"       >{{part1}}</span>
-    <span class="part spaced">{{part2}}</span>
+    <span class="parts">
+      <span class="part"       >{{part1}}</span>
+      <span class="part spaced">{{part2}}</span>
+    </span>
+    <span class="spaced separator" v-if="showSep">{{separator}}</span>
   </span>
-  <span class="spaced separator" v-if="openedFolders.length && root !== `/`">{{separator}}</span>
 </template>
 
 <script>
@@ -30,6 +32,9 @@ export default {
     const part2 = computed(() => {
       return root.value.slice(-1);
     });
+    const showSep = computed(() => {
+      return openedFolders.length && root.value !== "/";
+    });
 
     function goToRoot() {
       console.log("folder", scanFolder.value);
@@ -47,6 +52,7 @@ export default {
       openedFolders,
       part1,
       part2,
+      showSep,
     };
   }
 }
@@ -54,24 +60,30 @@ export default {
 
 <style lang="scss" scoped>
 .scanPath {
-  cursor: pointer;
   height: 100%;
   display: flex;
   align-items: center;
-  border-bottom: transparent solid 1px;
-  box-sizing: border-box;
-  &:hover {
-    background-color: var(--blue-2);
-    border-bottom: 1px solid var(--blue-1);
+  .parts {
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    cursor: pointer;
+    box-sizing: border-box;
+    border-bottom: transparent solid 1px;
+    &:hover {
+      background-color: var(--blue-2);
+      border-bottom: 1px solid var(--blue-1);
+    }
+    &:active {
+      background: var(--blue-3);
+    }
+    .part {
+      display: contents; // for correct selection by double click
+    }
   }
-  &:active {
-    background: var(--blue-3);
+  .spaced {
+    letter-spacing: 2px;
   }
-  .part {
-    display: contents;
-  }
-}
-.spaced {
-  letter-spacing: 2px;
 }
 </style>

@@ -1,10 +1,12 @@
 <template>
   <span class="opened-folder"
         @click="onClick">
-    <span class="part"       >{{part1}}</span>
-    <span class="part spaced">{{part2}}</span>
+    <span class="parts">
+      <span class="part"       >{{part1}}</span>
+      <span class="part spaced">{{part2}}</span>
+    </span>
+    <span class="separator spaced" v-if="!isLast">{{separator}}</span>
   </span>
-  <span class="separator spaced" v-if="!isLast">{{separator}}</span>
 </template>
 
 <script>
@@ -48,24 +50,40 @@ export default {
 
 <style lang="scss" scoped>
 .opened-folder {
-  cursor: pointer;
   height: 100%;
   display: flex;
   align-items: center;
-  border-bottom: transparent solid 1px;
-  box-sizing: border-box;
-  &:hover {
-    background-color: var(--blue-2);
-    border-bottom: 1px solid var(--blue-1);
+  .parts {
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: pre;
+
+    cursor: pointer;
+    box-sizing: border-box;
+    border-bottom: transparent solid 1px;
+    &:hover {
+      background-color: var(--blue-2);
+      border-bottom: 1px solid var(--blue-1);
+    }
+    &:active {
+      background: var(--blue-3);
+    }
+    .part { // to use with max-width limitation // not works with  `display: contents;`
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: pre;
+    }
+    .part {
+      display: contents; // for correct selection by double click
+    }
   }
-  &:active {
-    background: var(--blue-3);
+  .spaced {
+    letter-spacing: 2px;
   }
-  .part {
-    display: contents;
-  }
-}
-.spaced {
-  letter-spacing: 2px;
 }
 </style>
