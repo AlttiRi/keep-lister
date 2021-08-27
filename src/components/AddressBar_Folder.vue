@@ -47,7 +47,7 @@ function onClick() {
     width: 100%;
     overflow-x: hidden;
     text-overflow: ellipsis;
-    white-space: pre;
+    white-space: pre; /* to display tailing spaces */
 
     cursor: pointer;
     box-sizing: border-box;

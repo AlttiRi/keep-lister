@@ -52,6 +52,7 @@ function goToRoot() {
     height: 100%;
     display: flex;
     align-items: center;
+    white-space: pre; /* to display tailing spaces */
 
     cursor: pointer;
     box-sizing: border-box;

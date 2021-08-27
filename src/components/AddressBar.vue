@@ -25,7 +25,6 @@ import {openedFolders} from "../store.js";
 <style lang="scss" scoped>
 .address {
   display: flex;
-  //white-space: pre; /* to display tailing spaces */ // firefox does shit with it
   overflow-x: scroll;
   padding-left: 6px;
 
