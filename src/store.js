@@ -5,18 +5,96 @@ import {compare, dateToDayDateString, debounce, sleep} from "./util.js";
 export const debugMessages = reactive([""]);
 
 const json = ref(null);
+const meta = ref(null);
 export function setJson(object) {
-    globalThis.json = object;
-    json.value = object;
+    console.time("parseEntries");
+    console.log(globalThis.json = parseEntries(object));
+    console.timeEnd("parseEntries");
+    json.value = globalThis.json;
+    meta.value = object.meta;
+}
+
+
+class SimpleEntry {
+    constructor({name, parent, type, meta, errors}) {
+        Object.assign(this, {name, parent, type});
+        if (meta) {
+            Object.assign(this, {meta});
+        }
+        if (errors) {
+            Object.assign(this, {errors});
+        }
+    }
+    addChild(entry) {
+        if (!this.children) {
+            this.children = [];
+        }
+        this.children.push(entry);
+    }
+    get hasErrors() {
+        return Boolean(this.errors?.length);
+    }
+    get isEmpty() {
+        return Boolean(this.children?.length);
+    }
+    get folders() {
+        return this.children?.filter(e => e.type === "folder");
+    }
+    get files() {
+        return this.children?.filter(e => e.type === "file");
+    }
+    get symlinks() {
+        return this.children?.filter(e => e.type === "symlink");
+    }
+}
+
+function parseEntries(rootFolder, parent = null) {
+    const root = new SimpleEntry({
+        name: rootFolder.name,
+        type: "folder",
+        errors: rootFolder.errors,
+        parent
+    });
+    if (rootFolder.folders) {
+        rootFolder.folders.forEach(folder => {
+            root.addChild(parseEntries(folder, root));
+        });
+    }
+    const simpleTypes = ["file", "fifo", "charDev", "blockDev", "socket"];
+    simpleTypes.forEach(type => {
+        if (rootFolder[type+"s"]) {
+            rootFolder[type+"s"].forEach(file => {
+                root.addChild(new SimpleEntry({
+                    name: file,
+                    parent: root,
+                    type: type
+                }));
+            });
+        }
+    });
+    if (rootFolder.symlinks) {
+        rootFolder.symlinks.forEach(symlink => {
+            root.addChild(new SimpleEntry({
+                name: symlink.name,
+                parent: root,
+                type: "symlink",
+                meta: {
+                    pathTo: symlink.pathTo
+                },
+                errors: symlink.errors
+            }));
+        });
+    }
+    return root;
 }
 
 /** @type {import("vue").ComputedRef<string>} */
 export const separator = computed(() => {
-    return json.value?.meta.separator || "/";
+    return meta.value?.separator || "/";
 });
 /** @type {import("vue").ComputedRef<string[]>} */
 export const scanRootPath = computed(() => {
-    return json.value?.meta.path || [];
+    return meta.value?.path || [];
 });
 export const scanFolder = computed(() => {
     return json.value || {
@@ -34,18 +112,18 @@ export const openedFolder = computed(() => {
     }
     return scanFolder.value;
 });
-watch(json, async (newValue, oldValue) => {
+watch(meta, async (newValue, oldValue) => {
     while (openedFolders.length) {
         openedFolders.pop();
     }
     search.value = "";
 
-    const {files, folders, symlinks, errors, total, scanDate} = json.value.meta;
-    console.log(json.value);
-    if (json.value.meta.scanDate) {
+    console.log(meta.value);
+    const {files, folders, symlinks, errors, total, scanDate} = meta.value;
+    if (meta.value.scanDate) {
         debugMessages[0] =
-            `files: "${files}" folders: "${folders}", symlinks: "${symlinks}",` +
-            ` errors: "${errors}", total: "${total}", scanDate: "${dateToDayDateString(scanDate)}"`;
+            `files: "${files}" folders: "${folders}", symlinks: "${symlinks}", ` +
+            `errors: "${errors}", total: "${total}", scanDate: "${dateToDayDateString(scanDate)}"`;
     }
 });
 
@@ -71,12 +149,12 @@ export const folders = computed(() => openedFolder.value.folders || []);
 export const files = computed(() => openedFolder.value.files || []);
 export const symlinks = computed(() => openedFolder.value.symlinks || []);
 export const entries = computed(() => [
-    ...folders.value.map(value => ({type: "folder", ...value})).sort(comparator),
-    ...files.value.map(value => ({type: "file", name: value})).sort(comparator),
-    ...symlinks.value.map(value => ({type: "symlink", name: value})).sort(comparator),
+    ...folders.value.sort(comparator),
+    ...files.value.sort(comparator),
+    ...symlinks.value.sort(comparator),
 ]);
 
-export const empty = computed(() => !(folders.value?.length || files.value?.length || symlinks.value?.length));
+export const empty = computed(() => json.value && !(folders.value?.length || files.value?.length || symlinks.value?.length));
 
 /** @type {number} */
 const limit = 1000;
@@ -139,8 +217,15 @@ watch(search, async (newValue, oldValue) => {
     }
 });
 
+/**
+ * @param {SimpleEntry} folder
+ * @param {String} word
+ * @return {Promise<SimpleEntry[]>}
+ */
 async function justFind(folder, word) {
     let time = performance.now();
+
+    /** @type SimpleEntry[] */
     const result = [];
 
     async function find(folder, word) {
@@ -148,20 +233,20 @@ async function justFind(folder, word) {
             await sleep();
             time = performance.now();
         }
-        for (const _folder of (folder.folders || [])) {
-            if (_folder.name.includes(word)) {
-                result.push({type: "folder", ..._folder});
+        for (const curFolder of (folder.folders || [])) {
+            if (curFolder.name.includes(word)) {
+                result.push(curFolder);
             }
-            await find(_folder, word);
+            await find(curFolder, word);
         }
         for (const file of (folder.files || [])) {
-            if (file.includes(word)) {
-                result.push({type: "file", name: file});
+            if (file.name.includes(word)) {
+                result.push(file);
             }
         }
         for (const symlink of (folder.symlinks || [])) {
-            if (symlink.includes(word)) {
-                result.push({type: "symlink", name: symlink});
+            if (symlink.name.includes(word)) {
+                result.push(symlink);
             }
         }
     }
