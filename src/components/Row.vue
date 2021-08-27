@@ -6,7 +6,7 @@
       :class="{error}"
   >
       <td class="icon">{{icon}}</td>
-      <td class="name">{{entry.name}}</td>
+      <td class="name">{{entryName}}</td>
 <!--      <td class="type">{{entry.type}}</td>-->
   </tr>
 </template>
@@ -17,12 +17,31 @@ import {openFolder} from "../store.js";
 import {isImage, isVideo} from "../util.js";
 
 const props = defineProps(["entry"]);
-const {entry} = toRefs(props);
 
-const title = ref("");
+/** @type {import("vue").Ref<SimpleEntry>} */
+const entry = toRefs(props).entry;
+
+/** @type {import("vue").Ref<String>} */
+const entryName = computed(() => {
+  return entry.value.name;
+});
+
+/** @type {import("vue").Ref<Boolean>} */
 const error = computed(() => {
   return entry.value.hasErrors;
 });
+
+/** @type {import("vue").ComputedRef<String>} */
+const title = computed(() => {
+  if (entry.value.hasErrors) {
+    return JSON.stringify(entry.value.errors[0], null, " ");
+  }
+  if (entry.value.type === "symlink") {
+    return entry.value.meta?.pathTo;
+  }
+});
+
+/** @type {import("vue").Ref<String>} */
 const icon = computed(() => {
   if (entry.value.type === "folder") {
     return "📁";
@@ -34,7 +53,6 @@ const icon = computed(() => {
     }
     return "📄";
   } else if (entry.value.type === "symlink") {
-    title.value = entry.value.meta?.pathTo;
     return "🔗";
   }
   return "👾";
