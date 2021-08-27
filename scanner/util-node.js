@@ -309,7 +309,7 @@ export class FilesStructure {
             } else {
                 console.log("unknown error", entry.error);
                 const meta = this.value.meta;
-                const unknownErrors = meta.errors || (meta.errors = []);
+                const unknownErrors = meta.unknownErrors || (meta.unknownErrors = []);
                 unknownErrors.push(entry.error);
             }
             return;
