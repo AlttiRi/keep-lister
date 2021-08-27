@@ -1,4 +1,4 @@
-import {ref, computed, reactive, watch} from "vue";
+import {ref, computed, reactive, watch, toRaw, isReactive, isReadonly} from "vue";
 import {compare, dateToDayDateString, debounce, sleep} from "./util.js";
 
 
@@ -16,7 +16,7 @@ export function setJson(object) {
 
 
 class SimpleEntry {
-    [Symbol.toStringTag] = "SimpleEntry";
+    //[Symbol.toStringTag] = "SimpleEntry";
     constructor({name, parent, type, meta, errors}) {
         Object.assign(this, {name, parent, type});
         if (meta) {
@@ -228,6 +228,11 @@ watch(search, async (newValue, oldValue) => {
 async function justFind(folder, word) {
     let time = performance.now();
 
+    // Do unProxy.
+    // Up to x40 in comparison with default reactive ref.
+    const folderRaw = isReactive(folder) ? toRaw(folder) : folder;
+
+
     /** @type SimpleEntry[] */
     const result = [];
 
@@ -251,6 +256,6 @@ async function justFind(folder, word) {
             }
         }
     }
-    await find(folder, word);
+    await find(folderRaw, word);
     return result;
 }
