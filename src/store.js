@@ -231,6 +231,7 @@ async function justFind(folder, word) {
     /** @type SimpleEntry[] */
     const result = [];
 
+    const types = ["file", "symlink", "fifo", "charDev", "blockDev", "socket"];
     async function find(folder, word) {
         if (performance.now() - time > 16) {
             await sleep();
@@ -242,14 +243,11 @@ async function justFind(folder, word) {
             }
             await find(curFolder, word);
         }
-        for (const file of (folder.files || [])) {
-            if (file.name.includes(word)) {
-                result.push(file);
-            }
-        }
-        for (const symlink of (folder.symlinks || [])) {
-            if (symlink.name.includes(word)) {
-                result.push(symlink);
+        for (const type of types) {
+            for (const file of (folder[type + "s"] || [])) {
+                if (file.name.includes(word)) {
+                    result.push(file);
+                }
             }
         }
     }
