@@ -1,6 +1,6 @@
 <template>
-  <span class="scanPath" @click="goToRoot">
-    <span class="parts">
+  <span class="scanPath">
+    <span class="parts" @click="goToRoot">
       <span class="part"       >{{part1}}</span>
       <span class="part spaced">{{part2}}</span>
     </span>

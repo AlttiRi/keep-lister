@@ -1,7 +1,6 @@
 <template>
-  <span class="opened-folder"
-        @click="onClick">
-    <span class="parts">
+  <span class="opened-folder">
+    <span class="parts" @click="onClick">
       <span class="part"       >{{part1}}</span>
       <span class="part spaced">{{part2}}</span>
     </span>
