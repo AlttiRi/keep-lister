@@ -1,7 +1,9 @@
 <template>
   <tr class="row"
-       @click="onClick"
-       @mousedown="onMousedown"
+      @click="onClick"
+      @mousedown="onMousedown"
+      :title="title"
+      :class="{error}"
   >
       <td class="icon">{{icon}}</td>
       <td class="name">{{entry.name}}</td>
@@ -10,13 +12,17 @@
 </template>
 
 <script setup>
-import {toRefs, computed} from "vue";
+import {toRefs, computed, ref} from "vue";
 import {openFolder} from "../store.js";
 import {isImage, isVideo} from "../util.js";
 
 const props = defineProps(["entry"]);
 const {entry} = toRefs(props);
 
+const title = ref("");
+const error = computed(() => {
+  return entry.value.hasErrors;
+});
 const icon = computed(() => {
   if (entry.value.type === "folder") {
     return "📁";
@@ -28,6 +34,7 @@ const icon = computed(() => {
     }
     return "📄";
   } else if (entry.value.type === "symlink") {
+    title.value = entry.value.meta.pathTo;
     return "🔗";
   }
   return "👾";
@@ -65,6 +72,7 @@ tr.row {
   td {
     max-width: 0;
     &.icon {
+      border-left: 2px solid transparent;
       width: 2.5%;
       min-width: 22px;
       user-select: none;
@@ -77,6 +85,11 @@ tr.row {
       width: 15%;
       user-select: none;
     }
+  }
+}
+tr.row.error {
+  .icon {
+    border-left: 2px solid red;
   }
 }
 </style>
