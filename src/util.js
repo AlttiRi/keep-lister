@@ -70,3 +70,13 @@ export function dateToDayDateString(dateValue, utc = true) {
 
     return year + "." + pad(month) + "." + pad(date);
 }
+
+export function structuredClone(object) {
+    return new Promise(resolve => {
+        const {port1, port2} = new MessageChannel();
+        port1.onmessage = function(message) {
+            resolve(message.data);
+        };
+        port2.postMessage(object);
+    });
+}

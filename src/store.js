@@ -1,5 +1,5 @@
 import {ref, computed, reactive, watch} from "vue";
-import {compare, dateToDayDateString, debounce, sleep} from "./util.js";
+import {compare, dateToDayDateString, debounce, sleep, structuredClone} from "./util.js";
 
 
 export const debugMessages = reactive([""]);
@@ -16,6 +16,7 @@ export function setJson(object) {
 
 
 class SimpleEntry {
+    [Symbol.toStringTag] = "SimpleEntry";
     constructor({name, parent, type, meta, errors}) {
         Object.assign(this, {name, parent, type});
         if (meta) {
@@ -30,12 +31,25 @@ class SimpleEntry {
             this.children = [];
         }
         this.children.push(entry);
-    }
-    get hasErrors() {
-        return Boolean(this.errors?.length);
-    }
-    get isEmpty() {
-        return Boolean(this.children?.length);
+
+        // if (entry.type === "folder") {
+        //     if (!this.folders) {
+        //         this.folders = [];
+        //     }
+        //     this.folders.push(entry);
+        // }
+        // if (entry.type === "file") {
+        //     if (!this.files) {
+        //         this.files = [];
+        //     }
+        //     this.files.push(entry);
+        // }
+        // if (entry.type === "symlink") {
+        //     if (!this.symlinks) {
+        //         this.symlinks = [];
+        //     }
+        //     this.symlinks.push(entry);
+        // }
     }
     get folders() {
         return this.children?.filter(e => e.type === "folder");
@@ -45,6 +59,12 @@ class SimpleEntry {
     }
     get symlinks() {
         return this.children?.filter(e => e.type === "symlink");
+    }
+    get isEmpty() {
+        return Boolean(this.children?.length);
+    }
+    get hasErrors() {
+        return Boolean(this.errors?.length);
     }
 }
 
@@ -186,9 +206,17 @@ export const count = computed(() => {
 const performSearchDebounced = debounce(performSearch, 300);
 async function performSearch() {
     let message = "";
+    const folder = openedFolder.value;
 
+    // const time0 = performance.now();
+    // const folder = await structuredClone(openedFolder.value);
+    // const cloneTime = performance.now() - time0;
+    // message += `Clone time: ${cloneTime.toFixed(2)} ms; `;
+    // await sleep();
+
+    console.log(folder);
     const time1 = performance.now();
-    const result = await justFind(openedFolder.value, search.value);
+    const result = await justFind(folder, search.value);
     const searchTime = performance.now() - time1;
     message += `Search time: ${searchTime.toFixed(2)} ms; `;
     debugMessages[0] = message;
