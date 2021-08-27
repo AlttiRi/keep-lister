@@ -22,18 +22,20 @@ import AddressBar_Part from "./AddressBar_Part.vue";
 import {openedFolders} from "../store.js";
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .address {
   display: flex;
-  white-space: pre; /* to display tailing spaces */
+  //white-space: pre; /* to display tailing spaces */ // firefox does shit with it
   overflow-x: scroll;
   padding-left: 6px;
-}
 
-::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-  background: transparent;
-  display: none;
+  scrollbar-width: none; // firefox
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 0;
+    height: 0;
+    background: transparent;
+    display: none;
+  }
 }
 </style>
