@@ -34,7 +34,7 @@ const icon = computed(() => {
     }
     return "📄";
   } else if (entry.value.type === "symlink") {
-    title.value = entry.value.meta.pathTo;
+    title.value = entry.value.meta?.pathTo;
     return "🔗";
   }
   return "👾";

@@ -74,13 +74,14 @@ function parseEntries(rootFolder, parent = null) {
     });
     if (rootFolder.symlinks) {
         rootFolder.symlinks.forEach(symlink => {
+            const meta = symlink.pathTo ? {
+                pathTo: symlink.pathTo
+            } : null;
             root.addChild(new SimpleEntry({
                 name: symlink.name,
                 parent: root,
                 type: "symlink",
-                meta: {
-                    pathTo: symlink.pathTo
-                },
+                meta,
                 errors: symlink.errors
             }));
         });

@@ -339,7 +339,7 @@ export class FilesStructure {
             if (entry.error) {
                 symlink.errors = [entry.error];
             }
-            if (entry.symPath) {
+            if (entry.symPath && entry.symPath.pathTo) {
                 symlink.pathTo = entry.symPath.pathTo;
             }
         } else
