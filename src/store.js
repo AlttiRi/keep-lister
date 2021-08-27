@@ -1,5 +1,5 @@
 import {ref, computed, reactive, watch} from "vue";
-import {compare, dateToDayDateString, debounce, sleep, structuredClone} from "./util.js";
+import {compare, dateToDayDateString, debounce, sleep} from "./util.js";
 
 
 export const debugMessages = reactive([""]);
@@ -31,25 +31,6 @@ class SimpleEntry {
             this.children = [];
         }
         this.children.push(entry);
-
-        // if (entry.type === "folder") {
-        //     if (!this.folders) {
-        //         this.folders = [];
-        //     }
-        //     this.folders.push(entry);
-        // }
-        // if (entry.type === "file") {
-        //     if (!this.files) {
-        //         this.files = [];
-        //     }
-        //     this.files.push(entry);
-        // }
-        // if (entry.type === "symlink") {
-        //     if (!this.symlinks) {
-        //         this.symlinks = [];
-        //     }
-        //     this.symlinks.push(entry);
-        // }
     }
     get folders() {
         return this.children?.filter(e => e.type === "folder");
@@ -208,13 +189,6 @@ async function performSearch() {
     let message = "";
     const folder = openedFolder.value;
 
-    // const time0 = performance.now();
-    // const folder = await structuredClone(openedFolder.value);
-    // const cloneTime = performance.now() - time0;
-    // message += `Clone time: ${cloneTime.toFixed(2)} ms; `;
-    // await sleep();
-
-    console.log(folder);
     const time1 = performance.now();
     const result = await justFind(folder, search.value);
     const searchTime = performance.now() - time1;
