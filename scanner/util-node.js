@@ -306,13 +306,16 @@ export class FilesStructure {
                 const folder = parentFolder.folders.find(entry => entry.name === basename);
                 folder.errors = [];
                 folder.errors.push(entry.error);
+                return;
+            } else if (entry.type === Type.symlink) {
+                // no need
             } else {
                 console.log("unknown error", entry.error);
                 const meta = this.value.meta;
                 const unknownErrors = meta.unknownErrors || (meta.unknownErrors = []);
                 unknownErrors.push(entry.error);
+                return;
             }
-            return;
         }
 
         if (entry.type === Type.folder) {
@@ -327,17 +330,19 @@ export class FilesStructure {
         } else
         if (entry.type === Type.symlink) {
             const symlinks = parentFolder.symlinks || (parentFolder.symlinks = []);
-            if (entry.symPath) {
-                symlinks.push({
-                    name: basename,
-                    ...entry.symPath
-                });
-            } else {
-                symlinks.push(basename);
+
+            const symlink = {
+                name: basename
+            };
+            symlinks.push(symlink);
+
+            if (entry.error) {
+                symlink.errors = [entry.error];
             }
-
+            if (entry.symPath) {
+                symlink.pathTo = entry.symPath.pathTo;
+            }
         } else
-
         if (entry.type === Type.fifo) {
             const fifos = parentFolder.fifos || (parentFolder.fifos = []);
             fifos.push(basename);

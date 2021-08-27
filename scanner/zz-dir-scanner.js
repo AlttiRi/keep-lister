@@ -51,7 +51,7 @@ for await (const entry of listFiles({
             entry.symPath = {
                 pathTo: absolute
             }
-        } catch (e) { // is it possible?
+        } catch (e) {
             entry.error = e;
         }
     }
