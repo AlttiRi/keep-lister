@@ -42,6 +42,20 @@ class SimpleEntry {
     get symlinks() {
         return this.children?.filter(e => e.type === "symlink");
     }
+
+    get fifos() {
+        return this.children?.filter(e => e.type === "fifo");
+    }
+    get charDevs() {
+        return this.children?.filter(e => e.type === "charDev");
+    }
+    get blockDevs() {
+        return this.children?.filter(e => e.type === "blockDev");
+    }
+    get sockets() {
+        return this.children?.filter(e => e.type === "socket");
+    }
+
     get isEmpty() {
         return !Boolean(this.children?.length);
     }
@@ -155,10 +169,18 @@ function comparator(pre, cur) {
 export const folders = computed(() => openedFolder.value.folders || []);
 export const files = computed(() => openedFolder.value.files || []);
 export const symlinks = computed(() => openedFolder.value.symlinks || []);
+export const fifos = computed(() => openedFolder.value.fifos || []);
+export const charDevs = computed(() => openedFolder.value.charDevs || []);
+export const blockDevs = computed(() => openedFolder.value.blockDevs || []);
+export const sockets = computed(() => openedFolder.value.sockets || []);
 export const entries = computed(() => [
     ...folders.value.sort(comparator),
     ...files.value.sort(comparator),
     ...symlinks.value.sort(comparator),
+    ...fifos.value.sort(comparator),
+    ...charDevs.value.sort(comparator),
+    ...blockDevs.value.sort(comparator),
+    ...sockets.value.sort(comparator),
 ]);
 
 export const empty = computed(() => json.value && openedFolder.value.isEmpty);
