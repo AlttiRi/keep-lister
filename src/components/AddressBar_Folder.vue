@@ -19,10 +19,10 @@ const isLast = computed(() => {
   return index.value + 1 === count.value;
 });
 const part1 = computed(() => {
-  return entry.value.name.slice(0, -1);
+  return [...entry.value.name].slice(0, -1).join(""); // if ends with surrogate pair
 });
 const part2 = computed(() => {
-  return entry.value.name.slice(-1);
+  return [...entry.value.name].slice(-1).join("");
 });
 
 function onClick() {

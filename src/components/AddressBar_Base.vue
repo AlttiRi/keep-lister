@@ -24,10 +24,10 @@ const openFolders = computed(() => {
   return openedFolders.map(entry => entry.name).join(separator.value);
 });
 const part1 = computed(() => {
-  return root.value.slice(0, -1);
+  return [...root.value].slice(0, -1).join(""); // if ends with surrogate pair
 });
 const part2 = computed(() => {
-  return root.value.slice(-1);
+  return [...root.value].slice(-1).join("");
 });
 const showSep = computed(() => {
   return openedFolders.length && root.value !== "/";
