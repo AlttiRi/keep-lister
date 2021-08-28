@@ -113,17 +113,10 @@ export const separator = computed(() => {
 export const scanRootPath = computed(() => {
     return meta.value?.path || [];
 });
-/** @type {import("vue").ComputedRef<SimpleEntry>} */
-export const openedFolder = ref({
+/** @type {import("vue").Ref<SimpleEntry>} */
+export const openedFolder = ref(new SimpleEntry({
     name: "",
-    folders: [],
-    files: [],
-    symlinks: [],
-    path: [],
-    root: {
-        name: ""
-    }
-});
+}));
 /** @type {import("vue").ComputedRef<SimpleEntry[]>} */
 export const openedFolders = computed(() => {
     console.log("path", openedFolder.value);
