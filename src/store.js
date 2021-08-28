@@ -1,4 +1,4 @@
-import {ref, computed, reactive, watch, toRaw, isReactive, unref} from "vue";
+import {ref, computed, reactive, watch, toRaw, isReactive, unref, markRaw} from "vue";
 import {compare, dateToDayDateString, debounce, sleep} from "./util.js";
 
 
@@ -7,12 +7,15 @@ export const debugMessages = reactive([""]);
 const json = ref(null);
 const meta = ref(null);
 export function setJson(object) {
+    meta.value = markRaw(object.meta);
+
     console.time("parseEntries");
-    console.log(globalThis.json = parseEntries(object));
+    const result = parseEntries(object);
     console.timeEnd("parseEntries");
-    json.value = globalThis.json;
-    meta.value = object.meta;
-    openFolder(json.value);
+
+    globalThis.json = result;
+    json.value = markRaw(result);
+    openFolder(result);
 }
 
 
@@ -158,7 +161,7 @@ watch(json, async (newValue, oldValue) => {
 /** @param {SimpleEntry} entry */
 export function openFolder(entry) {
     search.value = "";
-    openedFolder.value = entry;
+    openedFolder.value = markRaw(unref(entry));
 }
 export function back() {
     if (openedFolder.value.parent) {
