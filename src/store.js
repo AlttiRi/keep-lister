@@ -104,6 +104,14 @@ function parseEntries(rootFolder, parent = null) {
     });
     if (rootFolder.symlinks) {
         rootFolder.symlinks.forEach(symlink => {
+            if (typeof symlink === "string") { // for old scans
+                root.addChild(new SimpleEntry({
+                    name: symlink,
+                    parent: root,
+                    type: "symlink"
+                }));
+                return;
+            }
             const meta = symlink.pathTo ? {
                 pathTo: symlink.pathTo
             } : null;
