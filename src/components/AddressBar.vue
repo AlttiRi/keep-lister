@@ -4,12 +4,12 @@
     <AddressBar_Base/>
   </AddressBar_Part>
   <AddressBar_Part
-      v-for="(folder, i) of openedFolders"
+      v-for="(folder, i) of openedFolders.slice(1)"
   >
     <AddressBar_Folder
         :entry="folder"
         :index="i"
-        :count="openedFolders.length"
+        :count="openedFolders.slice(1).length"
     />
   </AddressBar_Part>
 </div>

@@ -10,7 +10,7 @@
 
 <script setup>
 import {computed, toRefs} from "vue";
-import {openedFolders, search, separator} from "../store.js";
+import {openFolder, separator} from "../store.js";
 
 const props = defineProps(["index", "count", "entry"]);
 const {index, count, entry} = toRefs(props);
@@ -26,11 +26,7 @@ const part2 = computed(() => {
 });
 
 function onClick() {
-  console.log("folder", entry.value, index.value);
-  while (openedFolders.length - 1 !== index.value) {
-    console.log("pop", openedFolders.pop());
-  }
-  search.value = "";
+  openFolder(entry.value);
 }
 </script>
 

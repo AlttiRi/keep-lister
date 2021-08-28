@@ -10,18 +10,15 @@
 
 <script setup>
 import {computed} from "vue";
-import {scanRootPath, openedFolders, scanFolder, separator, search} from "../store.js";
+import {scanRootPath, openedFolders, separator, openedFolder, openFolder} from "../store.js";
 
 const root = computed(() => {
-  const scanPath = [...scanRootPath.value, scanFolder.value.name];
+  const scanPath = [...scanRootPath.value, openedFolder.value.root.name];
   const str = scanPath.join(separator.value);
   if (str.startsWith("//")) { // for unix
     return str.slice(1);
   }
   return str;
-});
-const openFolders = computed(() => {
-  return openedFolders.map(entry => entry.name).join(separator.value);
 });
 const part1 = computed(() => {
   return [...root.value].slice(0, -1).join(""); // if ends with surrogate pair
@@ -30,15 +27,11 @@ const part2 = computed(() => {
   return [...root.value].slice(-1).join("");
 });
 const showSep = computed(() => {
-  return openedFolders.length && root.value !== "/";
+  return (openedFolders.value.length - 1) && root.value !== "/";
 });
 
 function goToRoot() {
-  console.log("folder", scanFolder.value);
-  search.value = "";
-  while (openedFolders.length) {
-    console.log("pop", openedFolders.pop());
-  }
+  openFolder(openedFolder.value.root);
 }
 
 </script>

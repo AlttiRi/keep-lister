@@ -1,4 +1,4 @@
-import {ref, computed, reactive, watch, toRaw, isReactive, isReadonly} from "vue";
+import {ref, computed, reactive, watch, toRaw, isReactive, unref} from "vue";
 import {compare, dateToDayDateString, debounce, sleep} from "./util.js";
 
 
@@ -12,6 +12,7 @@ export function setJson(object) {
     console.timeEnd("parseEntries");
     json.value = globalThis.json;
     meta.value = object.meta;
+    openFolder(json.value);
 }
 
 
@@ -42,10 +43,24 @@ class SimpleEntry {
         return this.children?.filter(e => e.type === "symlink");
     }
     get isEmpty() {
-        return Boolean(this.children?.length);
+        return !Boolean(this.children?.length);
     }
     get hasErrors() {
         return Boolean(this.errors?.length);
+    }
+    /** @return {SimpleEntry} */
+    get root() {
+        if (!this.parent) {
+            return this;
+        }
+        return this.parent.root;
+    }
+    /** @return {SimpleEntry[]} */
+    get path() {
+        if (!this.parent) {
+            return [this];
+        }
+        return [...this.parent.path, this];
     }
 }
 
@@ -98,28 +113,24 @@ export const separator = computed(() => {
 export const scanRootPath = computed(() => {
     return meta.value?.path || [];
 });
-export const scanFolder = computed(() => {
-    return json.value || {
-        name: "",
-        folders: [],
-        files: [],
-        symlinks: [],
-    };
-});
-
-export const openedFolders = reactive([]);
-export const openedFolder = computed(() => {
-    if (openedFolders.length) {
-        return openedFolders[openedFolders.length - 1];
+/** @type {import("vue").ComputedRef<SimpleEntry>} */
+export const openedFolder = ref({
+    name: "",
+    folders: [],
+    files: [],
+    symlinks: [],
+    path: [],
+    root: {
+        name: ""
     }
-    return scanFolder.value;
 });
-watch(meta, async (newValue, oldValue) => {
-    while (openedFolders.length) {
-        openedFolders.pop();
-    }
+/** @type {import("vue").ComputedRef<SimpleEntry[]>} */
+export const openedFolders = computed(() => {
+    console.log("path", openedFolder.value);
+    return openedFolder.value.path;
+});
+watch(json, async (newValue, oldValue) => {
     search.value = "";
-
     console.log(meta.value);
     const {files, folders, symlinks, errors, total, scanDate} = meta.value;
     if (meta.value.scanDate) {
@@ -129,13 +140,14 @@ watch(meta, async (newValue, oldValue) => {
     }
 });
 
-
+/** @param {SimpleEntry} entry */
 export function openFolder(entry) {
-    openedFolders.push(entry);
+    search.value = "";
+    openedFolder.value = entry;
 }
 export function back() {
-    if (openedFolders.length) {
-        openedFolders.pop();
+    if (openedFolder.value.parent) {
+        openFolder(openedFolder.value.parent);
     }
 }
 
@@ -156,7 +168,7 @@ export const entries = computed(() => [
     ...symlinks.value.sort(comparator),
 ]);
 
-export const empty = computed(() => json.value && !(folders.value?.length || files.value?.length || symlinks.value?.length));
+export const empty = computed(() => json.value && openedFolder.value.isEmpty);
 
 /** @type {number} */
 const limit = 1000;
