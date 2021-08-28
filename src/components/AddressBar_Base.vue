@@ -1,6 +1,6 @@
 <template>
   <span class="scanPath">
-    <span class="parts" @click="goToRoot">
+    <span class="parts" @click="goToRoot" :title="title">
       <span class="part"       >{{part1}}</span>
       <span class="part spaced">{{part2}}</span>
     </span>
@@ -9,8 +9,46 @@
 </template>
 
 <script setup>
+//todo title
 import {computed} from "vue";
-import {scanRootPath, openedFolders, separator, openedFolder, openFolder} from "../core/folders.js";
+import {scanRootPath, openedFolders, separator, openedFolder, openFolder, meta} from "../core/folders.js";
+import {dateToDayDateString} from "../util.js";
+
+const title = computed(() => {
+  if (!meta.value) {
+    return;
+  }
+
+  const {
+      files, folders, symlinks,
+      charDevs, blockDevs, fifos, sockets,
+      total,
+      platform, scanDate
+  } = meta.value;
+
+  function doString(o) {
+    function pad(str) {
+      const count = 3 - Math.trunc((str.length/4));
+      console.log(str, count);
+      return str + "\t".repeat(count);
+    }
+    return Object.entries(o)
+        .map(([k, v]) => pad(k) + ": " + v)
+        .join("\n");
+  }
+  const commonFiles = doString({files, folders, symlinks});
+  const unusualFiles = doString({charDevs, blockDevs, fifos, sockets});
+  const additional = doString({total, platform, scanDate: dateToDayDateString(scanDate)});
+
+  let result;
+  if (platform !== "win32") {
+    result = [commonFiles, unusualFiles, additional].join("\n");
+  } else {
+    result = [commonFiles, additional].join("\n");
+  }
+  console.log(result);
+  return result;
+});
 
 const root = computed(() => {
   const scanPath = [...scanRootPath.value, openedFolder.value.root.name];
