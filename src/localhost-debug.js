@@ -1,5 +1,5 @@
 import {onMounted} from "vue";
-import {setJson} from "./store.js";
+import {setJson} from "./core/folders.js";
 
 export function localhostDebugHelper() {
     // Already opened directory, no need to open with input

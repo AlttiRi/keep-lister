@@ -10,7 +10,7 @@
 
 <script setup>
 import {computed, toRefs} from "vue";
-import {openFolder, separator} from "../store.js";
+import {openFolder, separator} from "../core/folders.js";
 
 const props = defineProps(["index", "count", "entry"]);
 const {index, count, entry} = toRefs(props);

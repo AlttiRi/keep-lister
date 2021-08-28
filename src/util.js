@@ -21,10 +21,6 @@ export function sleep(ms) {
 }
 
 export const shuffle = () => Math.random() >= 0.5 ? -1 : 1;
-export const {compare} = new Intl.Collator(undefined, {
-    numeric: true,
-    sensitivity: "accent",
-});
 
 const videoExtensions = ["mp4", "webm", "mkv", "avi"];
 export function isVideo(filename) {

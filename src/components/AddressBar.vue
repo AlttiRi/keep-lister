@@ -19,7 +19,7 @@
 import AddressBar_Base from "./AddressBar_Base.vue";
 import AddressBar_Folder from "./AddressBar_Folder.vue";
 import AddressBar_Part from "./AddressBar_Part.vue";
-import {openedFolders} from "../store.js";
+import {openedFolders} from "../core/folders.js";
 </script>
 
 <style lang="scss" scoped>

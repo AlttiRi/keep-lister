@@ -12,8 +12,8 @@
 </template>
 
 <script setup>
-import {toRefs, computed, ref} from "vue";
-import {openFolder} from "../store.js";
+import {toRefs, computed} from "vue";
+import {openFolder} from "../core/folders.js";
 import {isImage, isVideo} from "../util.js";
 
 const props = defineProps(["entry"]);

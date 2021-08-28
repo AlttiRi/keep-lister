@@ -9,12 +9,11 @@
 </template>
 
 <script setup>
-import {setJson} from "../store.js";
+import {setJson} from "../core/folders.js";
 
 async function onChange(event) {
   const jsonObj = JSON.parse(await event.target.files[0].text());
   setJson(jsonObj);
-  globalThis.json = jsonObj;
 }
 </script>
 

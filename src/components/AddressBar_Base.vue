@@ -10,7 +10,7 @@
 
 <script setup>
 import {computed} from "vue";
-import {scanRootPath, openedFolders, separator, openedFolder, openFolder} from "../store.js";
+import {scanRootPath, openedFolders, separator, openedFolder, openFolder} from "../core/folders.js";
 
 const root = computed(() => {
   const scanPath = [...scanRootPath.value, openedFolder.value.root.name];

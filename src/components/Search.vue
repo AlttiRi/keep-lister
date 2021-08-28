@@ -1,15 +1,12 @@
 <template>
   <div class="search">
     <input type="text" v-model="search">
-    <button @click="clear">Clear</button>
+    <button @click="clearSearch">Clear</button>
   </div>
 </template>
 
 <script setup>
-import {search} from "../store.js";
-function clear() {
-  search.value = "";
-}
+import {search, clearSearch} from "../core/search.js";
 </script>
 
 <style lang="scss" scoped>

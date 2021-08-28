@@ -13,11 +13,12 @@
 
 <script setup>
 import Row from "./Row.vue";
-import {back, empty, listLimited} from "../store.js";
+import {goBack, empty} from "../core/folders.js";
+import {listLimited} from "../core/entries.js";
 
 function onContextMenu(event) {
   event.preventDefault();
-  back();
+  goBack();
 }
 </script>
 
