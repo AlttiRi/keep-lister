@@ -5,10 +5,7 @@ import {comparator} from "./entries.js";
 import * as debug from "./debug.js";
 
 /** @type {import("vue").Ref<string>} */
-export const search = ref("");
-export function setSearch(search) {
-    search.value = search;
-}
+export const search = ref(""); // [v-model]
 export function clearSearch() {
     search.value = "";
 }
@@ -18,8 +15,16 @@ export const searchResult = ref([]);
 function clearSearchResult() {
     setSearchResult([]);
 }
+/** * @param {SimpleEntry[]} result */
 function setSearchResult(result) {
     searchResult.value = markRaw(result);
+
+    console.log("globalThis.search:", globalThis.search = result);
+    Object.defineProperty(globalThis.search, "download", {
+        get() {
+            console.log("download"); // todo
+        }
+    });
 }
 
 //todo search by type
