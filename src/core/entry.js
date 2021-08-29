@@ -166,6 +166,7 @@ export function parseEntries(rootFolder, parent = null) {
                 }));
                 return;
             }
+            /** @type {EntryMeta|null} */
             const meta = symlink.pathTo ? {
                 pathTo: symlink.pathTo
             } : null;
