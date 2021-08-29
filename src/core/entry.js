@@ -18,8 +18,24 @@
  * @property {Error[]} unknownErrors
  */
 
+/**
+ * Scan error.
+ * @typedef {Object} ScanError
+ * @property {String} syscall - "scandir", "readlink", ...
+ * @property {String} code    - "EPERM", ...
+ * @property {Number} errno   - "-4048", ...
+ * @property {String} path    - "C:\System Volume Information", ...
+ */
+
 export class SimpleEntry {
-    //[Symbol.toStringTag] = "SimpleEntry";
+    // [Symbol.toStringTag] = "SimpleEntry";
+    /**
+     * @param {String} name
+     * @param {SimpleEntry|null} parent
+     * @param {String} type
+     * @param {Object?} meta
+     * @param {ScanError?} errors
+     */
     constructor({name, parent, type, meta, errors}) {
         Object.assign(this, {name, parent, type});
         if (meta) {
@@ -129,4 +145,8 @@ export function parseEntries(rootFolder, parent = null) {
     return root;
 }
 
-export const folderDummy = new SimpleEntry({name: ""});
+export const folderDummy = new SimpleEntry({
+    name: "",
+    parent: null,
+    type: "folder"
+});
