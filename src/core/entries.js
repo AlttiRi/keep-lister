@@ -16,13 +16,13 @@ export function comparator(pre, cur) {
     return 0;
 }
 
-export const folders = computed(() => openedFolder.value.folders || []);
-export const files = computed(() => openedFolder.value.files || []);
-export const symlinks = computed(() => openedFolder.value.symlinks || []);
-export const fifos = computed(() => openedFolder.value.fifos || []);
-export const charDevs = computed(() => openedFolder.value.charDevs || []);
-export const blockDevs = computed(() => openedFolder.value.blockDevs || []);
-export const sockets = computed(() => openedFolder.value.sockets || []);
+export const folders = computed(() => openedFolder.value.folders);
+export const files = computed(() => openedFolder.value.files);
+export const symlinks = computed(() => openedFolder.value.symlinks);
+export const fifos = computed(() => openedFolder.value.fifos);
+export const charDevs = computed(() => openedFolder.value.charDevs);
+export const blockDevs = computed(() => openedFolder.value.blockDevs);
+export const sockets = computed(() => openedFolder.value.sockets);
 export const entries = computed(() => [
     ...folders.value.sort(comparator),
     ...files.value.sort(comparator),

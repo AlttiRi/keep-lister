@@ -27,12 +27,24 @@
  * @property {String} path    - "C:\System Volume Information", ...
  */
 
+/**
+ * @typedef {
+ * "folder" |
+ * "file" |
+ * "symlink" |
+ * "fifo" |
+ * "charDev" |
+ * "blockDev" |
+ * "socket"
+ * } EntryType
+ */
+
 export class SimpleEntry {
     // [Symbol.toStringTag] = "SimpleEntry";
     /**
      * @param {String} name
      * @param {SimpleEntry|null} parent
-     * @param {String} type
+     * @param {EntryType} type
      * @param {Object?} meta
      * @param {ScanError?} errors
      */
@@ -45,38 +57,50 @@ export class SimpleEntry {
             Object.assign(this, {errors});
         }
     }
+    /** @param {SimpleEntry} entry */
     addChild(entry) {
         if (!this.children) {
+            /** @type {SimpleEntry[]} */
             this.children = [];
         }
         this.children.push(entry);
     }
+
+    /** @return {SimpleEntry[]} */
     get folders() {
-        return this.children?.filter(e => e.type === "folder");
+        return this.children?.filter(e => e.type === "folder") || [];
     }
+    /** @return {SimpleEntry[]} */
     get files() {
-        return this.children?.filter(e => e.type === "file");
+        return this.children?.filter(e => e.type === "file") || [];
     }
+    /** @return {SimpleEntry[]} */
     get symlinks() {
-        return this.children?.filter(e => e.type === "symlink");
+        return this.children?.filter(e => e.type === "symlink") || [];
     }
 
+    /** @return {SimpleEntry[]} */
     get fifos() {
-        return this.children?.filter(e => e.type === "fifo");
+        return this.children?.filter(e => e.type === "fifo") || [];
     }
+    /** @return {SimpleEntry[]} */
     get charDevs() {
-        return this.children?.filter(e => e.type === "charDev");
+        return this.children?.filter(e => e.type === "charDev") || [];
     }
+    /** @return {SimpleEntry[]} */
     get blockDevs() {
-        return this.children?.filter(e => e.type === "blockDev");
+        return this.children?.filter(e => e.type === "blockDev") || [];
     }
+    /** @return {SimpleEntry[]} */
     get sockets() {
-        return this.children?.filter(e => e.type === "socket");
+        return this.children?.filter(e => e.type === "socket") || [];
     }
 
+    /** @return {Boolean} */
     get isEmpty() {
         return !Boolean(this.children?.length);
     }
+    /** @return {Boolean} */
     get hasErrors() {
         return Boolean(this.errors?.length);
     }
@@ -96,6 +120,11 @@ export class SimpleEntry {
     }
 }
 
+/**
+ * @param {Object} rootFolder
+ * @param {SimpleEntry|null} parent
+ * @return {SimpleEntry}
+ */
 export function parseEntries(rootFolder, parent = null) {
     const root = new SimpleEntry({
         name: rootFolder.name,
@@ -108,6 +137,7 @@ export function parseEntries(rootFolder, parent = null) {
             root.addChild(parseEntries(folder, root));
         });
     }
+    /** @type {EntryType[]} */
     const simpleTypes = ["file", "fifo", "charDev", "blockDev", "socket"];
     simpleTypes.forEach(type => {
         if (rootFolder[type+"s"]) {
