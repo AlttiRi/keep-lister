@@ -55,12 +55,15 @@ export class SimpleEntry {
      * @param {ScanError[]?} errors
      */
     constructor({name, parent, type, meta, errors}) {
-        Object.assign(this, {name, parent, type});
+        this.name = name;
+        this.parent = parent;
+        this.type = type;
+
         if (meta) {
-            Object.assign(this, {meta});
+            this.meta = meta;
         }
         if (errors) {
-            Object.assign(this, {errors});
+            this.errors = errors;
         }
     }
     /** @param {SimpleEntry} entry */
