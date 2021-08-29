@@ -39,14 +39,20 @@
  * } EntryType
  */
 
+/**
+ * Additional properties.
+ * @typedef {Object} EntryMeta
+ * @property {String?} pathTo - where symlink goes (Absolute path)
+ */
+
 export class SimpleEntry {
-    // [Symbol.toStringTag] = "SimpleEntry";
+    // [Symbol.toStringTag] = "SimpleEntry"; // Disables reactivity, BTW.
     /**
      * @param {String} name
      * @param {SimpleEntry|null} parent
      * @param {EntryType} type
-     * @param {Object?} meta
-     * @param {ScanError?} errors
+     * @param {EntryMeta?} meta
+     * @param {ScanError[]?} errors
      */
     constructor({name, parent, type, meta, errors}) {
         Object.assign(this, {name, parent, type});
@@ -175,6 +181,7 @@ export function parseEntries(rootFolder, parent = null) {
     return root;
 }
 
+/** @type {SimpleEntry} */
 export const folderDummy = new SimpleEntry({
     name: "",
     parent: null,
