@@ -1,5 +1,6 @@
-import t from "ava"; const test = t;
-import {comparator, shuffle} from "../src/util.js";
+import t from "ava"; const test = t; // npm install ava -D
+import {shuffle} from "../src/util.js";
+import {comparator} from "../src/core/entries.js";
 
 
 
