@@ -6,7 +6,7 @@
       :class="{error}"
   >
       <td class="icon">{{icon}}</td>
-      <td class="name">{{entryName}}</td>
+      <td class="name">{{entry.name}}</td>
 <!--      <td class="type">{{entry.type}}</td>-->
   </tr>
 </template>
@@ -20,11 +20,6 @@ const props = defineProps(["entry"]);
 
 /** @type {import("vue").Ref<SimpleEntry>} */
 const entry = toRefs(props).entry;
-
-/** @type {import("vue").Ref<String>} */
-const entryName = computed(() => {
-  return entry.value.name;
-});
 
 /** @type {import("vue").Ref<Boolean>} */
 const error = computed(() => {
@@ -77,7 +72,7 @@ function onMousedown(event) {
 </script>
 
 <style lang="scss" scoped>
-tr.row {
+.row {
   width: 100%;
   &:hover {
     background-color: var(--blue-2);
@@ -88,7 +83,7 @@ tr.row {
     white-space: nowrap;
   }
   td {
-    max-width: 0;
+    max-width: 0; // no scroll for long names
     &.icon {
       border-left: 2px solid transparent;
       width: 2.5%;
@@ -96,18 +91,18 @@ tr.row {
       user-select: none;
     }
     &.name {
-      width: 95%;
+      width: 100%;
       white-space: pre; // to display tailing spaces
     }
     &.type {
-      width: 15%;
+      min-width: 58px;
       user-select: none;
     }
   }
-}
-tr.row.error {
-  .icon {
-    border-left: 2px solid red;
+  &.error {
+    .icon {
+      border-left: 2px solid red;
+    }
   }
 }
 </style>
