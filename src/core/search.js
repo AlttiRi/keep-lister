@@ -33,9 +33,10 @@ function setSearchResult(result) {
 const performSearchDebounced = debounce(performSearch, 300);
 async function performSearch() {
     const folder = openedFolder.value;
+    const request = search.value;
 
     const time1 = performance.now();
-    const result = await justFind(folder, search.value);
+    const result = await justFind(folder, request);
     const searchTime = performance.now() - time1;
     debug.addMessage(`Search time: ${searchTime.toFixed(2)} ms; `);
     await sleep();
@@ -47,7 +48,7 @@ async function performSearch() {
     await sleep();
 
     setSearchResult(sortedResult);
-    debug.appendMessage(`${searchResult.value.length} items; search: ${search.value}`);
+    debug.appendMessage(`${result.length} items; search: ${request}`);
 }
 
 watch(search, async (newValue, oldValue) => {
