@@ -37,16 +37,18 @@ export const entries = computed(() => [
 /** @type {number} */
 const limit = 1000;
 
+/** @type {import("vue").ComputedRef<SimpleEntry[]>} */
 export const list = computed(() => {
     if (search.value.length) {
         return searchResult.value;
     }
     return entries.value;
 });
+/** @type {import("vue").ComputedRef<SimpleEntry[]>} */
 export const listLimited = computed(() => {
     return list.value.slice(0, limit);
 });
-
+/** @type {import("vue").ComputedRef<Number>} */
 export const count = computed(() => {
     if (searchResult.value.length > limit) {
         return searchResult.value.length;
