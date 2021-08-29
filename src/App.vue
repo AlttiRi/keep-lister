@@ -14,5 +14,6 @@ import Main from "./components/Main.vue";
   --white:  white;
   --gray-1: #eee;
   --gray-2: #d4d4d4;
+  --red-1: rgba(234, 33, 74, 0.88);
 }
 </style>
