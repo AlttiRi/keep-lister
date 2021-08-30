@@ -13,6 +13,7 @@ What? Just look:
 
 Search is case sensitive.
 
-Search by file type, for example: `/type:folder/windows`
+Search by file type, for example: `/type:folder/query`
+(`folder`, `file`, `symlink` for Windows and `fifo`, `charDev`, `blockDev`, `socket` in additional for other platforms).
 
 
