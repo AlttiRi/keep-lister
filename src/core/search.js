@@ -33,12 +33,14 @@ function setSearchResult(result) {
 const performSearchDebounced = debounce(performSearch, 300);
 async function performSearch() {
     const folder = openedFolder.value;
-    const request = search.value;
+    const word = search.value;
 
     const time1 = performance.now();
     // Do unProxy. Up to x40 in comparison with default reactive ref.
     const folderRaw = isReactive(folder) ? toRaw(folder) : folder;
-    const result = await justFindAll(folderRaw, request);
+    const result = await findAll(folderRaw, (entry) => {
+        return entry.name.includes(word);
+    });
     const searchTime = performance.now() - time1;
     debug.addMessage(`Search time: ${searchTime.toFixed(2)} ms; `);
     await sleep();
@@ -50,7 +52,7 @@ async function performSearch() {
     await sleep();
 
     setSearchResult(sortedResult);
-    debug.appendMessage(`${result.length} items; search: ${request}`);
+    debug.appendMessage(`${result.length} items; search: ${word}`);
 }
 
 watch(search, async (newValue, oldValue) => {
@@ -69,10 +71,10 @@ watch(search, async (newValue, oldValue) => {
 
 /**
  * @param {SimpleEntry} folder
- * @param {String} word
+ * @param {function(SimpleEntry)} predicate
  * @return {Promise<SimpleEntry[]>}
  */
-async function justFindAll(folder, word) {
+async function findAll(folder, predicate) {
     let res = [];
     let time = Date.now();
     for (const entries of listAllEntries(folder)) {
@@ -82,7 +84,7 @@ async function justFindAll(folder, word) {
             await sleep();
         }
         for (const entry of entries) {
-            if (entry.name.includes(word)) {
+            if (predicate(entry)) {
                 res.push(entry);
             }
         }
