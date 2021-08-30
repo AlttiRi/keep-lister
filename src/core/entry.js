@@ -39,6 +39,9 @@
  * } EntryType
  */
 
+/** @type {EntryType[]} */
+export const entryTypes = ["folder", "file", "symlink", "fifo", "charDev", "blockDev", "socket"];
+
 /**
  * Additional properties.
  * @typedef {Object} EntryMeta

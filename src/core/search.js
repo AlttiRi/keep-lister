@@ -3,6 +3,7 @@ import {debounce, sleep} from "../util.js";
 import {openedFolder} from "./folders.js";
 import {comparator} from "./entries.js";
 import * as debug from "./debug.js";
+import {entryTypes} from "./entry.js";
 
 /** @type {import("vue").Ref<string>} */
 export const search = ref(""); // [v-model]
@@ -33,14 +34,16 @@ function setSearchResult(result) {
 const performSearchDebounced = debounce(performSearch, 300);
 async function performSearch() {
     const folder = openedFolder.value;
-    const word = search.value;
+    const request = search.value;
 
-    const time1 = performance.now();
     // Do unProxy. Up to x40 in comparison with default reactive ref.
     const folderRaw = isReactive(folder) ? toRaw(folder) : folder;
-    const result = await findAll(folderRaw, (entry) => {
-        return entry.name.includes(word);
-    });
+
+    const time1 = performance.now();
+    const result = await searcher(folderRaw, request);
+    if (!result) {
+        return;
+    }
     const searchTime = performance.now() - time1;
     debug.addMessage(`Search time: ${searchTime.toFixed(2)} ms; `);
     await sleep();
@@ -52,7 +55,31 @@ async function performSearch() {
     await sleep();
 
     setSearchResult(sortedResult);
-    debug.appendMessage(`${result.length} items; search: ${word}`);
+    debug.appendMessage(`${result.length} items; search: ${request}`);
+}
+
+/**
+ * @param {SimpleEntry} folder
+ * @param {string} search
+ * @return {Promise<SimpleEntry[]|false>}
+ */
+async function searcher(folder, search) {
+    if (search.startsWith("/")) {
+        const {type, word} = search.match(/\/type:(?<type>[^\/]+)\/?(?<word>[^\/]*)/)?.groups || {};
+        if (type) {
+            console.log({type, word});
+            if (entryTypes.includes(type)) {
+                return findAll(folder, (entry) => {
+                    return entry.type === type && entry.name.includes(word);
+                });
+            }
+        }
+    } else {
+        return findAll(folder, (entry) => {
+            return entry.name.includes(search);
+        });
+    }
+    return false;
 }
 
 watch(search, async (newValue, oldValue) => {
