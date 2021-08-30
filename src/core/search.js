@@ -36,7 +36,9 @@ async function performSearch() {
     const request = search.value;
 
     const time1 = performance.now();
-    const result = await justFind(folder, request);
+    // Do unProxy. Up to x40 in comparison with default reactive ref.
+    const folderRaw = isReactive(folder) ? toRaw(folder) : folder;
+    const result = await justFindAll(folderRaw, request);
     const searchTime = performance.now() - time1;
     debug.addMessage(`Search time: ${searchTime.toFixed(2)} ms; `);
     await sleep();
@@ -70,36 +72,46 @@ watch(search, async (newValue, oldValue) => {
  * @param {String} word
  * @return {Promise<SimpleEntry[]>}
  */
-async function justFind(folder, word) {
+async function justFindAll(folder, word) {
+    let res = [];
     let time = Date.now();
-
-    // Do unProxy.
-    // Up to x40 in comparison with default reactive ref.
-    const folderRaw = isReactive(folder) ? toRaw(folder) : folder;
-
-    /** @type SimpleEntry[] */
-    const result = [];
-
-    const types = ["file", "symlink", "fifo", "charDev", "blockDev", "socket"];
-    async function find(folder, word) {
-        if (Date.now() - time > 16) {
+    for (const entries of listAllEntries(folder)) {
+        const curTime = Date.now();
+        if (curTime - time > 15) {
+            time = curTime;
             await sleep();
-            time = Date.now();
         }
-        for (const curFolder of (folder.folders || [])) {
-            if (curFolder.name.includes(word)) {
-                result.push(curFolder);
-            }
-            await find(curFolder, word);
-        }
-        for (const type of types) {
-            for (const file of (folder[type + "s"] || [])) {
-                if (file.name.includes(word)) {
-                    result.push(file);
-                }
+        for (const entry of entries) {
+            if (entry.name.includes(word)) {
+                res.push(entry);
             }
         }
     }
-    await find(folderRaw, word);
-    return result;
+    return res;
+}
+
+/**
+ * List all entries by parts.
+ * @param {SimpleEntry} folder
+ * @return {Generator<SimpleEntry[]>}
+ */
+function *listAllEntries(folder) {
+    const partSize = 1000;
+    /** @type {SimpleEntry[]} */
+    let list = [];
+    /** @param {SimpleEntry} folderEntry */
+    function *takePart(folderEntry) {
+        for (const entry of (folderEntry.children || [])) {
+            if (entry.type === "folder") {
+                yield *takePart(entry);
+            }
+            list.push(entry);
+            if (list.length === partSize) {
+                yield list;
+                list = [];
+            }
+        }
+    }
+    yield *takePart(folder);
+    yield list;
 }
