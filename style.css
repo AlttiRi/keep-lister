@@ -129,6 +129,25 @@ button[data-v-4c326e10] {
 .search button[data-v-4c326e10]:active {
   background: var(--blue-3);
 }
+/* FileSelect.vue */
+.file-select label[data-v-31779169] {
+  cursor: pointer;
+}
+.file-select label[data-v-31779169]:hover {
+  text-decoration: underline;
+}
+input[data-v-31779169] {
+  display: none;
+}
+/* AddressBar_Part.vue */
+.box[data-v-f8be0ec4] {
+  height: 100%;
+}
+.box .sub[data-v-f8be0ec4] {
+  height: 100%;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
 /* AddressBar_Base.vue */
 .scanPath[data-v-06f0cfae] {
   height: 100%;
@@ -157,25 +176,6 @@ button[data-v-4c326e10] {
 }
 .scanPath .spaced[data-v-06f0cfae] {
   letter-spacing: 2px;
-}
-/* FileSelect.vue */
-.file-select label[data-v-31779169] {
-  cursor: pointer;
-}
-.file-select label[data-v-31779169]:hover {
-  text-decoration: underline;
-}
-input[data-v-31779169] {
-  display: none;
-}
-/* AddressBar_Part.vue */
-.box[data-v-f8be0ec4] {
-  height: 100%;
-}
-.box .sub[data-v-f8be0ec4] {
-  height: 100%;
-  overflow-x: hidden;
-  text-overflow: ellipsis;
 }
 /* Row.vue */
 .row[data-v-33217ece] {
