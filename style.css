@@ -138,6 +138,35 @@ button[data-v-4c326e10] {
   overflow-x: hidden;
   text-overflow: ellipsis;
 }
+/* AddressBar_Base.vue */
+.scanPath[data-v-06f0cfae] {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.scanPath .parts[data-v-06f0cfae] {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  white-space: pre;
+  /* to display tailing spaces */
+  cursor: pointer;
+  box-sizing: border-box;
+  border-bottom: transparent solid 1px;
+}
+.scanPath .parts[data-v-06f0cfae]:hover {
+  background-color: var(--blue-2);
+  border-bottom: 1px solid var(--blue-1);
+}
+.scanPath .parts[data-v-06f0cfae]:active {
+  background: var(--blue-3);
+}
+.scanPath .parts .part[data-v-06f0cfae] {
+  display: contents;
+}
+.scanPath .spaced[data-v-06f0cfae] {
+  letter-spacing: 2px;
+}
 /* AddressBar_Folder.vue */
 .opened-folder[data-v-44b3de2e] {
   height: 100%;
@@ -184,35 +213,6 @@ button[data-v-4c326e10] {
 }
 input[data-v-31779169] {
   display: none;
-}
-/* AddressBar_Base.vue */
-.scanPath[data-v-06f0cfae] {
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-.scanPath .parts[data-v-06f0cfae] {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  white-space: pre;
-  /* to display tailing spaces */
-  cursor: pointer;
-  box-sizing: border-box;
-  border-bottom: transparent solid 1px;
-}
-.scanPath .parts[data-v-06f0cfae]:hover {
-  background-color: var(--blue-2);
-  border-bottom: 1px solid var(--blue-1);
-}
-.scanPath .parts[data-v-06f0cfae]:active {
-  background: var(--blue-3);
-}
-.scanPath .parts .part[data-v-06f0cfae] {
-  display: contents;
-}
-.scanPath .spaced[data-v-06f0cfae] {
-  letter-spacing: 2px;
 }
 /* Row.vue */
 .row[data-v-33217ece] {
