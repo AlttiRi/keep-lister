@@ -71,7 +71,7 @@ watch(search, async (newValue, oldValue) => {
  * @return {Promise<SimpleEntry[]>}
  */
 async function justFind(folder, word) {
-    let time = performance.now();
+    let time = Date.now();
 
     // Do unProxy.
     // Up to x40 in comparison with default reactive ref.
@@ -82,9 +82,9 @@ async function justFind(folder, word) {
 
     const types = ["file", "symlink", "fifo", "charDev", "blockDev", "socket"];
     async function find(folder, word) {
-        if (performance.now() - time > 16) {
+        if (Date.now() - time > 16) {
             await sleep();
-            time = performance.now();
+            time = Date.now();
         }
         for (const curFolder of (folder.folders || [])) {
             if (curFolder.name.includes(word)) {
