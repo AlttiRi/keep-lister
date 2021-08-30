@@ -9,6 +9,11 @@ What? Just look:
 
 [Win 10 scan (as Admin)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/win10.json)
 
+[Ubuntu scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/linux.json)
+
+[Linux Source Code scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/linux-master.json)
+
+
 ---
 
 Search is case sensitive.
