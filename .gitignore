@@ -2,3 +2,4 @@ node_modules/
 .idea/
 demo-scans/
 dist/
+dist-scanner/

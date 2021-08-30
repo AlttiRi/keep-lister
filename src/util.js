@@ -53,15 +53,15 @@ export function dateToDayDateString(dateValue, utc = true) {
     function pad(str) {
         return str.toString().padStart(2, "0");
     }
-    const _utc = utc ? "UTC" : ""; // 2021.01.10 UTC support
+    const _utc = utc ? "UTC" : "";
     const year  = _date[`get${_utc}FullYear`]();
     const month = _date[`get${_utc}Month`]() + 1;
     const date  = _date[`get${_utc}Date`]();
 
     // if server error (or missed)
     if (Number(_date) === 0) {
-        console.warn("date is 1970.01.01"); // todo use colored console.log
-        return ""; // new 2021.03.08
+        console.warn("date is 1970.01.01");
+        return "";
     }
 
     return year + "." + pad(month) + "." + pad(date);
@@ -76,3 +76,7 @@ export function structuredClone(object) {
         port2.postMessage(object);
     });
 }
+
+// -------
+// todo:
+//  - use colored console.log for dateToDayDateString warn
