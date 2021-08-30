@@ -1,0 +1,248 @@
+/* App.vue */
+:root {
+  --blue-1: #8ca0ff;
+  --blue-2: aliceblue;
+  --blue-3: #e6eeff;
+  --white:  white;
+  --gray-1: #eee;
+  --gray-2: #d4d4d4;
+  --red-1: rgba(234, 33, 74, 0.88);
+}
+
+/* Main.vue */
+.main[data-v-2ceedf67] {
+  grid-template-areas: "switch address search " "tabs   content content" "status status  status " "debug  debug   debug  ";
+  display: grid;
+  grid-template-columns: 7em 2fr 1fr;
+  grid-template-rows: 2em 1fr;
+  height: 720px;
+  max-height: 100vh;
+  width: 1280px;
+  max-width: 100%;
+  box-sizing: border-box;
+  grid-gap: 1px;
+  border: 1px solid var(--gray-2);
+  background-color: var(--gray-2);
+}
+.main *[data-v-2ceedf67] {
+  background-color: white;
+}
+/* Tabs.vue */
+.tabs[data-v-1717d4e8] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.tab[data-v-1717d4e8] {
+  padding: 6px;
+}
+
+/* AddressBar.vue */
+.address[data-v-55c28eea] {
+  display: flex;
+  overflow-x: scroll;
+  padding-left: 6px;
+  scrollbar-width: none;
+}
+.address[data-v-55c28eea]::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+  display: none;
+}
+/* Content.vue */
+.content[data-v-47520d98] {
+  width: 100%;
+  overflow: auto;
+}
+.content .rows[data-v-47520d98] {
+  width: 100%;
+  overflow: auto;
+}
+.content .empty-message[data-v-47520d98] {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--gray-2);
+}
+.content .error-message[data-v-47520d98] {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: var(--red-1);
+}
+.content .error-message div h2[data-v-47520d98] {
+  margin: 0;
+  padding-bottom: 6px;
+  padding-left: 2px;
+}
+.content .error-message div pre[data-v-47520d98] {
+  display: inline;
+}
+.content .error-message div td[data-v-47520d98] {
+  padding-right: 3px;
+}
+/* Search.vue */
+/** reset */
+input[data-v-4c326e10] {
+  padding: 0 0;
+}
+button[data-v-4c326e10] {
+  padding: 0 0;
+}
+.search[data-v-4c326e10] {
+  display: flex;
+  height: 100%;
+}
+.search input[data-v-4c326e10] {
+  height: 100%;
+  flex-grow: 2;
+  border: none;
+  padding-left: 6px;
+  border-bottom: transparent solid 1px;
+  box-sizing: border-box;
+}
+.search input[data-v-4c326e10]:focus, .search input[data-v-4c326e10]:hover {
+  outline: none;
+  border-bottom: var(--blue-1) solid 1px;
+}
+.search button[data-v-4c326e10] {
+  height: 100%;
+  padding: 0 6px;
+  outline: none;
+  border: none;
+  border-bottom: transparent solid 1px;
+  border-left: var(--gray-2) solid 1px;
+  box-sizing: border-box;
+  background-color: var(--gray-1);
+}
+.search button[data-v-4c326e10]:hover {
+  border-bottom: var(--blue-1) solid 1px;
+  background: var(--blue-2);
+}
+.search button[data-v-4c326e10]:active {
+  background: var(--blue-3);
+}
+/* AddressBar_Part.vue */
+.box[data-v-f8be0ec4] {
+  height: 100%;
+}
+.box .sub[data-v-f8be0ec4] {
+  height: 100%;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+/* AddressBar_Folder.vue */
+.opened-folder[data-v-44b3de2e] {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.opened-folder .parts[data-v-44b3de2e] {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+  /* to display tailing spaces */
+  cursor: pointer;
+  box-sizing: border-box;
+  border-bottom: transparent solid 1px;
+}
+.opened-folder .parts[data-v-44b3de2e]:hover {
+  background-color: var(--blue-2);
+  border-bottom: 1px solid var(--blue-1);
+}
+.opened-folder .parts[data-v-44b3de2e]:active {
+  background: var(--blue-3);
+}
+.opened-folder .parts .part[data-v-44b3de2e] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+}
+.opened-folder .parts .part[data-v-44b3de2e] {
+  display: contents;
+}
+.opened-folder .spaced[data-v-44b3de2e] {
+  letter-spacing: 2px;
+}
+/* FileSelect.vue */
+.file-select label[data-v-31779169] {
+  cursor: pointer;
+}
+.file-select label[data-v-31779169]:hover {
+  text-decoration: underline;
+}
+input[data-v-31779169] {
+  display: none;
+}
+/* AddressBar_Base.vue */
+.scanPath[data-v-06f0cfae] {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.scanPath .parts[data-v-06f0cfae] {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  white-space: pre;
+  /* to display tailing spaces */
+  cursor: pointer;
+  box-sizing: border-box;
+  border-bottom: transparent solid 1px;
+}
+.scanPath .parts[data-v-06f0cfae]:hover {
+  background-color: var(--blue-2);
+  border-bottom: 1px solid var(--blue-1);
+}
+.scanPath .parts[data-v-06f0cfae]:active {
+  background: var(--blue-3);
+}
+.scanPath .parts .part[data-v-06f0cfae] {
+  display: contents;
+}
+.scanPath .spaced[data-v-06f0cfae] {
+  letter-spacing: 2px;
+}
+/* Row.vue */
+.row[data-v-33217ece] {
+  width: 100%;
+}
+.row[data-v-33217ece]:hover {
+  background-color: var(--blue-2);
+}
+.row *[data-v-33217ece] {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.row td[data-v-33217ece] {
+  max-width: 0;
+}
+.row td.icon[data-v-33217ece] {
+  border-left: 2px solid transparent;
+  width: 2.5%;
+  min-width: 22px;
+  user-select: none;
+}
+.row td.name[data-v-33217ece] {
+  width: 100%;
+  white-space: pre;
+}
+.row td.type[data-v-33217ece] {
+  min-width: 58px;
+  user-select: none;
+}
+.row.error .icon[data-v-33217ece] {
+  border-left: 2px solid red;
+}
