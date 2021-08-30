@@ -69,7 +69,7 @@ export class SimpleEntry {
     /** @param {SimpleEntry} entry */
     addChild(entry) {
         if (!this.children) {
-            /** @type {SimpleEntry[]|null} */
+            /** @type {SimpleEntry[]|undefined} */
             this.children = [];
         }
         this.children.push(entry);
