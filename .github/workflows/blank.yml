@@ -48,7 +48,7 @@ jobs:
           echo "------------------";
           git status;
       - name: Move static and generated files && and check files
-        run: cp -r ./dist/ ./$folder_name/ &&
+        run: cp -r ./dist/* ./$folder_name/ &&
           cd $folder_name && pwd && ls -l &&
           echo "-------------------------";
           echo "--- Files were copied ---";
