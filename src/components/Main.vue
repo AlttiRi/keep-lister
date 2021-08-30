@@ -17,10 +17,20 @@ import Tabs from "./Tabs.vue";
 import Content from "./Content.vue";
 import Status from "./Status.vue";
 import Debug from "./Debug.vue";
+import {onMounted} from "vue";
+import {setJson} from "../core/folders.js";
 
-import {localhostDebugHelper} from "../localhost-debug.js";
 
-localhostDebugHelper();
+// Already opened directory, no need to open with input
+onMounted(async () => {
+  const filepath = new URL(location.href).searchParams.get("filepath");
+  if (filepath) {
+    const response = await fetch(filepath);
+    const data = await response.json();
+    setJson(data);
+  }
+});
+
 </script>
 
 <style lang="scss" scoped>
