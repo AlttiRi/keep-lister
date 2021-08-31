@@ -11,6 +11,8 @@ What? Just look:
 
 [Ubuntu scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/ubuntu.json)
 
+[Ubuntu scan (as Root)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/ubuntu-admin.json)
+
 [Linux Source Code scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/linux-master.json)
 
 
