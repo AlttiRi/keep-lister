@@ -23,4 +23,3 @@ Search by file type, for example: `/type:folder/query`
 
 Only up to 1000 rows are displayed.
 
-
