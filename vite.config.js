@@ -98,6 +98,7 @@ function cssBundlePlugin({callback, overwriteBundle, importFromModule, removeCod
   const entries = [];
   async function resultCssBundle() {
     const results = [];
+    entries.sort((a, b) => a.id.localeCompare(b.id));
     for (const {code, id} of entries) {
       // C:\Projects\formatted-number\components\Main.vue?vue&type=style&index=0&id=f889b9d8&scoped=true&lang.css
       const filenameWithQueryParams = id.match(/[^\\\/]+$/)[0];    // Main.vue?vue&type=style&index=0&id=f889b9d8&scoped=true&lang.css
