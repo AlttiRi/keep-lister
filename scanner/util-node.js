@@ -371,3 +371,4 @@ export class FilesStructure {
 
 const _ANSI_RESET = "\u001B[0m";
 export const ANSI_BLUE = text => "\u001B[34m" + text + _ANSI_RESET;
+export const ANSI_GREEN = text => "\u001B[32m" + text + _ANSI_RESET;

@@ -17,6 +17,7 @@
  * @property {Number} errors
  * @property {Error[]} unknownErrors
  */
+// scans result types: flat, tree
 
 /**
  * Scan error.
