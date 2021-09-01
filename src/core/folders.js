@@ -7,8 +7,9 @@ import {addMessage} from "./debug.js";
 
 /** @type {import("vue").Ref<Meta>} */
 export const meta = ref(null);
-/** @type {import("vue").Ref<Object>} */
+/** @type {import("vue").Ref<SimpleEntry>} */
 const json = ref(null);
+/** @param {TreeScanResult} object */
 export function setJson(object) {
     meta.value = markRaw(object.meta);
 

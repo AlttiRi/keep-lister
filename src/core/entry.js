@@ -133,8 +133,41 @@ export class SimpleEntry {
     }
 }
 
+
 /**
- * @param {Object} rootFolder
+ * It just a filename.
+ * @typedef {String} SimpleScanEntry
+ */
+
+/**
+ * @typedef {String} ScanSymlink
+ * @property {String} name
+ * @property {String?} pathTo
+ * @property {ScanError[]?} errors
+ */
+
+/**
+ * @typedef {String} ScanFolder
+ * @property {String} name
+ * @property {ScanFolder[]?} folders
+ * @property {SimpleScanEntry[]?} files
+ * @property {ScanSymlink[]|SimpleScanEntry[]?} symlinks
+ * @property {SimpleScanEntry[]?} fifos
+ * @property {SimpleScanEntry[]?} charDevs
+ * @property {SimpleScanEntry[]?} blockDevs
+ * @property {SimpleScanEntry[]?} sockets
+ * @property {ScanError[]?} errors
+ */
+
+
+/**
+ * The scan result as one object.
+ * @typedef {ScanFolder} TreeScanResult
+ * @property {Meta} meta
+ */
+
+/**
+ * @param {ScanFolder} rootFolder
  * @param {SimpleEntry|null} parent
  * @return {SimpleEntry}
  */
