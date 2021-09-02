@@ -7,6 +7,7 @@
 
 <script setup>
 import {search, clearSearch} from "../core/search.js";
+//todo focus on double shift
 </script>
 
 <style lang="scss" scoped>
