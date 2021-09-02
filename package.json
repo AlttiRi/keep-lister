@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
-    "build-scanner": "rollup ./scanner/scanner.js --file ./dist-scanner/zz-dir-scanner.mjs --format es --banner \"#!/usr/bin/env node\"",
+    "build-scanner": "rollup ./scanner/scanner.js --file ./dist-scanner/zz-dir-scanner.mjs --format es --banner \"#!/usr/bin/env node\" --external=path,os,url,fs,fs/promises",
     "serve": "vite preview",
     "test": "ava"
   },
