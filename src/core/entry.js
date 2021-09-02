@@ -1,21 +1,20 @@
 /**
  * Meta info of a scan.
  * @typedef {Object} Meta
- * @property {String[]} path
- * @property {String} separator
- * @property {Number} scanDate
- * @property {String} platform
- * @property {Number} files
- * @property {Number} folders
- * @property {Number} symlinks
- * @property {Number} fifos
- * @property {Number} charDevs
- * @property {Number} blockDevs
- * @property {Number} sockets
- * @property {Number} unknowns
- * @property {Number} total
- * @property {Number} errors
- * @property {Error[]} unknownErrors
+ * @property {String[]} [path]
+ * @property {String} [separator]
+ * @property {Number} [scanDate]
+ * @property {String} [platform]
+ * @property {Number} [files]
+ * @property {Number} [folders]
+ * @property {Number} [symlinks]
+ * @property {Number} [fifos]
+ * @property {Number} [charDevs]
+ * @property {Number} [blockDevs]
+ * @property {Number} [sockets]
+ * @property {Number} [unknowns]
+ * @property {Number} [total]
+ * @property {Number} [errors]
  */
 // scans result types: flat, tree
 

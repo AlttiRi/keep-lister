@@ -31,6 +31,7 @@ export async function isSymLooped(filepath) {
  *     error?: IOError
  * }} ListEntry
  */
+
 /**
  * Not follows symlinks
  * May return an entry with readdir error (entry type is folder)

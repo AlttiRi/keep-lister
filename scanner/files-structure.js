@@ -1,8 +1,14 @@
 import path from "path";
-import os from "os";
 
 
 /**
+ * @typedef {{
+ *  errno: number,
+ *  code: string,
+ *  syscall: string,
+ *  path: string
+ * }} IOError
+ *
  * @example
  * [Error: EPERM: operation not permitted, scandir "C:\\$Recycle.Bin\\S-1-5-18"] {
  *  errno: -4048,
@@ -17,14 +23,8 @@ import os from "os";
  *  syscall: 'scandir',
  *  path: '/boot/efi'
  *}
- *
- * @typedef {{
- *  errno: number,
- *  code: string,
- *  syscall: string,
- *  path: string
- * }} IOError
  */
+
 /**
  * @typedef {
  * "folder" |
@@ -36,79 +36,37 @@ import os from "os";
  * "socket"
  * } EntryType
  */
+
 /**
  * @typedef {{
  *     path: string,
- *     type?: EntryType,
- *     error?: IOError,
- *     symlinkInfo?: {pathTo:string}
+ *     type: EntryType,
+ *     error: IOError,
+ *     [symlinkInfo]: {
+ *       pathTo: string,
+ *       [content]: string
+ *     }
  * }} PathEntry
  */
 
-const separator = path.sep;
-
 export class FilesStructure {
     /**
-     * @type {Map<string, TreeScanResult|ScanFolder>}
-     * @private */
-    foldersMap = new Map();
-
-    /** @type {string[]} */
-    scanPath;
-    /** @type {string} */
-    scanDirName;
-
-    /**
-     * @param {string} absolutePath
-     * @return {{path: string[], name: string}}
-     * @private
+     * @param {Object} init
+     * @param {String} init.scanDirName
+     * @param {String} init.scanFolderAbsolutePath
      */
-    getPathAndName(absolutePath) {
-        const fullPath = absolutePath.split(path.sep).filter(e => e);
-        this.scanPath = fullPath.slice(0, -1);
-        this.scanDirName = fullPath[fullPath.length - 1];
-        const startsWithSlash = absolutePath.startsWith("/");
-        if (startsWithSlash) { // for linux
-            if (!this.scanDirName) {
-                this.scanDirName = "/";
-            } else {
-                this.scanPath.unshift("/");
-            }
-        }
-        return {name: this.scanDirName, path: this.scanPath};
-    }
-
-    /** @param {String} scanFolderPath */
-    constructor(scanFolderPath) {
-        const scanFolderAbsolutePath = path.resolve(scanFolderPath);
-        const {name, path: scanPath} = this.getPathAndName(scanFolderAbsolutePath);
-
-        /** @type {TreeScanResult} */
-        const root = {
-            name,
-            meta: {
-                path: scanPath,
-                separator,
-                scanDate: Date.now(),
-                platform: os.platform()
-            }
+    constructor({scanDirName, scanFolderAbsolutePath}) {
+        /** @type {ScanFolder} */
+        this.root = {
+            name: scanDirName
         };
-        this.foldersMap.set(".", root);
-        /**
-         * Absolute path of the scan root
-         * @type {string} */
-        this.scanFolder = scanFolderAbsolutePath;
-    }
 
-    get scanFilename() {
-        return [...this.scanPath, this.scanDirName]
-            .join("/") // no need to use `path.sep`
-            .replace("//", "/"); // linux root folder
-    }
+        /** @type {Map<string, ScanFolder>} */
+        this.foldersMap = new Map();
+        this.foldersMap.set(".", this.root);
 
-    /** @return {TreeScanResult} */
-    get root() {
-        return this.foldersMap.get(".");
+        /** @type {string} */
+        this.scanFolderAbsolutePath = scanFolderAbsolutePath;
     }
 
     /**
@@ -122,7 +80,7 @@ export class FilesStructure {
         /** @type {string} */
         const dirKey = relativeDirname.split(path.sep).slice(0, -1).join(path.sep) || ".";
 
-        /** @type {TreeScanResult | ScanFolder} */
+        /** @type {ScanFolder} */
         let parent = this.foldersMap.get(dirKey);
         if (!parent) {
             parent = this.addFolder(dirKey);
@@ -148,7 +106,7 @@ export class FilesStructure {
 
     /** @param {PathEntry} entry */
     put(entry) {
-        const relativePath = path.relative(this.scanFolder, entry.path);
+        const relativePath = path.relative(this.scanFolderAbsolutePath, entry.path);
         const relativeDirname = path.dirname(relativePath); // "." for files in the scan folder
         const basename = path.basename(relativePath);
 
@@ -179,14 +137,13 @@ export class FilesStructure {
             const symlink = {
                 name: basename
             };
-            symlinks.push(symlink);
-
-            if (entry.error) {
+            if (entry.error) { // on readlink
                 symlink.errors = [entry.error];
             }
             if (entry.symlinkInfo?.pathTo) {
                 symlink.pathTo = entry.symlinkInfo.pathTo;
             }
+            symlinks.push(symlink);
         } else
         if (entry.type === "fifo") {
             const fifos = parentFolder.fifos || (parentFolder.fifos = []);
@@ -204,16 +161,5 @@ export class FilesStructure {
             const sockets = parentFolder.sockets || (parentFolder.sockets = []);
             sockets.push(basename);
         }
-
-        if (entry.error && !["folder", "symlink"].includes(entry.type)) {
-            console.log("unknown error", entry.error);
-            const meta = this.root.meta;
-            const unknownErrors = meta.unknownErrors || (meta.unknownErrors = []);
-            unknownErrors.push(entry.error);
-        }
-    }
-
-    addMetaObject(meta) {
-        Object.assign(this.root.meta, meta);
     }
 }

@@ -8,14 +8,25 @@ import {FilesStructure} from "./files-structure.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const downloads = path.join(os.homedir(), "Downloads");
 
-const scanFolder = path.resolve("./");
-console.log("Scanning:", ANSI_GREEN(scanFolder));
+const scanFolder = ".";
+const scanFolderAbsolutePath = path.resolve(scanFolder);
+console.log("Scanning:", ANSI_GREEN(scanFolderAbsolutePath));
 
-const filesStructure = new FilesStructure(scanFolder);
 
+const {scanPath, scanDirName} = getPathAndName(scanFolderAbsolutePath);
+const filesStructure = new FilesStructure({
+    scanFolderAbsolutePath,
+    scanDirName
+});
+
+/** @type {Meta} */
 const meta = {
+    path: scanPath,
+    separator: path.sep,
+    scanDate: Date.now(),
+    platform: os.platform(),
+
     files: 0,
     folders: 0,
     symlinks: 0,
@@ -29,6 +40,27 @@ const meta = {
 
     total: 0,
 };
+
+/**
+ * @param {string} absolutePath
+ * @return {{scanPath: string[], scanDirName: string}}
+ */
+function getPathAndName(absolutePath) {
+    const fullPath = absolutePath.split(path.sep).filter(e => e);
+    /** @type {string[]} */
+    const scanPath = fullPath.slice(0, -1);
+    /** @type {string} */
+    let scanDirName = fullPath[fullPath.length - 1];
+    const startsWithSlash = absolutePath.startsWith("/");
+    if (startsWithSlash) { // for linux
+        if (!scanDirName) {
+            scanDirName = "/";
+        } else {
+            scanPath.unshift("/");
+        }
+    }
+    return {scanDirName, scanPath};
+}
 
 
 /**
@@ -73,16 +105,16 @@ export function typeFromDirent(dirent) {
 
 
 const startTime = Date.now();
-for await (const /** @type {ListEntry} */ simpleEntry of listFiles({
+for await (const /** @type {ListEntry} */ listEntry of listFiles({
     filepath: scanFolder,
     recursively: true,
     directories: true
 })) {
     /** @type {EntryType} */
     let type;
-    const readdirError = simpleEntry.error;
+    const readdirError = listEntry.error;
     if (!readdirError) {
-        type = typeFromDirent(simpleEntry.dirent);
+        type = typeFromDirent(listEntry.dirent);
         meta[`${type}s`]++;
         meta.total++;
     } else {
@@ -91,18 +123,19 @@ for await (const /** @type {ListEntry} */ simpleEntry of listFiles({
 
     /** @type {PathEntry} */
     const entry = {
-        ...simpleEntry,
+        ...listEntry,
         type
-    }
+    };
 
     if (type === "symlink") {
         try {
             const symContent = await fs.promises.readlink(entry.path);
-            const absolutePathTo = path.resolve(symContent);
-            console.log(entry.path, ANSI_BLUE("->"), absolutePathTo);
+            const absolutePathTo = path.resolve(entry.path, symContent);
             entry.symlinkInfo = {
-                pathTo: absolutePathTo
+                pathTo: absolutePathTo,
+                content: symContent, // [unused] the orig content of sym link
             }
+            console.info(entry.path, ANSI_BLUE("->"), absolutePathTo);
         } catch (e) {
             entry.error = e;
         }
@@ -112,21 +145,30 @@ for await (const /** @type {ListEntry} */ simpleEntry of listFiles({
 
     if (entry.error) {
         meta.errors++;
-        console.log(`"${entry.path}"`, entry.error, entry.path);
+        console.error(entry.error);
     }
 }
+const {files, folders, symlinks} = meta;
+const {fifos, sockets, charDevs, blockDevs} = meta;
+const {total, errors} = meta;
+console.table({files, folders, symlinks, fifos, sockets, charDevs, blockDevs, total, errors});
 
-console.table(meta);
-filesStructure.addMetaObject(meta);
-
+/** @type {ScanFolder} */
+let result = filesStructure.root;
 /** @type {TreeScanResult} */
-const result = filesStructure.root;
+result = {...result, meta};
 const json = JSON.stringify(result/*, null, " "*/)
     .replaceAll(  "\"name\":\"", "\n\"name\":\""); // to simplify parsing for Notepad++
 
+function scanFilename() {
+    return [...scanPath, scanDirName]
+        .join("/") // no need to use `path.sep`
+        .replace("//", "/"); // linux root folder
+}
+
 const filename =
     "[.dir-scan]" +
-    "[" + filesStructure.scanFilename + "]" +
+    "[" + scanFilename() + "]" +
     " " + dateToDayDateString(new Date(), false);
 const filenameEscaped = filename
     // .replaceAll("/", "⧸")
@@ -135,6 +177,8 @@ const filenameEscaped = filename
     .replaceAll(/[/:#]/g, "~");
 try {
     let saveLocation;
+    const downloads = path.join(os.homedir(), "Downloads");
+
     if (await exists(downloads)) {
         saveLocation = downloads;
     } else {
