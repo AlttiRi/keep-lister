@@ -76,7 +76,3 @@ export function structuredClone(object) {
         port2.postMessage(object);
     });
 }
-
-// -------
-// todo:
-//  - use colored console.log for dateToDayDateString warn
