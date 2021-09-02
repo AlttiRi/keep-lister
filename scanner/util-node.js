@@ -25,45 +25,12 @@ export async function isSymLooped(filepath) {
 
 
 /**
- * @typedef {
- * "folder" |
- * "file" |
- * "symlink" |
- * "fifo" |
- * "charDev" |
- * "blockDev" |
- * "socket"
- * } EntryType
+ * @typedef {{
+ *     path: string,
+ *     dirent?: import("fs/promises").Dirent,
+ *     error?: IOError
+ * }} ListEntry
  */
-
-/**
- * @param {fs.Dirent} dirent
- * @return {EntryType}
- */
-export function typeFromDirent(dirent) {
-    if (dirent.isFile()) {
-        return "file";
-    }
-    if (dirent.isDirectory()) {
-        return "folder";
-    }
-    if (dirent.isSymbolicLink()) {
-        return "symlink";
-    }
-    if (dirent.isFIFO()) {
-        return "fifo";
-    }
-    if (dirent.isCharacterDevice()) {
-        return "charDev";
-    }
-    if (dirent.isBlockDevice()) {
-        return "blockDev";
-    }
-    if (dirent.isSocket()) {
-        return "socket";
-    }
-}
-
 /**
  * Not follows symlinks
  * May return an entry with readdir error (entry type is folder)
@@ -73,9 +40,9 @@ export function typeFromDirent(dirent) {
  * @param {boolean} [settings.recursively = true]
  * @param {boolean} [settings.emitDirectories = false]
  * @param {boolean} [settings.onlyFiles = false]
- * @return {AsyncGenerator<PathEntry>}
+ * @return {AsyncGenerator<ListEntry>}
  */
-export async function * listFiles(settings = {}) {
+export async function *listFiles(settings = {}) {
     const {
         filepath,
         recursively,
@@ -89,7 +56,7 @@ export async function * listFiles(settings = {}) {
     }, settings);
 
     try {
-        /** @type {fs.Dirent[]} */
+        /** @type {import("fs/promises").Dirent[]} */
         const dirEntries = await fs.readdir(filepath, { // can throws an error
             withFileTypes: true
         });
@@ -99,17 +66,17 @@ export async function * listFiles(settings = {}) {
             if (!dirEntry.isDirectory()) {
                 yield {
                     path: entryFilepath,
-                    type: typeFromDirent(dirEntry)
+                    dirent: dirEntry
                 };
             } else {
                 if (directories) {
                     yield {
                         path: entryFilepath,
-                        type: "folder"
+                        dirent: dirEntry
                     }
                 }
                 if (recursively) {
-                    yield * listFiles({...settings, filepath: entryFilepath});
+                    yield *listFiles({...settings, filepath: entryFilepath});
                 }
             }
         }
@@ -117,8 +84,7 @@ export async function * listFiles(settings = {}) {
         yield {
             /** @type {IOError} */
             error,
-            path: filepath,
-            type: "folder", // since it only may be happened on readdir
+            path: filepath
         }
     }
 }

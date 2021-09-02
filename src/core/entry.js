@@ -148,7 +148,7 @@ export class SimpleEntry {
  */
 
 /**
- * @typedef {String} ScanFolder
+ * @typedef {Object} ScanFolder
  * @property {String} name
  * @property {ScanFolder[]} [folders]
  * @property {SimpleScanEntry[]} [files]

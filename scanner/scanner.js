@@ -30,18 +30,72 @@ const meta = {
     total: 0,
 };
 
+
+/**
+ * @typedef {
+ * "folder" |
+ * "file" |
+ * "symlink" |
+ * "fifo" |
+ * "charDev" |
+ * "blockDev" |
+ * "socket"
+ * } EntryType
+ */
+
+/**
+ * @param {import("fs/promises").Dirent} dirent
+ * @return {EntryType}
+ */
+export function typeFromDirent(dirent) {
+    if (dirent.isFile()) {
+        return "file";
+    }
+    if (dirent.isDirectory()) {
+        return "folder";
+    }
+    if (dirent.isSymbolicLink()) {
+        return "symlink";
+    }
+    if (dirent.isFIFO()) {
+        return "fifo";
+    }
+    if (dirent.isCharacterDevice()) {
+        return "charDev";
+    }
+    if (dirent.isBlockDevice()) {
+        return "blockDev";
+    }
+    if (dirent.isSocket()) {
+        return "socket";
+    }
+}
+
+
 const startTime = Date.now();
-for await (const /** @type {PathEntry} */ entry of listFiles({
+for await (const /** @type {ListEntry} */ simpleEntry of listFiles({
     filepath: scanFolder,
     recursively: true,
     directories: true
 })) {
-    if (!entry.error) { // no readdir error
-        meta[`${entry.type}s`]++;
+    /** @type {EntryType} */
+    let type;
+    const readdirError = simpleEntry.error;
+    if (!readdirError) {
+        type = typeFromDirent(simpleEntry.dirent);
+        meta[`${type}s`]++;
         meta.total++;
+    } else {
+        type = "folder";
     }
 
-    if (entry.type === "symlink") {
+    /** @type {PathEntry} */
+    const entry = {
+        ...simpleEntry,
+        type
+    }
+
+    if (type === "symlink") {
         try {
             const symContent = await fs.promises.readlink(entry.path);
             const absolutePathTo = path.resolve(symContent);
