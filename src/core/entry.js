@@ -52,11 +52,12 @@ export const entryTypes = ["folder", "file", "symlink", "fifo", "charDev", "bloc
 export class SimpleEntry {
     // [Symbol.toStringTag] = "SimpleEntry"; // Disables reactivity, BTW.
     /**
-     * @param {String} name
-     * @param {SimpleEntry|null} parent
-     * @param {EntryType} type
-     * @param {EntryMeta?} meta
-     * @param {ScanError[]?} errors
+     * @param {Object} init
+     * @param {String} init.name
+     * @param {SimpleEntry|null} init.parent
+     * @param {EntryType} init.type
+     * @param {EntryMeta} [init.meta]
+     * @param {ScanError[]} [init.errors]
      */
     constructor({name, parent, type, meta, errors}) {
         this.name = name;
@@ -142,21 +143,21 @@ export class SimpleEntry {
 /**
  * @typedef {String} ScanSymlink
  * @property {String} name
- * @property {String?} pathTo
- * @property {ScanError[]?} errors
+ * @property {String} [pathTo]
+ * @property {ScanError[]} [errors]
  */
 
 /**
  * @typedef {String} ScanFolder
  * @property {String} name
- * @property {ScanFolder[]?} folders
- * @property {SimpleScanEntry[]?} files
- * @property {ScanSymlink[]|SimpleScanEntry[]?} symlinks
- * @property {SimpleScanEntry[]?} fifos
- * @property {SimpleScanEntry[]?} charDevs
- * @property {SimpleScanEntry[]?} blockDevs
- * @property {SimpleScanEntry[]?} sockets
- * @property {ScanError[]?} errors
+ * @property {ScanFolder[]} [folders]
+ * @property {SimpleScanEntry[]} [files]
+ * @property {ScanSymlink[]|SimpleScanEntry[]} [symlinks]
+ * @property {SimpleScanEntry[]} [fifos]
+ * @property {SimpleScanEntry[]} [charDevs]
+ * @property {SimpleScanEntry[]} [blockDevs]
+ * @property {SimpleScanEntry[]} [sockets]
+ * @property {ScanError[]} [errors]
  */
 
 
