@@ -197,17 +197,17 @@ input[data-v-31779169] {
 }
 /* Search.vue */
 /** reset */
-input[data-v-4c326e10] {
+input[data-v-a5a6c16c] {
   padding: 0 0;
 }
-button[data-v-4c326e10] {
+button[data-v-a5a6c16c] {
   padding: 0 0;
 }
-.search[data-v-4c326e10] {
+.search[data-v-a5a6c16c] {
   display: flex;
   height: 100%;
 }
-.search input[data-v-4c326e10] {
+.search input[data-v-a5a6c16c] {
   height: 100%;
   flex-grow: 2;
   border: none;
@@ -215,11 +215,11 @@ button[data-v-4c326e10] {
   border-bottom: transparent solid 1px;
   box-sizing: border-box;
 }
-.search input[data-v-4c326e10]:focus, .search input[data-v-4c326e10]:hover {
+.search input[data-v-a5a6c16c]:focus, .search input[data-v-a5a6c16c]:hover {
   outline: none;
   border-bottom: var(--blue-1) solid 1px;
 }
-.search button[data-v-4c326e10] {
+.search button[data-v-a5a6c16c] {
   height: 100%;
   padding: 0 6px;
   outline: none;
@@ -229,11 +229,11 @@ button[data-v-4c326e10] {
   box-sizing: border-box;
   background-color: var(--gray-1);
 }
-.search button[data-v-4c326e10]:hover {
+.search button[data-v-a5a6c16c]:hover {
   border-bottom: var(--blue-1) solid 1px;
   background: var(--blue-2);
 }
-.search button[data-v-4c326e10]:active {
+.search button[data-v-a5a6c16c]:active {
   background: var(--blue-3);
 }
 /* Tabs.vue */
