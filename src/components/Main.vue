@@ -23,6 +23,7 @@ import {setJson} from "../core/folders.js";
 
 // Already opened directory, no need to open with input
 onMounted(async () => {
+  //todo search
   const filepath = new URL(location.href).searchParams.get("filepath");
   if (filepath) {
     const response = await fetch(filepath);
