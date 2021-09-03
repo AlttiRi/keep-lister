@@ -1,52 +1,26 @@
 import path from "path";
 
-
 /**
- * @typedef {{
- *  errno: number,
- *  code: string,
- *  syscall: string,
- *  path: string
- * }} IOError
- *
- * @example
- * [Error: EPERM: operation not permitted, scandir "C:\\$Recycle.Bin\\S-1-5-18"] {
- *  errno: -4048,
- *  code: "EPERM",
- *  syscall: "scandir",
- *  path: "C:\\$Recycle.Bin\\S-1-5-18"
- * }
- *
- * [Error: EACCES: permission denied, scandir '/boot/efi'] {
- *  errno: -13,
- *  code: 'EACCES',
- *  syscall: 'scandir',
- *  path: '/boot/efi'
- *}
+ * It's just a filename.
+ * @typedef {String} SimpleScanEntry
  */
-
 /**
- * @typedef {
- * "folder" |
- * "file" |
- * "symlink" |
- * "fifo" |
- * "charDev" |
- * "blockDev" |
- * "socket"
- * } EntryType
+ * @typedef {String} ScanSymlink
+ * @property {String} name
+ * @property {String} [pathTo]
+ * @property {ScanError[]} [errors]
  */
-
 /**
- * @typedef {{
- *     path: string,
- *     type: EntryType,
- *     error: IOError,
- *     [symlinkInfo]: {
- *       pathTo: string,
- *       [content]: string
- *     }
- * }} PathEntry
+ * @typedef {Object} ScanFolder
+ * @property {String} name
+ * @property {ScanFolder[]} [folders]
+ * @property {SimpleScanEntry[]} [files]
+ * @property {ScanSymlink[]|SimpleScanEntry[]} [symlinks]
+ * @property {SimpleScanEntry[]} [fifos]
+ * @property {SimpleScanEntry[]} [charDevs]
+ * @property {SimpleScanEntry[]} [blockDevs]
+ * @property {SimpleScanEntry[]} [sockets]
+ * @property {ScanError[]} [errors]
  */
 
 export class FilesStructure {
@@ -104,7 +78,7 @@ export class FilesStructure {
         return folder;
     }
 
-    /** @param {PathEntry} entry */
+    /** @param {ScanEntry} entry */
     put(entry) {
         const relativePath = path.relative(this.scanFolderAbsolutePath, entry.path);
         const relativeDirname = path.dirname(relativePath); // "." for files in the scan folder
@@ -140,8 +114,8 @@ export class FilesStructure {
             if (entry.error) { // on readlink
                 symlink.errors = [entry.error];
             }
-            if (entry.symlinkInfo?.pathTo) {
-                symlink.pathTo = entry.symlinkInfo.pathTo;
+            if (entry.meta?.pathTo) {
+                symlink.pathTo = entry.meta.pathTo;
             }
             symlinks.push(symlink);
         } else

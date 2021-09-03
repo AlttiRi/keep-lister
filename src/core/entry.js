@@ -1,52 +1,5 @@
-/**
- * Meta info of a scan.
- * @typedef {Object} Meta
- * @property {String[]} [path]
- * @property {String} [separator]
- * @property {Number} [scanDate]
- * @property {String} [platform]
- * @property {Number} [files]
- * @property {Number} [folders]
- * @property {Number} [symlinks]
- * @property {Number} [fifos]
- * @property {Number} [charDevs]
- * @property {Number} [blockDevs]
- * @property {Number} [sockets]
- * @property {Number} [unknowns]
- * @property {Number} [total]
- * @property {Number} [errors]
- */
-// scans result types: flat, tree
-
-/**
- * Scan error.
- * @typedef {Object} ScanError
- * @property {String} syscall - "scandir", "readlink", ...
- * @property {String} code    - "EPERM", ...
- * @property {Number} errno   - "-4048", ...
- * @property {String} path    - "C:\System Volume Information", ...
- */
-
-/**
- * @typedef {
- * "folder" |
- * "file" |
- * "symlink" |
- * "fifo" |
- * "charDev" |
- * "blockDev" |
- * "socket"
- * } EntryType
- */
-
-/** @type {EntryType[]} */
+/** @type {ScanEntryType[]} */
 export const entryTypes = ["folder", "file", "symlink", "fifo", "charDev", "blockDev", "socket"];
-
-/**
- * Additional properties.
- * @typedef {Object} EntryMeta
- * @property {String?} pathTo - where symlink goes (Absolute path)
- */
 
 export class SimpleEntry {
     // [Symbol.toStringTag] = "SimpleEntry"; // Disables reactivity, BTW.
@@ -54,19 +7,24 @@ export class SimpleEntry {
      * @param {Object} init
      * @param {String} init.name
      * @param {SimpleEntry|null} init.parent
-     * @param {EntryType} init.type
-     * @param {EntryMeta} [init.meta]
+     * @param {ScanEntryType} init.type
+     * @param {ScanEntryMeta} [init.meta]
      * @param {ScanError[]} [init.errors]
      */
     constructor({name, parent, type, meta, errors}) {
+        /** @type {String} */
         this.name = name;
+        /** @type {SimpleEntry} */
         this.parent = parent;
+        /** @type {ScanEntryType} */
         this.type = type;
 
         if (meta) {
+            /** @type {ScanEntryMeta} */
             this.meta = meta;
         }
         if (errors) {
+            /** @type {ScanError[]} */
             this.errors = errors;
         }
     }
@@ -133,39 +91,6 @@ export class SimpleEntry {
     }
 }
 
-
-/**
- * It just a filename.
- * @typedef {String} SimpleScanEntry
- */
-
-/**
- * @typedef {String} ScanSymlink
- * @property {String} name
- * @property {String} [pathTo]
- * @property {ScanError[]} [errors]
- */
-
-/**
- * @typedef {Object} ScanFolder
- * @property {String} name
- * @property {ScanFolder[]} [folders]
- * @property {SimpleScanEntry[]} [files]
- * @property {ScanSymlink[]|SimpleScanEntry[]} [symlinks]
- * @property {SimpleScanEntry[]} [fifos]
- * @property {SimpleScanEntry[]} [charDevs]
- * @property {SimpleScanEntry[]} [blockDevs]
- * @property {SimpleScanEntry[]} [sockets]
- * @property {ScanError[]} [errors]
- */
-
-
-/**
- * The scan result as one object.
- * @typedef {ScanFolder} TreeScanResult
- * @property {Meta} meta
- */
-
 /**
  * @param {ScanFolder} rootFolder
  * @param {SimpleEntry|null} parent
@@ -183,7 +108,7 @@ export function parseEntries(rootFolder, parent = null) {
             root.addChild(parseEntries(folder, root));
         });
     }
-    /** @type {EntryType[]} */
+    /** @type {ScanEntryType[]} */
     const simpleTypes = ["file", "fifo", "charDev", "blockDev", "socket"];
     simpleTypes.forEach(type => {
         if (rootFolder[type+"s"]) {
@@ -206,7 +131,7 @@ export function parseEntries(rootFolder, parent = null) {
                 }));
                 return;
             }
-            /** @type {EntryMeta|null} */
+            /** @type {ScanSymlinkInfo|null} */
             const meta = symlink.pathTo ? {
                 pathTo: symlink.pathTo
             } : null;

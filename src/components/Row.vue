@@ -62,10 +62,11 @@ function onClick(event) {
   }
 }
 
+/** @param {MouseEvent} event */
 function onMousedown(event) {
-  const MIDDLE_BUTTON = 2;
-  if (event.which === MIDDLE_BUTTON && entry.value.type === "folder") {
-    console.log("MIDDLE_BUTTON on a folder");
+  const MIDDLE_BUTTON = 1;
+  if (event.button === MIDDLE_BUTTON && entry.value.type === "folder") {
+    console.log("MIDDLE_BUTTON on a folder", event);
   }
 }
 

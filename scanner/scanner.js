@@ -4,6 +4,7 @@ import os from "os";
 import {listFiles, dateToDayDateString, ANSI_BLUE, exists, ANSI_GREEN} from "./util-node.js";
 import {fileURLToPath} from "url";
 import {FilesStructure} from "./files-structure.js";
+import {Meta} from "./meta.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,34 +13,6 @@ const __dirname = path.dirname(__filename);
 const scanFolder = ".";
 const scanFolderAbsolutePath = path.resolve(scanFolder);
 console.log("Scanning:", ANSI_GREEN(scanFolderAbsolutePath));
-
-
-const {scanPath, scanDirName} = getPathAndName(scanFolderAbsolutePath);
-const filesStructure = new FilesStructure({
-    scanFolderAbsolutePath,
-    scanDirName
-});
-
-/** @type {Meta} */
-const meta = {
-    path: scanPath,
-    separator: path.sep,
-    scanDate: Date.now(),
-    platform: os.platform(),
-
-    files: 0,
-    folders: 0,
-    symlinks: 0,
-    errors: 0,
-
-    // unix-like
-    fifos: 0,
-    charDevs: 0,
-    blockDevs: 0,
-    sockets: 0,
-
-    total: 0,
-};
 
 /**
  * @param {string} absolutePath
@@ -62,6 +35,13 @@ function getPathAndName(absolutePath) {
     return {scanDirName, scanPath};
 }
 
+const {scanPath, scanDirName} = getPathAndName(scanFolderAbsolutePath);
+const filesStructure = new FilesStructure({
+    scanFolderAbsolutePath,
+    scanDirName
+});
+
+const meta = new Meta(scanPath);
 
 /**
  * @typedef {
@@ -72,12 +52,12 @@ function getPathAndName(absolutePath) {
  * "charDev" |
  * "blockDev" |
  * "socket"
- * } EntryType
+ * } ScanEntryType
  */
 
 /**
  * @param {import("fs/promises").Dirent} dirent
- * @return {EntryType}
+ * @return {ScanEntryType}
  */
 export function typeFromDirent(dirent) {
     if (dirent.isFile()) {
@@ -103,6 +83,26 @@ export function typeFromDirent(dirent) {
     }
 }
 
+/**
+ * @typedef {Object} ScanSymlinkInfo
+ * @property {string} pathTo
+ * @property {string} [content]
+ **/
+/**
+ * Uses in ScanEntry
+ * @typedef {ScanSymlinkInfo} ScanEntryMeta
+ **/
+/**
+ * Scan error. Scan result representation of `IOError`.
+ * @typedef {IOError} ScanError
+ **/
+/**
+ * @typedef {Object} ScanEntry
+ * @property {string} path
+ * @property {ScanEntryType} type
+ * @property {ScanError} [error]
+ * @property {ScanEntryMeta} [meta]
+ **/
 
 const startTime = Date.now();
 for await (const /** @type {ListEntry} */ listEntry of listFiles({
@@ -110,18 +110,17 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
     recursively: true,
     directories: true
 })) {
-    /** @type {EntryType} */
+    /** @type {ScanEntryType} */
     let type;
     const readdirError = listEntry.error;
     if (!readdirError) {
         type = typeFromDirent(listEntry.dirent);
-        meta[`${type}s`]++;
-        meta.total++;
+        meta.add(type);
     } else {
         type = "folder";
     }
 
-    /** @type {PathEntry} */
+    /** @type {ScanEntry} */
     const entry = {
         ...listEntry,
         type
@@ -131,7 +130,7 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
         try {
             const symContent = await fs.promises.readlink(entry.path);
             const absolutePathTo = path.resolve(entry.path, symContent);
-            entry.symlinkInfo = {
+            entry.meta = {
                 pathTo: absolutePathTo,
                 content: symContent, // [unused] the orig content of sym link
             }
@@ -148,15 +147,18 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
         console.error(entry.error);
     }
 }
-const {files, folders, symlinks} = meta;
-const {fifos, sockets, charDevs, blockDevs} = meta;
-const {total, errors} = meta;
-console.table({files, folders, symlinks, fifos, sockets, charDevs, blockDevs, total, errors});
+meta.logTable();
+
+/**
+ * The scan result as one object.
+ * @typedef {ScanFolder} TreeScanResult
+ * @property {ScanMeta} meta
+ */
 
 /** @type {ScanFolder} */
 let result = filesStructure.root;
 /** @type {TreeScanResult} */
-result = {...result, meta};
+result = {meta, ...result};
 const json = JSON.stringify(result/*, null, " "*/)
     .replaceAll(  "\"name\":\"", "\n\"name\":\""); // to simplify parsing for Notepad++
 

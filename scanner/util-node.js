@@ -23,13 +23,36 @@ export async function isSymLooped(filepath) {
     return linkPathAbsolute.includes(dirname);
 }
 
+/**
+ * The error object that happens while scanning.
+ * @typedef {Object} IOError
+ * @property {String} syscall - "scandir", "readlink", ...
+ * @property {String} code    - "EPERM", ...
+ * @property {Number} errno   - "-4048", ...
+ * @property {String} path    - "C:\System Volume Information", ...
+ *
+ * @example
+ * [Error: EPERM: operation not permitted, scandir "C:\\$Recycle.Bin\\S-1-5-18"] {
+ *  errno: -4048,
+ *  code: "EPERM",
+ *  syscall: "scandir",
+ *  path: "C:\\$Recycle.Bin\\S-1-5-18"
+ * }
+ *
+ * [Error: EACCES: permission denied, scandir '/boot/efi'] {
+ *  errno: -13,
+ *  code: 'EACCES',
+ *  syscall: 'scandir',
+ *  path: '/boot/efi'
+ *}
+ */
 
 /**
- * @typedef {{
- *     path: string,
- *     dirent?: import("fs/promises").Dirent,
- *     error?: IOError
- * }} ListEntry
+ * An entry of the listing of the content of a directory.
+ * @typedef {Object} ListEntry
+ * @property {String} path
+ * @property {import("fs/promises").Dirent} dirent
+ * @property {IOError} error
  */
 
 /**

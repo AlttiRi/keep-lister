@@ -5,7 +5,7 @@ import {dateToDayDateString} from "../util.js";
 import {addMessage} from "./debug.js";
 
 
-/** @type {import("vue").Ref<Meta>} */
+/** @type {import("vue").Ref<ScanMeta>} */
 export const meta = ref(null);
 /** @type {import("vue").Ref<SimpleEntry>} */
 const json = ref(null);
