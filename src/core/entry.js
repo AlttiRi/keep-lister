@@ -14,17 +14,17 @@ export class SimpleEntry {
     constructor({name, parent, type, meta, errors}) {
         /** @type {String} */
         this.name = name;
-        /** @type {SimpleEntry} */
+        /** @type {SimpleEntry|null} */
         this.parent = parent;
         /** @type {ScanEntryType} */
         this.type = type;
 
         if (meta) {
-            /** @type {ScanEntryMeta} */
+            /** @type {ScanEntryMeta|undefined} */
             this.meta = meta;
         }
         if (errors) {
-            /** @type {ScanError[]} */
+            /** @type {ScanError[]|undefined} */
             this.errors = errors;
         }
     }

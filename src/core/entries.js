@@ -16,21 +16,15 @@ export function comparator(pre, cur) {
     return 0;
 }
 
-export const folders = computed(() => openedFolder.value.folders);
-export const files = computed(() => openedFolder.value.files);
-export const symlinks = computed(() => openedFolder.value.symlinks);
-export const fifos = computed(() => openedFolder.value.fifos);
-export const charDevs = computed(() => openedFolder.value.charDevs);
-export const blockDevs = computed(() => openedFolder.value.blockDevs);
-export const sockets = computed(() => openedFolder.value.sockets);
+// grouped by type
 export const entries = computed(() => [
-    ...folders.value.sort(comparator),
-    ...files.value.sort(comparator),
-    ...symlinks.value.sort(comparator),
-    ...fifos.value.sort(comparator),
-    ...charDevs.value.sort(comparator),
-    ...blockDevs.value.sort(comparator),
-    ...sockets.value.sort(comparator),
+    ...openedFolder.value.folders.sort(comparator),
+    ...openedFolder.value.files.sort(comparator),
+    ...openedFolder.value.symlinks.sort(comparator),
+    ...openedFolder.value.fifos.sort(comparator),
+    ...openedFolder.value.charDevs.sort(comparator),
+    ...openedFolder.value.blockDevs.sort(comparator),
+    ...openedFolder.value.sockets.sort(comparator),
 ]);
 
 
