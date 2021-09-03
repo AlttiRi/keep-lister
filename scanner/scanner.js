@@ -3,7 +3,7 @@ import fs from "fs";
 import os from "os";
 import {listFiles, dateToDayDateString, ANSI_BLUE, exists, ANSI_GREEN} from "./util-node.js";
 import {fileURLToPath} from "url";
-import {FilesStructure} from "./files-structure.js";
+import {TreeScanObject} from "./files-structure.js";
 import {Meta} from "./meta.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -36,7 +36,7 @@ function getPathAndName(absolutePath) {
 }
 
 const {scanPath, scanDirName} = getPathAndName(scanFolderAbsolutePath);
-const filesStructure = new FilesStructure({
+const treeScan = new TreeScanObject({
     scanFolderAbsolutePath,
     scanDirName
 });
@@ -130,6 +130,7 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
         try {
             const symContent = await fs.promises.readlink(entry.path);
             const absolutePathTo = path.resolve(entry.path, symContent);
+            /** @type {ScanSymlinkInfo} */
             entry.meta = {
                 pathTo: absolutePathTo,
                 content: symContent, // [unused] the orig content of sym link
@@ -140,7 +141,7 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
         }
     }
 
-    filesStructure.put(entry);
+    treeScan.put(entry);
 
     if (entry.error) {
         meta.errors++;
@@ -156,7 +157,7 @@ meta.logTable();
  */
 
 /** @type {ScanFolder} */
-let result = filesStructure.root;
+let result = treeScan.root;
 /** @type {TreeScanResult} */
 result = {meta, ...result};
 const json = JSON.stringify(result/*, null, " "*/)

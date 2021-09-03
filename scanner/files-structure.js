@@ -23,7 +23,7 @@ import path from "path";
  * @property {ScanError[]} [errors]
  */
 
-export class FilesStructure {
+export class TreeScanObject {
     /**
      * @param {Object} init
      * @param {String} init.scanDirName
