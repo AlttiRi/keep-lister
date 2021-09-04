@@ -51,8 +51,8 @@ export async function isSymLooped(filepath) {
  * An entry of the listing of the content of a directory.
  * @typedef {Object} ListEntry
  * @property {String} path
- * @property {import("fs/promises").Dirent} dirent
- * @property {IOError} error
+ * @property {import("fs/promises").Dirent} [dirent]
+ * @property {IOError} [error]
  */
 
 /**
