@@ -48,7 +48,7 @@ export class Meta {
     }
 
     /** @param {ScanEntryType} type */
-    add(type) {
+    increaseTypeCounter(type) {
         this[`${type}s`]++;
         this.total++;
     }

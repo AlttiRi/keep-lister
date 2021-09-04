@@ -115,7 +115,7 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
     const readdirError = listEntry.error;
     if (!readdirError) {
         type = typeFromDirent(listEntry.dirent);
-        meta.add(type);
+        meta.increaseTypeCounter(type);
     } else {
         type = "folder";
     }
