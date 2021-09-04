@@ -111,15 +111,37 @@ function typeFromDirent(dirent) {
  * @property {ScanEntryStats} [stats]
  **/
 
-async function stats(filepath) {
+async function statInfo(entry) {
     const {
         size,
         mtimeMs
-    } = await fs.promises.stat(filepath);
-    return {
+    } = await fs.promises.stat(entry.path);
+    console.log(entry);
+    entry.stats = {
         size,
         mtime: Math.trunc(mtimeMs)
     };
+    if (entry.type === "folder") {
+        delete entry.stats.size;
+    }
+}
+async function linkInfo(entry) {
+    if (entry.type !== "symlink") {
+        return;
+    }
+    try {
+        const symContent = await fs.promises.readlink(entry.path);
+        const linkLocation = path.dirname(entry.path);
+        const absolutePathTo = path.resolve(linkLocation, symContent);
+        /** @type {ScanSymlinkInfo} */
+        entry.meta = {
+            pathTo: absolutePathTo,
+            content: symContent, // [unused] the orig content of sym link
+        }
+        console.info(entry.path, ANSI_BLUE("->"), absolutePathTo);
+    } catch (e) {
+        entry.error = e;
+    }
 }
 
 /** @param {ListEntry} listEntry */
@@ -136,30 +158,13 @@ async function handleListEntry(listEntry) {
 
     /** @type {ScanEntry} */
     const entry = {
-        ...listEntry,
+        path: listEntry.path,
+        name: listEntry.dirent.name,
         type
     };
 
-    entry.stats = await stats(listEntry.path);
-    // console.log(entry.stats);
-    if (type === "folder") {
-        delete entry.stats.size;
-    }
-
-    if (type === "symlink") {
-        try {
-            const symContent = await fs.promises.readlink(entry.path);
-            const absolutePathTo = path.resolve(entry.path, symContent);
-            /** @type {ScanSymlinkInfo} */
-            entry.meta = {
-                pathTo: absolutePathTo,
-                content: symContent, // [unused] the orig content of sym link
-            }
-            console.info(entry.path, ANSI_BLUE("->"), absolutePathTo);
-        } catch (e) {
-            entry.error = e;
-        }
-    }
+    await linkInfo(entry);
+    await statInfo(entry);
 
     treeScan.put(entry);
 
