@@ -174,6 +174,7 @@ async function handleListEntry(listEntry) {
     /** @type {ScanEntry} */
     const entry = {
         path: listEntry.path,
+        error: listEntry.error,
         type
     };
 
