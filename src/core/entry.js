@@ -9,9 +9,10 @@ export class SimpleEntry {
      * @param {SimpleEntry|null} init.parent
      * @param {ScanEntryType} init.type
      * @param {ScanEntryMeta} [init.meta]
+     * @param {ScanEntryStats} [init.stats]
      * @param {ScanError[]} [init.errors]
      */
-    constructor({name, parent, type, meta, errors}) {
+    constructor({name, parent, type, meta, stats, errors}) {
         /** @type {String} */
         this.name = name;
         /** @type {SimpleEntry|null} */
@@ -22,6 +23,10 @@ export class SimpleEntry {
         if (meta) {
             /** @type {ScanEntryMeta|undefined} */
             this.meta = meta;
+        }
+        if (stats) {
+            /** @type {ScanEntryStats|undefined} */
+            this.stats = stats;
         }
         if (errors) {
             /** @type {ScanError[]|undefined} */
@@ -97,11 +102,16 @@ export class SimpleEntry {
  * @return {SimpleEntry}
  */
 export function parseEntries(rootFolder, parent = null) {
+    /** @type {ScanEntryStats} */
+    const stats = rootFolder.mtime ? {
+        mtime: rootFolder.mtime,
+    } : null;
     const root = new SimpleEntry({
         name: rootFolder.name,
         type: "folder",
         errors: rootFolder.errors,
-        parent
+        parent,
+        stats
     });
     if (rootFolder.folders) {
         rootFolder.folders.forEach(folder => {
@@ -112,12 +122,24 @@ export function parseEntries(rootFolder, parent = null) {
     const simpleTypes = ["file", "fifo", "charDev", "blockDev", "socket"];
     simpleTypes.forEach(type => {
         if (rootFolder[type+"s"]) {
-            rootFolder[type+"s"].forEach(file => {
-                root.addChild(new SimpleEntry({
-                    name: file,
-                    parent: root,
-                    type: type
-                }));
+            rootFolder[type+"s"].forEach(/** @type {SimpleScanEntry|ScanStatEntry} */ file => {
+                if (typeof file === "string") {
+                    root.addChild(new SimpleEntry({
+                        name: file,
+                        parent: root,
+                        type: type
+                    }));
+                } else {
+                    root.addChild(new SimpleEntry({
+                        name: file.name,
+                        parent: root,
+                        type: type,
+                        stats: {
+                            size: file.size,
+                            mtime: file.mtime,
+                        }
+                    }));
+                }
             });
         }
     });
@@ -131,15 +153,22 @@ export function parseEntries(rootFolder, parent = null) {
                 }));
                 return;
             }
-            /** @type {ScanSymlinkInfo|null} */
+            /** @type {ScanSymlinkInfo} */
             const meta = symlink.pathTo ? {
                 pathTo: symlink.pathTo
+            } : null;
+
+            /** @type {ScanEntryStats} */
+            const stats = symlink.mtime ? {
+                size: symlink.size,
+                mtime: symlink.mtime,
             } : null;
             root.addChild(new SimpleEntry({
                 name: symlink.name,
                 parent: root,
                 type: "symlink",
                 meta,
+                stats,
                 errors: symlink.errors
             }));
         });

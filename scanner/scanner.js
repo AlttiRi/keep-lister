@@ -3,7 +3,7 @@ import fs from "fs";
 import os from "os";
 import {listFiles, dateToDayDateString, ANSI_BLUE, exists, ANSI_GREEN} from "./util-node.js";
 import {fileURLToPath} from "url";
-import {TreeScanObject} from "./files-structure.js";
+import {TreeScanObject} from "./tree-scan-object.js";
 import {Meta} from "./meta.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -96,20 +96,34 @@ function typeFromDirent(dirent) {
  * Scan error. Scan result representation of `IOError`.
  * @typedef {IOError} ScanError
  **/
+
+/**
+ * @typedef {Object} ScanEntryStats
+ * @property {number} [size]
+ * @property {number} mtime
+ */
 /**
  * @typedef {Object} ScanEntry
  * @property {string} path
  * @property {ScanEntryType} type
  * @property {ScanError} [error]
  * @property {ScanEntryMeta} [meta]
+ * @property {ScanEntryStats} [stats]
  **/
 
-const startTime = Date.now();
-for await (const /** @type {ListEntry} */ listEntry of listFiles({
-    filepath: scanFolder,
-    recursively: true,
-    directories: true
-})) {
+async function stats(filepath) {
+    const {
+        size,
+        mtimeMs
+    } = await fs.promises.stat(filepath);
+    return {
+        size,
+        mtime: Math.trunc(mtimeMs)
+    };
+}
+
+/** @param {ListEntry} listEntry */
+async function handleListEntry(listEntry) {
     /** @type {ScanEntryType} */
     let type;
     const readdirError = listEntry.error;
@@ -125,6 +139,12 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
         ...listEntry,
         type
     };
+
+    entry.stats = await stats(listEntry.path);
+    // console.log(entry.stats);
+    if (type === "folder") {
+        delete entry.stats.size;
+    }
 
     if (type === "symlink") {
         try {
@@ -147,6 +167,15 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
         meta.errors++;
         console.error(entry.error);
     }
+}
+
+const startTime = Date.now();
+for await (const /** @type {ListEntry} */ listEntry of listFiles({
+    filepath: scanFolder,
+    recursively: true,
+    directories: true
+})) {
+    await handleListEntry(listEntry);
 }
 meta.logTable();
 

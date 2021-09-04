@@ -5,13 +5,19 @@ import path from "path";
  * @typedef {String} SimpleScanEntry
  */
 /**
- * @typedef {String} ScanSymlink
+ * @typedef {Object} ScanStatEntry
+ * @property {String} name
+ * @property {Number} mtime
+ * @property {Number} size
+ */
+/**
+ * @typedef {Object|ScanStatEntry} ScanSymlink
  * @property {String} name
  * @property {String} [pathTo]
  * @property {ScanError[]} [errors]
  */
 /**
- * @typedef {Object} ScanFolder
+ * @typedef {Object|ScanStatEntry} ScanFolder
  * @property {String} name
  * @property {ScanFolder[]} [folders]
  * @property {SimpleScanEntry[]} [files]
@@ -87,6 +93,11 @@ export class TreeScanObject {
         /** @type {ScanFolder} */
         const parentFolder = this.takeFolder(relativeDirname);
 
+        const base = {
+            name: basename,
+            ...entry.stats
+        };
+
         if (entry.type === "folder") {
             if (entry.error) { // on readdir
                 const folder = parentFolder.folders.find(entry => entry.name === basename);
@@ -95,22 +106,21 @@ export class TreeScanObject {
                 return;
             }
             /** @type {ScanFolder} */
-            const folder = {name: basename};
+            const folder = base;
             this.foldersMap.set(relativePath, folder);
             const folders = parentFolder.folders || (parentFolder.folders = []);
             folders.push(folder);
-        } else
-        if (entry.type === "file") {
-            const files = parentFolder.files || (parentFolder.files = []);
-            files.push(basename);
-        } else
+            return;
+        }
+
         if (entry.type === "symlink") {
             const symlinks = parentFolder.symlinks || (parentFolder.symlinks = []);
 
             /** @type {ScanSymlink} */
-            const symlink = {
-                name: basename
-            };
+            const symlink = base;
+            if (entry.stats) {
+                symlink.size = entry.stats.size;
+            }
             if (entry.error) { // on readlink
                 symlink.errors = [entry.error];
             }
@@ -118,22 +128,28 @@ export class TreeScanObject {
                 symlink.pathTo = entry.meta.pathTo;
             }
             symlinks.push(symlink);
+            return;
+        }
+
+        if (entry.type === "file") {
+            const files = parentFolder.files || (parentFolder.files = []);
+            files.push(base);
         } else
         if (entry.type === "fifo") {
             const fifos = parentFolder.fifos || (parentFolder.fifos = []);
-            fifos.push(basename);
+            fifos.push(base);
         } else
         if (entry.type === "charDev") {
             const charDevs = parentFolder.charDevs || (parentFolder.charDevs = []);
-            charDevs.push(basename);
+            charDevs.push(base);
         } else
         if (entry.type === "blockDev") {
             const blockDevs = parentFolder.blockDevs || (parentFolder.blockDevs = []);
-            blockDevs.push(basename);
+            blockDevs.push(base);
         } else
         if (entry.type === "socket") {
             const sockets = parentFolder.sockets || (parentFolder.sockets = []);
-            sockets.push(basename);
+            sockets.push(base);
         }
     }
 }
