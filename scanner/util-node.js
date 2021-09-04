@@ -115,4 +115,7 @@ export async function *listFiles(settings = {}) {
 
 const _ANSI_RESET = "\u001B[0m";
 export const ANSI_BLUE = text => "\u001B[34m" + text + _ANSI_RESET;
+export const ANSI_CYAN = text => "\u001B[36m" + text + _ANSI_RESET;
 export const ANSI_GREEN = text => "\u001B[32m" + text + _ANSI_RESET;
+export const ANSI_GREEN_BOLD = text => "\u001B[1;32m" + text + _ANSI_RESET;
+export const ANSI_RED_BOLD = text => "\u001B[1;31m" + text + _ANSI_RESET;

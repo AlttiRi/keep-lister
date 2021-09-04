@@ -1,7 +1,14 @@
 import path from "path";
 import fs from "fs";
 import os from "os";
-import {listFiles, dateToDayDateString, ANSI_BLUE, exists, ANSI_GREEN} from "./util-node.js";
+import {
+    listFiles,
+    dateToDayDateString,
+    exists,
+    ANSI_GREEN,
+    ANSI_GREEN_BOLD,
+    ANSI_RED_BOLD, ANSI_CYAN
+} from "./util-node.js";
 import {fileURLToPath} from "url";
 import {TreeScanObject} from "./tree-scan-object.js";
 import {Meta} from "./meta.js";
@@ -10,32 +17,30 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-const scanFolder = ".";
-const scanFolderAbsolutePath = path.resolve(scanFolder);
-console.log("Scanning:", ANSI_GREEN(scanFolderAbsolutePath));
+const scanFolderPath = ".";
+const scanFolderAbsolutePath = path.resolve(scanFolderPath);
+
+const chunks = chunkifyPath(scanFolderAbsolutePath);
+const scanPath = chunks.slice(0, -1);
+const scanDirName = chunks[chunks.length - 1];
+
+const scanPathStr = scanPath.join(path.sep).replace("//", "/");
+console.log("Scanning:", ANSI_GREEN(scanPathStr ? scanPathStr + path.sep : "") + ANSI_GREEN_BOLD(scanDirName));
 
 /**
- * @param {string} absolutePath
- * @return {{scanPath: string[], scanDirName: string}}
+ * @param {string} pathStr
+ * @return {string[]}
  */
-function getPathAndName(absolutePath) {
-    const fullPath = absolutePath.split(path.sep).filter(e => e);
-    /** @type {string[]} */
-    const scanPath = fullPath.slice(0, -1);
-    /** @type {string} */
-    let scanDirName = fullPath[fullPath.length - 1];
-    const startsWithSlash = absolutePath.startsWith("/");
-    if (startsWithSlash) { // for linux
-        if (!scanDirName) {
-            scanDirName = "/";
-        } else {
-            scanPath.unshift("/");
-        }
+function chunkifyPath(pathStr) {
+    const _pathStr = path.normalize(pathStr);
+    const pathChunks = _pathStr.split(path.sep).filter(e => e);
+    if (_pathStr.startsWith("/") && path.isAbsolute(_pathStr)) { // for linux
+        pathChunks.unshift("/");
     }
-    return {scanDirName, scanPath};
+    return pathChunks;
 }
 
-const {scanPath, scanDirName} = getPathAndName(scanFolderAbsolutePath);
+
 const treeScan = new TreeScanObject({
     scanFolderAbsolutePath,
     scanDirName
@@ -111,18 +116,25 @@ function typeFromDirent(dirent) {
  * @property {ScanEntryStats} [stats]
  **/
 
-async function statInfo(entry) {
-    const {
-        size,
-        mtimeMs
-    } = await fs.promises.stat(entry.path);
-    console.log(entry);
-    entry.stats = {
-        size,
-        mtime: Math.trunc(mtimeMs)
-    };
-    if (entry.type === "folder") {
-        delete entry.stats.size;
+async function statsInfo(entry) {
+    try {
+        const {
+            size,
+            mtimeMs
+        } = await fs.promises.lstat(entry.path);
+        // console.log(entry);
+        entry.stats = {
+            size,
+            mtime: Math.trunc(mtimeMs)
+        };
+        if (entry.type === "folder") {
+            delete entry.stats.size;
+        }
+    } catch (e) {
+        if (entry.error) {
+            console.log(ANSI_RED_BOLD("overwrite error")); // error after readlink
+        }
+        entry.error = e; // todo use array
     }
 }
 async function linkInfo(entry) {
@@ -138,8 +150,11 @@ async function linkInfo(entry) {
             pathTo: absolutePathTo,
             content: symContent, // [unused] the orig content of sym link
         }
-        console.info(entry.path, ANSI_BLUE("->"), absolutePathTo);
+        console.info(entry.path, ANSI_CYAN("->"), absolutePathTo);
     } catch (e) {
+        if (entry.error) {
+            console.log(ANSI_RED_BOLD("overwrite error"));
+        }
         entry.error = e;
     }
 }
@@ -159,12 +174,11 @@ async function handleListEntry(listEntry) {
     /** @type {ScanEntry} */
     const entry = {
         path: listEntry.path,
-        name: listEntry.dirent.name,
         type
     };
 
     await linkInfo(entry);
-    await statInfo(entry);
+    await statsInfo(entry);
 
     treeScan.put(entry);
 
@@ -176,7 +190,7 @@ async function handleListEntry(listEntry) {
 
 const startTime = Date.now();
 for await (const /** @type {ListEntry} */ listEntry of listFiles({
-    filepath: scanFolder,
+    filepath: scanFolderPath,
     recursively: true,
     directories: true
 })) {

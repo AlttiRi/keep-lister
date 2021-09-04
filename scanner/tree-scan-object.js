@@ -99,14 +99,17 @@ export class TreeScanObject {
         };
 
         if (entry.type === "folder") {
-            if (entry.error) { // on readdir
+            if (entry.error) {
                 const folder = parentFolder.folders.find(entry => entry.name === basename);
-                const folderErrors = folder.errors || (folder.errors = []);
-                folderErrors.push(entry.error);
-                return;
+                if (folder) { // on `readdir`
+                    const folderErrors = folder.errors || (folder.errors = []);
+                    folderErrors.push(entry.error);
+                    return;
+                }
             }
             /** @type {ScanFolder} */
             const folder = base;
+            folder.error = [entry.error]; // on `stat`
             this.foldersMap.set(relativePath, folder);
             const folders = parentFolder.folders || (parentFolder.folders = []);
             folders.push(folder);
