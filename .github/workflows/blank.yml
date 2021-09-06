@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v1
         with:
-          node-version: "15"
+          node-version: "16"
       - uses: actions/checkout@v2
       - name: Info
         run: node -v && pwd && ls -la
