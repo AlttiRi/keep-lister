@@ -59,7 +59,7 @@ const meta = new Meta(scanPath);
  * @param {import("fs/promises").Dirent} dirent
  * @return {ScanEntryType}
  */
-export function typeFromDirent(dirent) {
+function typeFromDirent(dirent) {
     if (dirent.isFile()) {
         return "file";
     }
