@@ -107,7 +107,7 @@ export async function *listFiles(settings = {}) {
     } catch (error) {
         yield {
             /** @type {IOError} */
-            error,
+            error, // `readdir()` error (`scandir` call)
             path: filepath
         }
     }

@@ -1,31 +1,60 @@
 import path from "path";
 import fs from "fs";
 import os from "os";
+import pako from "../node_modules/pako/dist/pako_deflate.min.js";
 import {
-    listFiles,
-    dateToDayDateString,
-    exists,
+    ANSI_CYAN,
     ANSI_GREEN,
     ANSI_GREEN_BOLD,
-    ANSI_RED_BOLD, ANSI_CYAN
+    ANSI_RED_BOLD,
+    dateToDayDateString,
+    exists,
+    listFiles
 } from "./util-node.js";
 import {fileURLToPath} from "url";
-import {TreeScanObject} from "./tree-scan-object.js";
 import {Meta} from "./meta.js";
+import {FlatScanObject} from "./flat-scan-object.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// -------
 
+const doGZip = true;
 const scanFolderPath = ".";
 const scanFolderAbsolutePath = path.resolve(scanFolderPath);
 
-const chunks = chunkifyPath(scanFolderAbsolutePath);
-const scanPath = chunks.slice(0, -1);
-const scanDirName = chunks[chunks.length - 1];
+const pathChunks = chunkifyPath(scanFolderAbsolutePath);
+const scanPath = pathChunks.slice(0, -1);
+const scanDirName = pathChunks[pathChunks.length - 1];
 
 const scanPathStr = scanPath.join(path.sep).replace("//", "/");
 console.log("Scanning:", ANSI_GREEN(scanPathStr ? scanPathStr + path.sep : "") + ANSI_GREEN_BOLD(scanDirName));
+const startTime = Date.now();
+
+
+const meta = new Meta(scanPath);
+const scanObject = new FlatScanObject(await handleListEntry({path: scanFolderAbsolutePath}));
+
+for await (const /** @type {ListEntry} */ listEntry of listFiles({
+    filepath: scanFolderPath,
+    recursively: true,
+    directories: true
+})) {
+    const scanEntry = await handleListEntry(listEntry);
+    meta.increaseErrorCounter(scanEntry);
+    scanObject.add(scanEntry);
+}
+
+
+meta.logTable();
+
+const json = creteJSON(scanObject, meta);
+await saveJSON(json);
+
+console.log("Executing time:\t", (Date.now() - startTime)/1000, "seconds");
+
+// -------
 
 /**
  * @param {string} pathStr
@@ -39,14 +68,6 @@ function chunkifyPath(pathStr) {
     }
     return pathChunks;
 }
-
-
-const treeScan = new TreeScanObject({
-    scanFolderAbsolutePath,
-    scanDirName
-});
-
-const meta = new Meta(scanPath);
 
 /**
  * @typedef {
@@ -88,55 +109,52 @@ function typeFromDirent(dirent) {
     }
 }
 
-/**
- * @typedef {Object} ScanSymlinkInfo
- * @property {string} pathTo
- * @property {string} [content]
- **/
-/**
- * Uses in ScanEntry
- * @typedef {ScanSymlinkInfo} ScanEntryMeta
- **/
+
 /**
  * Scan error. Scan result representation of `IOError`.
  * @typedef {IOError} ScanError
  **/
 
 /**
- * @typedef {Object} ScanEntryStats
- * @property {number} [size]
- * @property {number} mtime
- */
-/**
- * @typedef {Object} ScanEntry
+ * @typedef {Object} ScanEntryBase
  * @property {string} path
  * @property {ScanEntryType} type
  * @property {ScanError} [error]
- * @property {ScanEntryMeta} [meta]
- * @property {ScanEntryStats} [stats]
  **/
 
+/**
+ * @typedef {Object} ScanSymlinkInfo
+ * @property {string} [pathTo]
+ * @property {string} [content]
+ * @property {ScanError} [error]
+ **/
+
+/**
+ * @typedef {Object} ScanStatsInfo
+ * @property {import("fs").Stats} [stats]
+ * @property {ScanError} [error]
+ **/
+
+/**
+ * @typedef {ScanEntryBase} ScanEntry
+ * @property {ScanStatsInfo} statsInfo
+ * @property {ScanSymlinkInfo} linkInfo
+ **/
+
+/** @param {ScanEntryBase} entry
+ * @return {ScanStatsInfo} */
 async function statsInfo(entry) {
     try {
-        const {
-            size,
-            mtimeMs
-        } = await fs.promises.lstat(entry.path);
-        // console.log(entry);
-        entry.stats = {
-            size,
-            mtime: Math.trunc(mtimeMs)
-        };
-        if (entry.type === "folder") {
-            delete entry.stats.size;
-        }
-    } catch (e) {
-        if (entry.error) {
-            console.log(ANSI_RED_BOLD("overwrite error")); // error after readlink
-        }
-        entry.error = e; // todo use array
+        /** @type {fs.Stats} */
+        const stats = await fs.promises.lstat(entry.path);
+        return {stats};
+    } catch (error) {
+        console.log(ANSI_RED_BOLD("[stat]: " + JSON.stringify(error)));
+        return {error};
     }
 }
+/** @param {ScanEntryBase} entry
+ * @return {ScanSymlinkInfo} */
 async function linkInfo(entry) {
     if (entry.type !== "symlink") {
         return;
@@ -145,106 +163,95 @@ async function linkInfo(entry) {
         const symContent = await fs.promises.readlink(entry.path);
         const linkLocation = path.dirname(entry.path);
         const absolutePathTo = path.resolve(linkLocation, symContent);
-        /** @type {ScanSymlinkInfo} */
-        entry.meta = {
-            pathTo: absolutePathTo,
-            content: symContent, // [unused] the orig content of sym link
-        }
         console.info(entry.path, ANSI_CYAN("->"), absolutePathTo);
-    } catch (e) {
-        if (entry.error) {
-            console.log(ANSI_RED_BOLD("overwrite error"));
+        return {
+            pathTo: absolutePathTo,
+            content: symContent,
         }
-        entry.error = e;
+    } catch (error) {
+        console.log(ANSI_RED_BOLD("[readlink]: " + JSON.stringify(error)));
+        return {error};
     }
+}
+
+/** @param {ListEntry} listEntry
+ *  @return {ScanEntryBase} */
+function createScanEntryBase(listEntry) {
+    const {
+        dirent,
+        path,
+        error: readdirError
+    } = listEntry;
+
+    /** @type {ScanEntryType} */
+    const type = dirent ? typeFromDirent(dirent) : "folder"; // "folder" for `readdir` error and for root
+    const entry = {
+        path,
+        type
+    };
+    if (readdirError) {
+        entry.error = readdirError;
+        console.log(ANSI_RED_BOLD("[readdir]: " + JSON.stringify(entry.error)));
+    } else {
+        meta.increaseTypeCounter(type);
+    }
+
+    return entry;
 }
 
 /** @param {ListEntry} listEntry */
 async function handleListEntry(listEntry) {
-    /** @type {ScanEntryType} */
-    let type;
-    const readdirError = listEntry.error;
-    if (!readdirError) {
-        type = typeFromDirent(listEntry.dirent);
-        meta.increaseTypeCounter(type);
-    } else {
-        type = "folder";
-    }
-
     /** @type {ScanEntry} */
-    const entry = {
-        path: listEntry.path,
-        error: listEntry.error,
-        type
-    };
+    const scanEntry = createScanEntryBase(listEntry);
+    if (scanEntry.error) { // `readdir` error
+        return scanEntry;
+    }
+    scanEntry.statsInfo = await statsInfo(scanEntry);
+    if (scanEntry.type === "symlink") {
+        scanEntry.linkInfo = await linkInfo(scanEntry);
+    }
+    return scanEntry;
+}
 
-    await linkInfo(entry);
-    await statsInfo(entry);
+function creteJSON(scanObject, meta) {
+    const scanEntries = scanObject.values;
+    return  `[\n` +
+            `${JSON.stringify(meta, null, " ")}` +
+            `,\n\n` +
+            `${scanEntries.map(e => JSON.stringify(e)).join(",\n")}` +
+            `\n]`;
+}
+async function saveJSON(json) {
+    const filename =
+        "[.dir-scan]" +
+        "[" + scanFolderAbsolutePath.replaceAll(path.sep, "/") + "]" +
+        " " + dateToDayDateString(new Date(), false);
+    const ext = doGZip ? ".json.gz" : ".json";
+    const filenameEscaped = filename
+        // .replaceAll("/", "⧸") .replaceAll(":", "：").replaceAll("#", "⋕")
+        .replaceAll(/[/:#]/g, "~");
 
-    treeScan.put(entry);
 
-    if (entry.error) {
-        meta.errors++;
-        console.error(entry.error);
+    const resultFilename = filenameEscaped + ext;
+    const gzippedJson = doGZip ? pako.gzip(json) : json;
+
+    try {
+        let saveLocation;
+        const downloads = path.join(os.homedir(), "Downloads");
+
+        if (await exists(downloads)) {
+            saveLocation = downloads;
+        } else {
+            console.log("Download folder is not detected.");
+            saveLocation = __dirname; // near the .mjs file
+            // process.cwd();
+        }
+        console.log("Writing to:\t", ANSI_GREEN(saveLocation));
+        const fullPath = path.join(saveLocation, resultFilename);
+        fs.writeFileSync(fullPath, gzippedJson);
+        console.log("Result file:\t", ANSI_GREEN(resultFilename));
+    } catch (e) {
+        console.log("Write error", e);
+        throw e;
     }
 }
-
-const startTime = Date.now();
-for await (const /** @type {ListEntry} */ listEntry of listFiles({
-    filepath: scanFolderPath,
-    recursively: true,
-    directories: true
-})) {
-    await handleListEntry(listEntry);
-}
-meta.logTable();
-
-/**
- * The scan result as one object.
- * @typedef {ScanFolder} TreeScanResult
- * @property {ScanMeta} meta
- */
-
-/** @type {ScanFolder} */
-let result = treeScan.root;
-/** @type {TreeScanResult} */
-result = {meta, ...result};
-const json = JSON.stringify(result/*, null, " "*/)
-    .replaceAll(  "\"name\":\"", "\n\"name\":\""); // to simplify parsing for Notepad++
-
-function scanFilename() {
-    return [...scanPath, scanDirName]
-        .join("/") // no need to use `path.sep`
-        .replace("//", "/"); // linux root folder
-}
-
-const filename =
-    "[.dir-scan]" +
-    "[" + scanFilename() + "]" +
-    " " + dateToDayDateString(new Date(), false);
-const filenameEscaped = filename
-    // .replaceAll("/", "⧸")
-    // .replaceAll(":", "：")
-    // .replaceAll("#", "⋕")
-    .replaceAll(/[/:#]/g, "~");
-try {
-    let saveLocation;
-    const downloads = path.join(os.homedir(), "Downloads");
-
-    if (await exists(downloads)) {
-        saveLocation = downloads;
-    } else {
-        console.log("Download folder is not detected.");
-        saveLocation = __dirname; // near the .mjs file
-        // process.cwd();
-    }
-    console.log("Writing to:\t", ANSI_GREEN(saveLocation));
-    const fullPath = path.join(saveLocation, filenameEscaped + ".json");
-    fs.writeFileSync(fullPath, json);
-    console.log("Result file:\t", ANSI_GREEN(filenameEscaped + ".json"));
-} catch (e) {
-    console.log("Write error", e);
-    throw e;
-}
-
-console.log("Executing time:\t", (Date.now() - startTime)/1000, "seconds");

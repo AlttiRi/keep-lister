@@ -53,6 +53,12 @@ export class Meta {
         this.total++;
     }
 
+    /** @param {ScanEntry} scanEntry */
+    increaseErrorCounter(scanEntry) {
+        // this.errors += (scanEntry.error && 1 || 0) + (scanEntry.link?.error && 1 || 0) + (scanEntry.stats?.error && 1 || 0);
+        this.errors += [scanEntry.error, scanEntry.link?.error, scanEntry.stats?.error].filter(e => e).length;
+    }
+
     logTable() {
         const {files, folders, symlinks} = this;
         const {total, errors} = this;
