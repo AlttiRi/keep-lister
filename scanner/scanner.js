@@ -224,6 +224,8 @@ async function handleListEntry(listEntry) {
 /**
  *
  * Meta + SerializableScanEntry's on each line
+ * The root folder should be the first and with id=0, pid=null.
+ *
  * @param {Meta} meta
  * @param {SerializableScanEntry[]} sEntries
  * @return {string}

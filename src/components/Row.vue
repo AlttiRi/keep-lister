@@ -32,7 +32,7 @@ const title = computed(() => {
     return JSON.stringify(entry.value.errors[0], null, " ");
   }
   if (entry.value.type === "symlink") {
-    return entry.value.meta?.pathTo;
+    return entry.value.pathTo;
   }
 });
 

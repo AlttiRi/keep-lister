@@ -1,6 +1,6 @@
 import {computed, markRaw, ref, unref, watch} from "vue";
 import {clearSearch} from "./search.js";
-import {folderDummy, parseEntries} from "./entry.js";
+import {folderDummy, parseFlatScan} from "./entry.js";
 import {dateToDayDateString} from "../util.js";
 import {addMessage} from "./debug.js";
 
@@ -9,12 +9,18 @@ import {addMessage} from "./debug.js";
 export const meta = ref(null);
 /** @type {import("vue").Ref<SimpleEntry>} */
 const json = ref(null);
-/** @param {TreeScanResult} object */
-export function setJson(object) {
-    meta.value = markRaw(object.meta);
+/**
+ * @see FlatScanResult
+ * @param {Object[]} flatScan */
+export function setJson(flatScan) {
+    /** @type {ScanMeta} */
+    const scanMeta = flatScan[0];
+    /** @type {SerializableScanEntry[]} */
+    const sEntries = flatScan.slice(1);
 
+    meta.value = markRaw(scanMeta);
     console.time("parseEntries");
-    const result = parseEntries(object);
+    const result = parseFlatScan(sEntries);
     console.timeEnd("parseEntries");
 
     json.value = markRaw(result);

@@ -1,7 +1,7 @@
 <template>
   <div class="tabs">
     <FileSelect class="tab"/>
-    <div class="tab">Tab 1</div>
+    <div class="tab"></div>
   </div>
 </template>
 

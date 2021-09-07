@@ -4,33 +4,42 @@ export const entryTypes = ["folder", "file", "symlink", "fifo", "charDev", "bloc
 export class SimpleEntry {
     // [Symbol.toStringTag] = "SimpleEntry"; // Disables reactivity, BTW.
     /**
-     * @param {Object} init
-     * @param {String} init.name
-     * @param {SimpleEntry|null} init.parent
-     * @param {ScanEntryType} init.type
-     * @param {ScanEntryMeta} [init.meta]
-     * @param {ScanEntryStats} [init.stats]
-     * @param {ScanError[]} [init.errors]
+     * @param {SerializableScanEntry} entry
+     * @param {SimpleEntry|null} parent
      */
-    constructor({name, parent, type, meta, stats, errors}) {
+    constructor(entry, parent) {
         /** @type {String} */
-        this.name = name;
+        this.name = entry.name;
         /** @type {SimpleEntry|null} */
         this.parent = parent;
         /** @type {ScanEntryType} */
-        this.type = type;
+        this.type = entry.type;
 
-        if (meta) {
-            /** @type {ScanEntryMeta|undefined} */
-            this.meta = meta;
+        if (entry.size) {
+            /** @type {Number|undefined} */
+            this._size = entry.size;
         }
-        if (stats) {
-            /** @type {ScanEntryStats|undefined} */
-            this.stats = stats;
+        if (entry.mtime) {
+            /** @type {Number|undefined} */
+            this.mtime = entry.mtime;
         }
-        if (errors) {
+        if (entry.btime) {
+            /** @type {Number|undefined} */
+            this.btime = entry.btime;
+        }
+
+        if (entry.errors) {
             /** @type {ScanError[]|undefined} */
-            this.errors = errors;
+            this.errors = entry.errors;
+        }
+
+        if (entry.pathTo) {
+            /** @type {String|undefined} */
+            this.pathTo = entry.pathTo;
+        }
+        if (entry.content) {
+            /** @type {String|undefined} */
+            this.content = entry.content;
         }
     }
     /** @param {SimpleEntry} entry */
@@ -97,88 +106,29 @@ export class SimpleEntry {
 }
 
 /**
- * @param {ScanFolder} rootFolder
- * @param {SimpleEntry|null} parent
+ * @param {SerializableScanEntry[]} sEntries
  * @return {SimpleEntry}
- */
-export function parseEntries(rootFolder, parent = null) {
-    /** @type {ScanEntryStats} */
-    const stats = rootFolder.mtime ? {
-        mtime: rootFolder.mtime,
-    } : null;
-    const root = new SimpleEntry({
-        name: rootFolder.name,
-        type: "folder",
-        errors: rootFolder.errors,
-        parent,
-        stats
-    });
-    if (rootFolder.folders) {
-        rootFolder.folders.forEach(folder => {
-            root.addChild(parseEntries(folder, root));
-        });
-    }
-    /** @type {ScanEntryType[]} */
-    const simpleTypes = ["file", "fifo", "charDev", "blockDev", "socket"];
-    simpleTypes.forEach(type => {
-        if (rootFolder[type+"s"]) {
-            rootFolder[type+"s"].forEach(/** @type {SimpleScanEntry|ScanStatEntry} */ file => {
-                if (typeof file === "string") {
-                    root.addChild(new SimpleEntry({
-                        name: file,
-                        parent: root,
-                        type: type
-                    }));
-                } else {
-                    root.addChild(new SimpleEntry({
-                        name: file.name,
-                        parent: root,
-                        type: type,
-                        stats: {
-                            size: file.size,
-                            mtime: file.mtime,
-                        }
-                    }));
-                }
-            });
-        }
-    });
-    if (rootFolder.symlinks) {
-        rootFolder.symlinks.forEach(symlink => {
-            if (typeof symlink === "string") { // for old scans
-                root.addChild(new SimpleEntry({
-                    name: symlink,
-                    parent: root,
-                    type: "symlink"
-                }));
-                return;
-            }
-            /** @type {ScanSymlinkInfo} */
-            const meta = symlink.pathTo ? {
-                pathTo: symlink.pathTo
-            } : null;
+ * */
+export function parseFlatScan(sEntries) {
+    /** @type {Map<Number, SimpleEntry>} */
+    const map = new Map();
 
-            /** @type {ScanEntryStats} */
-            const stats = symlink.mtime ? {
-                size: symlink.size,
-                mtime: symlink.mtime,
-            } : null;
-            root.addChild(new SimpleEntry({
-                name: symlink.name,
-                parent: root,
-                type: "symlink",
-                meta,
-                stats,
-                errors: symlink.errors
-            }));
-        });
+    for (const entry of sEntries) {
+        /** @type {SimpleEntry|null}*/
+        const parent = map.get(entry.pid) ?? null;
+        const simpleEntry = new SimpleEntry(entry, parent);
+        if (entry.type === "folder") {
+            map.set(entry.id, simpleEntry);
+        }
+        parent?.addChild(simpleEntry);
     }
-    return root;
+    // console.log(map);
+    return map.get(0);
 }
 
 /** @type {SimpleEntry} */
 export const folderDummy = new SimpleEntry({
+    type: "folder",
     name: "",
-    parent: null,
-    type: "folder"
-});
+    pid: null,
+}, null);
