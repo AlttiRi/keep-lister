@@ -20,7 +20,7 @@ const __dirname = path.dirname(__filename);
 
 // -------
 
-const doGZip = true;
+const doGZip = false;
 const scanFolderPath = ".";
 const scanFolderAbsolutePath = path.resolve(scanFolderPath);
 
@@ -48,8 +48,7 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
 
 
 meta.logTable();
-
-const json = creteJSON(scanObject, meta);
+const json = createJSON(meta, scanObject.values);
 await saveJSON(json);
 
 console.log("Executing time:\t", (Date.now() - startTime)/1000, "seconds");
@@ -193,7 +192,9 @@ function createScanEntryBase(listEntry) {
         entry.error = readdirError;
         console.log(ANSI_RED_BOLD("[readdir]: " + JSON.stringify(entry.error)));
     } else {
-        meta.increaseTypeCounter(type);
+        if (entry.path !== scanFolderAbsolutePath) { // in order do not count the scan folder
+            meta.increaseTypeCounter(type);
+        }
     }
 
     return entry;
@@ -213,13 +214,26 @@ async function handleListEntry(listEntry) {
     return scanEntry;
 }
 
-function creteJSON(scanObject, meta) {
-    const scanEntries = scanObject.values;
-    return  `[\n` +
-            `${JSON.stringify(meta, null, " ")}` +
-            `,\n\n` +
-            `${scanEntries.map(e => JSON.stringify(e)).join(",\n")}` +
-            `\n]`;
+/** @typedef {ScanMeta|SerializableScanEntry} FlatScanResultEntry */
+
+/**
+ *  The first element is ScanMeta, others — SerializableScanEntry.
+ *  @typedef {FlatScanResultEntry[]} FlatScanResult
+ **/
+
+/**
+ *
+ * Meta + SerializableScanEntry's on each line
+ * @param {Meta} meta
+ * @param {SerializableScanEntry[]} sEntries
+ * @return {string}
+ */
+function createJSON(meta, sEntries) {
+    return  "[\n" +
+            meta.toFormattedJSON() + ",\n" +
+            "\n" +
+            sEntries.map(e => JSON.stringify(e)).join(",\n") + "\n" +
+            "]";
 }
 async function saveJSON(json) {
     const filename =

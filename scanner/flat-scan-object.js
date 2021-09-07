@@ -82,8 +82,8 @@ export class FlatScanObject {
 
         /** @type {SerializableScanEntry} */
         const sEntry = {
-            name,
             type,
+            name,
             pid: parentFolder?.id, // undefined only for root
         }
 

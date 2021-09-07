@@ -4,20 +4,19 @@ import os from "os";
 /**
  * Scan result representation of Meta class.
  * @typedef {Object} ScanMeta
- * @property {String[]} [path]
- * @property {String} [separator]
- * @property {Number} [scanDate]
- * @property {String} [platform]
- * @property {Number} [files]
- * @property {Number} [folders]
- * @property {Number} [symlinks]
- * @property {Number} [fifos]
- * @property {Number} [charDevs]
- * @property {Number} [blockDevs]
- * @property {Number} [sockets]
- * @property {Number} [unknowns]
- * @property {Number} [total]
- * @property {Number} [errors]
+ * @property {String[]} path
+ * @property {String} separator
+ * @property {String} scanDate
+ * @property {String} platform
+ * @property {Number} files
+ * @property {Number} folders
+ * @property {Number} symlinks
+ * @property {Number} fifos
+ * @property {Number} charDevs
+ * @property {Number} blockDevs
+ * @property {Number} sockets
+ * @property {Number} total
+ * @property {Number} errors
  */
 
 
@@ -28,15 +27,14 @@ export class Meta {
         this.path = scanPath;
         /** @type {String} */
         this.separator = path.sep;
-        /** @type {Number} */
-        this.scanDate = Date.now();
+        /** @type {String} */
+        this.scanDate = new Date().toISOString();
         /** @type {String} */
         this.platform = os.platform();
 
         this.files = 0;
         this.folders = 0;
         this.symlinks = 0;
-        this.errors = 0;
 
         // For Unix-like OS
         this.fifos = 0;
@@ -45,6 +43,7 @@ export class Meta {
         this.sockets = 0;
 
         this.total = 0;
+        this.errors = 0;
     }
 
     /** @param {ScanEntryType} type */
@@ -55,8 +54,24 @@ export class Meta {
 
     /** @param {ScanEntry} scanEntry */
     increaseErrorCounter(scanEntry) {
-        // this.errors += (scanEntry.error && 1 || 0) + (scanEntry.link?.error && 1 || 0) + (scanEntry.stats?.error && 1 || 0);
-        this.errors += [scanEntry.error, scanEntry.link?.error, scanEntry.stats?.error].filter(e => e).length;
+        this.errors += [scanEntry.error, scanEntry.linkInfo?.error, scanEntry.statsInfo?.error].filter(e => e).length;
+    }
+
+    /*
+     *--- Converts multiline JSON array:
+     * "path": [
+     *  "C:",
+     *  "Downloads"
+     * ],
+     *--- to one line:
+     * "path": ["C:", "Downloads"],
+     *---
+     */
+    toFormattedJSON() {
+        return JSON.stringify(this, null, " ")
+            .replace("[\n  ", "[")
+            .replaceAll(",\n  ", ", ")
+            .replace("\n ],", "],");
     }
 
     logTable() {
