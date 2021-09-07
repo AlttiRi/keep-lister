@@ -76,3 +76,17 @@ export function structuredClone(object) {
         port2.postMessage(object);
     });
 }
+
+export function appendScript(src, integrity) {
+    return new Promise(resolve => {
+        const script = document.createElement("script");
+        script.onload = resolve;
+        script.src = src;
+        script.setAttribute("async", "");
+        if (integrity) {
+            script.integrity = integrity;
+            script.setAttribute("crossorigin", "anonymous");
+        }
+        document.querySelector("body").append(script);
+    });
+}

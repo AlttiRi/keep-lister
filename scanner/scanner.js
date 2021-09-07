@@ -20,7 +20,7 @@ const __dirname = path.dirname(__filename);
 
 // -------
 
-const doGZip = false;
+const doGZip = true;
 const scanFolderPath = ".";
 const scanFolderAbsolutePath = path.resolve(scanFolderPath);
 
