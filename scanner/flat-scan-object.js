@@ -26,9 +26,8 @@ export class FlatScanObject {
     map = new Map();
 
     /** @type {ScanEntry} */
-    constructor(rootEntry) {
+    constructor(rootEntry, name) {
         this.rootPath = rootEntry.path;
-        const name = path.basename(rootEntry.path);
 
         const sEntry = this.createSerializableEntry(rootEntry);
         sEntry.name = name;

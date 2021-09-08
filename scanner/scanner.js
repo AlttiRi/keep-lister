@@ -34,7 +34,9 @@ const startTime = Date.now();
 
 
 const meta = new Meta(scanPath);
-const scanObject = new FlatScanObject(await handleListEntry({path: scanFolderAbsolutePath}));
+/** @type {ScanEntry} */
+const rootEntry = await handleListEntry({path: scanFolderAbsolutePath});
+const scanObject = new FlatScanObject(rootEntry, scanDirName);
 
 for await (const /** @type {ListEntry} */ listEntry of listFiles({
     filepath: scanFolderPath,
@@ -200,7 +202,8 @@ function createScanEntryBase(listEntry) {
     return entry;
 }
 
-/** @param {ListEntry} listEntry */
+/** @param {ListEntry} listEntry
+ * @return {ScanEntry} */
 async function handleListEntry(listEntry) {
     /** @type {ScanEntry} */
     const scanEntry = createScanEntryBase(listEntry);
