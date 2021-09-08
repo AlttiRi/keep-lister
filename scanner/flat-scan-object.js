@@ -95,7 +95,7 @@ export class FlatScanObject {
 
                 sEntry.mtime = Math.trunc(stats.mtimeMs);
                 sEntry.btime = Math.trunc(stats.birthtimeMs);
-                if (type !== "folder") {
+                if (stats.size) { // do not store size for folders and empty files
                     sEntry.size = stats.size;
                 }
             }

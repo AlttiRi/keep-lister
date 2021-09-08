@@ -51,6 +51,13 @@ export class SimpleEntry {
         this.children.push(entry);
     }
 
+    get size() {
+        if (this.type === "folder") {
+            return -0; // todo
+        }
+        return this._size || 0;
+    }
+
     /** @return {SimpleEntry[]} */
     get folders() {
         return this.children?.filter(e => e.type === "folder") || [];
