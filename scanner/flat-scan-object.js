@@ -33,7 +33,6 @@ export class FlatScanObject {
 
         const sEntry = this.createSerializableEntry(rootEntry);
         sEntry.name = name;
-        sEntry.id = this.id++;
         sEntry.pid = null;
         this.foldersMap.set(".", sEntry)
         this.values.push(sEntry);
@@ -50,7 +49,6 @@ export class FlatScanObject {
 
         const sEntry = this.createSerializableEntry(entry);
         if (sEntry.type === "folder") {
-            sEntry.id = this.id++;
             this.foldersMap.set(relativePath, sEntry);
         }
         this.values.push(sEntry);
@@ -85,6 +83,10 @@ export class FlatScanObject {
             type,
             name,
             pid: parentFolder?.id, // undefined only for root
+        }
+
+        if (sEntry.type === "folder") {
+            sEntry.id = this.id++;
         }
 
         if (statsInfo) {
