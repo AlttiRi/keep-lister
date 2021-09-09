@@ -116,6 +116,12 @@ export class FlatScanObject {
                     }
                     const hid = this.hardlinkMap.get(key);
                     sEntry.hid = hid;
+
+                    // linux madness debug
+                    const nLinks = Number(hid.split(":")[1]); // at the first time
+                    if (nLinks !== stats.nlink) {
+                        console.log(`[nlink-count]:`, stats.nlink, entry.path);
+                    }
                 }
             }
         }

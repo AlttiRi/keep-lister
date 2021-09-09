@@ -61,6 +61,7 @@ await saveJSON(json);
 
 console.log("Executing time:\t", (Date.now() - startTime)/1000, "seconds");
 
+debugLinuxHID();
 // -------
 
 /**
@@ -220,6 +221,7 @@ async function handleListEntry(listEntry) {
     if (scanEntry.type === "symlink") {
         scanEntry.linkInfo = await linkInfo(scanEntry);
     }
+    // debugLinuxStats(scanEntry);
     return scanEntry;
 }
 
@@ -279,4 +281,32 @@ async function saveJSON(json) {
         console.log("Write error", e);
         throw e;
     }
+}
+
+// ---
+/** @param {ScanEntry} scanEntry*/
+function debugLinuxStats(scanEntry) {
+    if (scanEntry.statsInfo?.stats) {
+        const {stats} = scanEntry.statsInfo;
+        if (stats.nlink > 1) {
+            if (scanEntry.type === "folder") {
+                console.log(scanEntry.path);
+                console.log(stats);
+            }
+        }
+    }
+}
+function debugLinuxHID() {
+    const map = new Map();
+    scanEntries.forEach(e => {
+        if (e.type === "folder" && e.hid) {
+            map.set(e.hid, (map.get(e.hid) || 0) + 1);
+        }
+    });
+    for (const [k, v] of map.entries()) {
+        if (v > 1) {
+            console.log(k, " - ", v);
+        }
+    }
+    console.log("total:", map.size);
 }
