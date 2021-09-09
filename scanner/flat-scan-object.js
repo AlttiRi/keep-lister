@@ -5,27 +5,34 @@ import path from "path";
  * @property {String} name
  * @property {ScanEntryType} type
  *
- * @property {Number} [id]
- * @property {Number|null} pid
+ * @property {Number} [id] - only for folders
+ * @property {String} [hid] - "uniqueID:hardlinksCount" (some hardlinks can be out of the scan)
+ * @property {Number|null} pid - parent's ID
  *
  * @property {ScanError[]} [errors]
  *
- * @property {String} [pathTo]
- * @property {String} [content]
+ * @property {String} [pathTo] - absolute path where the link goes
+ * @property {String} [content] - the original text content
  *
- * @property {number} [mtime]
- * @property {number} [btime]
+ * @property {number} [mtime] - modification time
+ * @property {number} [btime] - creation time (crtime)
  * @property {number} [size]
  *
  **/
 
 export class FlatScanObject {
+    /* Incremental IDs used in entries */
     id = 0;
+    hid = 0; // hardlink id
+
     /** @type {SerializableScanEntry[]} */
     values = [];
     /** rel path to folder
      * @type {Map<String, SerializableScanEntry>} */
     foldersMap = new Map();
+    /** "dev:inode" to "hid:nlink"
+     * @type {Map<String, String>} */
+    hardlinkMap = new Map();
 
     /** @type {ScanEntry} */
     constructor(rootEntry, name) {
@@ -100,6 +107,15 @@ export class FlatScanObject {
                 sEntry.btime = Math.trunc(stats.birthtimeMs);
                 if (stats.size) { // do not store size for folders and empty files
                     sEntry.size = stats.size;
+                }
+                if (stats.nlink > 1) {
+                    const key = `${stats.dev}:${stats.ino}`;
+                    if (!this.hardlinkMap.has(key)) {
+                        const hid = `${this.hid++}:${stats.nlink}`;
+                        this.hardlinkMap.set(key, hid);
+                    }
+                    const hid = this.hardlinkMap.get(key);
+                    sEntry.hid = hid;
                 }
             }
         }

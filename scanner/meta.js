@@ -17,10 +17,16 @@ import os from "os";
  * @property {Number} sockets
  * @property {Number} total
  * @property {Number} errors
+ * @property {Number} mHardLinks
+ * @property {Number} mHardLinksTotal
  */
 
 
 export class Meta {
+    /** inode to count
+     * @type {Map<Number, Number>} */
+    hardlinkMap = new Map();
+
     /** @param {String[]} scanPath */
     constructor(scanPath) {
         /** @type {String[]} */
@@ -44,6 +50,36 @@ export class Meta {
 
         this.total = 0;
         this.errors = 0;
+
+        /** @type {number} */
+        this.mHardLinks = 0;      // count of unique files with nlink > 1
+        /** @type {number} */
+        this.mHardLinksTotal = 0; //  total count of files with nlink > 1
+    }
+
+    finalizeHardlinkInfo() {
+        const inodeCount = this.hardlinkMap.size;
+        if (inodeCount) {
+            /** @type {number} */
+            let hardlinks = 0;
+            for (const [inode, count] of this.hardlinkMap.entries()) {
+                hardlinks += count;
+            }
+            this.mHardLinks = inodeCount;
+            this.mHardLinksTotal = hardlinks;
+        }
+        delete this.hardlinkMap;
+    }
+
+    /** @param {ScanEntry} scanEntry */
+    handleStats(scanEntry) {
+        if (scanEntry.statsInfo?.stats) {
+            const {stats} = scanEntry.statsInfo;
+            if (stats.nlink > 1) {
+                const count = this.hardlinkMap.get(stats.ino) || 0;
+                this.hardlinkMap.set(stats.ino, count + 1);
+            }
+        }
     }
 
     /** @param {ScanEntryType} type */
@@ -77,11 +113,13 @@ export class Meta {
     logTable() {
         const {files, folders, symlinks} = this;
         const {total, errors} = this;
+        const {mHardLinksTotal, mHardLinks} = this;
+        const mHardlinks = `${mHardLinksTotal}(${mHardLinks})`;
         if (this.platform === "win32") {
-            console.table({files, folders, symlinks, total, errors});
+            console.table({files, folders, symlinks, total, errors, mHardlinks});
         } else {
             const {fifos, sockets, charDevs, blockDevs} = this;
-            console.table({files, folders, symlinks, fifos, sockets, charDevs, blockDevs, total, errors});
+            console.table({files, folders, symlinks, fifos, sockets, charDevs, blockDevs, total, errors, mHardlinks});
         }
     }
 }

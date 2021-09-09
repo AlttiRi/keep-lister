@@ -47,10 +47,11 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
 }, false)) {
     const scanEntry = await handleListEntry(listEntry);
     meta.increaseErrorCounter(scanEntry);
+    meta.handleStats(scanEntry);
     scanObject.add(scanEntry);
 }
 
-
+meta.finalizeHardlinkInfo();
 meta.logTable();
 
 /** @type {SerializableScanEntry[]} */
