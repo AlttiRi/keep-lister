@@ -50,6 +50,14 @@ export class SimpleEntry {
         }
         this.children.push(entry);
     }
+    /** @param {SimpleEntry[]} entries
+     *  @param {Number} total */
+    addHardlinks(entries, total) {
+        /** @type {SimpleEntry[]|undefined} */
+        this.hadrlinks = entries;
+        /** @type {Number|undefined} */
+        this.hadrlinksTotal = total;
+    }
 
     get size() {
         if (this.type === "folder") {
@@ -119,7 +127,10 @@ export class SimpleEntry {
 export function parseFlatScan(sEntries) {
     /** @type {Map<Number, SimpleEntry>} */
     const map = new Map();
+    /** @type {Map<String, SimpleEntry[]>} */
+    const hidMap = new Map();
 
+    const rootId = 0;
     for (const entry of sEntries) {
         /** @type {SimpleEntry|null}*/
         const parent = map.get(entry.pid) ?? null;
@@ -128,9 +139,20 @@ export function parseFlatScan(sEntries) {
             map.set(entry.id, simpleEntry);
         }
         parent?.addChild(simpleEntry);
+        if (entry.hid) {
+            const array = hidMap.get(entry.hid) || [];
+            hidMap.set(entry.hid, [...array, simpleEntry]);
+        }
     }
-    // console.log(map);
-    return map.get(0);
+    console.log(hidMap);
+    for (const [hid, simpleEntries] of hidMap.entries()) {
+        /** @type {Number}*/
+        const totalLinks = Number(hid.split(":")[1]);
+        simpleEntries.forEach(e => {
+            e.addHardlinks(simpleEntries, totalLinks);
+        });
+    }
+    return map.get(rootId);
 }
 
 /** @type {SimpleEntry} */
