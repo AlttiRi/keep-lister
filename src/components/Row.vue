@@ -13,7 +13,7 @@
 
 <script setup>
 import {toRefs, computed} from "vue";
-import {openFolder, separator} from "../core/folders.js";
+import {meta, openFolder, separator} from "../core/folders.js";
 import {isImage, isVideo} from "../util.js";
 
 const props = defineProps(["entry"]);
@@ -66,11 +66,11 @@ function onClick(event) {
 function onMousedown(event) {
   const MIDDLE_BUTTON = 1;
   const RIGHT_BUTTON = 2;
-  if (event.button === MIDDLE_BUTTON && entry.value.type === "folder") {
+  if (event.button === MIDDLE_BUTTON) {
     event.preventDefault();
     console.log(
         entry.value,
-        entry.value.path.map(e => e.name).join(separator.value).replace("//", "/")
+        [...meta.value.path,...entry.value.path.map(e => e.name)].join(separator.value).replace("//", "/")
     );
   }
 }
