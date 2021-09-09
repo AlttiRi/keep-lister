@@ -23,7 +23,9 @@ export class FlatScanObject {
     id = 0;
     /** @type {SerializableScanEntry[]} */
     values = [];
-    map = new Map();
+    /** rel path to folder
+     * @type {Map<String, SerializableScanEntry>} */
+    foldersMap = new Map();
 
     /** @type {ScanEntry} */
     constructor(rootEntry, name) {
@@ -33,7 +35,7 @@ export class FlatScanObject {
         sEntry.name = name;
         sEntry.id = this.id++;
         sEntry.pid = null;
-        this.map.set(".", sEntry)
+        this.foldersMap.set(".", sEntry)
         this.values.push(sEntry);
     }
 
@@ -41,8 +43,7 @@ export class FlatScanObject {
     add(entry) {
         const {relativePath} = this.parsePath(entry);
         if (entry.error) { // `readdir` error (scandir)
-            // const sEntry = this.values.find(entry => entry.name === name && parentFolder.id === entry.pid);
-            const sEntry = this.map.get(relativePath);
+            const sEntry = this.foldersMap.get(relativePath);
             (sEntry.errors || (sEntry.errors = [])).push(entry.error);
             return sEntry;
         }
@@ -50,7 +51,7 @@ export class FlatScanObject {
         const sEntry = this.createSerializableEntry(entry);
         if (sEntry.type === "folder") {
             sEntry.id = this.id++;
-            this.map.set(relativePath, sEntry);
+            this.foldersMap.set(relativePath, sEntry);
         }
         this.values.push(sEntry);
         return sEntry;
@@ -65,7 +66,7 @@ export class FlatScanObject {
         const relativeDirname = path.dirname(relativePath); // "." for files in the scan folder
         const name = path.basename(relativePath);
         /** @type {SerializableScanEntry} */
-        const parentFolder = this.map.get(relativeDirname);
+        const parentFolder = this.foldersMap.get(relativeDirname);
         return {name, relativePath, relativeDirname, parentFolder};
     }
 
