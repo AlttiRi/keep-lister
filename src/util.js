@@ -24,12 +24,12 @@ export const shuffle = () => Math.random() >= 0.5 ? -1 : 1;
 
 const videoExtensions = ["mp4", "webm", "mkv", "avi"];
 export function isVideo(filename) {
-    const {ext} = filename.match(/(?<ext>[^\.]+)$/).groups;
+    const {ext} = filename.match(/(?<ext>[^.]+)$/).groups;
     return videoExtensions.includes(ext);
 }
 const imageExtensions = ["png", "jpg", "jpeg", "gif", "tiff", "webp"];
 export function isImage(filename) {
-    const {ext} = filename.match(/(?<ext>[^\.]+)$/).groups;
+    const {ext} = filename.match(/(?<ext>[^.]+)$/).groups;
     return imageExtensions.includes(ext);
 }
 
