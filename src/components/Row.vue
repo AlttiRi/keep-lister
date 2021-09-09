@@ -67,9 +67,7 @@ function onMousedown(event) {
   const MIDDLE_BUTTON = 1;
   const RIGHT_BUTTON = 2;
   if (event.button === MIDDLE_BUTTON && entry.value.type === "folder") {
-    console.log("MIDDLE_BUTTON on a folder", event);
-  }
-  if (event.button === RIGHT_BUTTON) {
+    event.preventDefault();
     console.log(
         entry.value,
         entry.value.path.map(e => e.name).join(separator.value).replace("//", "/")
