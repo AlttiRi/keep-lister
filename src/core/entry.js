@@ -54,9 +54,9 @@ export class SimpleEntry {
      *  @param {Number} total */
     addHardlinks(entries, total) {
         /** @type {SimpleEntry[]|undefined} */
-        this.hadrlinks = entries;
+        this.hardlinks = entries;
         /** @type {Number|undefined} */
-        this.hadrlinksTotal = total;
+        this.hardlinksTotal = total;
     }
 
     get size() {
