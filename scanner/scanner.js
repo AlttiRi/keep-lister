@@ -21,6 +21,8 @@ const __dirname = path.dirname(__filename);
 // -------
 
 const doGZip = true;
+const logging = false;
+
 const scanFolderPath = ".";
 const scanFolderAbsolutePath = path.resolve(scanFolderPath);
 
@@ -153,7 +155,7 @@ async function statsInfo(entry) {
         const stats = await fs.promises.lstat(entry.path);
         return {stats};
     } catch (error) {
-        console.log(ANSI_RED_BOLD("[stat]: " + JSON.stringify(error)));
+        logging && console.log(ANSI_RED_BOLD("[stat]: " + JSON.stringify(error)));
         return {error};
     }
 }
@@ -167,13 +169,13 @@ async function linkInfo(entry) {
         const symContent = await fs.promises.readlink(entry.path);
         const linkLocation = path.dirname(entry.path);
         const absolutePathTo = path.resolve(linkLocation, symContent);
-        console.info(entry.path, ANSI_CYAN("->"), absolutePathTo);
+        logging && console.info(entry.path, ANSI_CYAN("->"), absolutePathTo);
         return {
             pathTo: absolutePathTo,
             content: symContent,
         }
     } catch (error) {
-        console.log(ANSI_RED_BOLD("[readlink]: " + JSON.stringify(error)));
+        logging && console.log(ANSI_RED_BOLD("[readlink]: " + JSON.stringify(error)));
         return {error};
     }
 }
@@ -195,7 +197,7 @@ function createScanEntryBase(listEntry) {
     };
     if (readdirError) {
         entry.error = readdirError;
-        console.log(ANSI_RED_BOLD("[readdir]: " + JSON.stringify(entry.error)));
+        logging && console.log(ANSI_RED_BOLD("[readdir]: " + JSON.stringify(entry.error)));
     } else {
         if (entry.path !== scanFolderAbsolutePath) { // in order do not count the scan folder
             meta.increaseTypeCounter(type);
