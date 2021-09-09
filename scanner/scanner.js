@@ -50,7 +50,10 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
 
 
 meta.logTable();
-const json = createJSON(meta, scanObject.values);
+
+/** @type {SerializableScanEntry[]} */
+const scanEntries = scanObject.values;
+const json = createJSON(meta, scanEntries);
 await saveJSON(json);
 
 console.log("Executing time:\t", (Date.now() - startTime)/1000, "seconds");
