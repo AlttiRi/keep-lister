@@ -9,7 +9,8 @@ import {scanParser} from "./scan-parser.js";
 /** @type {import("vue").Ref<ScanMeta>} */
 export const meta = ref(null);
 /** @type {import("vue").Ref<SimpleEntry>} */
-const json = ref(null);
+const root = ref(null);
+
 /**
  * @param {Blob|Response} input
  * @return {Promise<void>}
@@ -21,7 +22,7 @@ export async function setScan(input) {
     } = await scanParser(input);
 
     meta.value = markRaw(scanMeta);
-    json.value = markRaw(rootEntry);
+    root.value = markRaw(rootEntry);
     globalThis.json = rootEntry;
 
     openFolder(rootEntry);
@@ -56,7 +57,7 @@ export function goBack() {
     }
 }
 /** @type {import("vue").ComputedRef<Boolean>} */
-export const empty = computed(() => json.value && openedFolder.value.isEmpty);
+export const empty = computed(() => root.value && openedFolder.value.isEmpty);
 
 
 watch(meta, async (newValue, oldValue) => {
