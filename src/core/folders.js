@@ -3,6 +3,7 @@ import {clearSearch} from "./search.js";
 import {folderDummy, parseFlatScan} from "./entry.js";
 import {dateToDayDateString} from "../util.js";
 import {addMessage} from "./debug.js";
+import {scanParser} from "./scan-parser.js";
 
 
 /** @type {import("vue").Ref<ScanMeta>} */
@@ -10,23 +11,20 @@ export const meta = ref(null);
 /** @type {import("vue").Ref<SimpleEntry>} */
 const json = ref(null);
 /**
- * @see FlatScanResult
- * @param {Object[]} flatScan */
-export function setJson(flatScan) {
-    /** @type {ScanMeta} */
-    const scanMeta = flatScan[0];
-    /** @type {SerializableScanEntry[]} */
-    const sEntries = flatScan.slice(1);
+ * @param {Blob|Response} input
+ * @return {Promise<void>}
+ */
+export async function setScan(input) {
+    const {
+        meta: scanMeta,
+        root: rootEntry
+    } = await scanParser(input);
 
     meta.value = markRaw(scanMeta);
-    console.time("parseEntries");
-    const result = parseFlatScan(sEntries);
-    console.timeEnd("parseEntries");
+    json.value = markRaw(rootEntry);
+    globalThis.json = rootEntry;
 
-    json.value = markRaw(result);
-    globalThis.json = result;
-
-    openFolder(result);
+    openFolder(rootEntry);
     clearSearch();
 }
 

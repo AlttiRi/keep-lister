@@ -2,18 +2,19 @@
   <div class="file-select">
     <label>
       Select file
-      <input type="file" accept="application/json" @change="onChange">
+      <input type="file" accept="application/json,application/gzip" @change="onChange">
     </label>
     <hr>
   </div>
 </template>
 
 <script setup>
-import {setJson} from "../core/folders.js";
+import {setScan} from "../core/folders.js";
 
-async function onChange(event) {
-  const jsonObj = JSON.parse(await event.target.files[0].text());
-  setJson(jsonObj);
+function onChange(event) {
+  /** @type {File} */
+  const file = event.target.files[0];
+  return setScan(file);
 }
 </script>
 

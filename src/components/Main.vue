@@ -18,8 +18,7 @@ import Content from "./Content.vue";
 import Status from "./Status.vue";
 import Debug from "./Debug.vue";
 import {onMounted} from "vue";
-import {setJson} from "../core/folders.js";
-import {appendScript} from "../util.js";
+import {setScan} from "../core/folders.js";
 
 
 // Already opened directory, no need to open with input
@@ -27,33 +26,9 @@ onMounted(async () => {
   //todo search
   const filepath = new URL(location.href).searchParams.get("filepath");
   if (filepath) {
+    /** @type {Response} */
     const response = await fetch(filepath);
-    /** @type {Object[]} */
-    let data;
-
-    // If "content-type" is "application/json" or "application/json; charset=utf-8"
-    // and "content-encoding" is "gzip"
-    // the browser will unGZip it itself.
-    const contentType = response.headers.get("content-type");
-    const contentEncoding = response.headers.get("content-encoding");
-    if (contentType.startsWith("application/gzip")/* && contentEncoding === null*/) {
-      const src = "https://cdn.jsdelivr.net/npm/pako@2.0.4/dist/pako_inflate.min.js";
-      const integrity = "sha256-ZIKs3+RZEULSy0dR6c/mke8V9unZm9vuh05TqvtMdGU=";
-      await appendScript(src, integrity);
-      console.log("pako is loaded");
-
-      const inflator = new pako.Inflate();
-      const ab = await response.arrayBuffer();
-      inflator.push(ab);
-      if (inflator.err) {
-        console.error(inflator.msg);
-      }
-      data = JSON.parse(new TextDecoder().decode(inflator.result));
-    } else {
-      data = await response.json();
-    }
-
-    setJson(data);
+    return setScan(response);
   }
 });
 
