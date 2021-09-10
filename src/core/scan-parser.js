@@ -90,6 +90,7 @@ export async function parseScan(input) {
      * @type {Object[]} flatScan */
     let flatScan;
 
+    console.time("parse-json");
     if (input instanceof Response) {
         /** @type {Response} */
         const response = input;
@@ -114,6 +115,7 @@ export async function parseScan(input) {
             flatScan = JSON.parse(await blob.text());
         }
     }
+    console.timeEnd("parse-json");
 
     /** @type {ScanMeta} */
     const meta = flatScan[0];
