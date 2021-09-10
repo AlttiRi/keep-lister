@@ -3,7 +3,7 @@ import {clearSearch} from "./search.js";
 import {folderDummy, parseFlatScan} from "./entry.js";
 import {dateToDayDateString} from "../util.js";
 import {addMessage} from "./debug.js";
-import {scanParser} from "./scan-parser.js";
+import {parseScan} from "./scan-parser.js";
 
 
 /** @type {import("vue").Ref<ScanMeta>} */
@@ -19,7 +19,7 @@ export async function setScan(input) {
     const {
         meta: scanMeta,
         root: rootEntry
-    } = await scanParser(input);
+    } = await parseScan(input);
 
     meta.value = markRaw(scanMeta);
     root.value = markRaw(rootEntry);

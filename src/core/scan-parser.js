@@ -32,7 +32,7 @@ async function unGZipJSON(input) {
  * @param {Blob|Response} input
  * @return {Promise<{meta: ScanMeta, root: SimpleEntry}>}
  */
-export async function scanParser(input) {
+export async function parseScan(input) {
     /**
      * @see FlatScanResult
      * @type {Object[]} flatScan */
