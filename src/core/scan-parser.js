@@ -19,10 +19,12 @@ async function loadPako() {
 async function unGZipJSON(input) {
     await loadPako();
 
+    /** @type {Uint8Array[]} */
+    let chunks = [];
     const inflator = new pako.Inflate();
     const ab = await input.arrayBuffer();
     let i = 0, time = 0;
-    for (const uint8Array of iterateArrayBuffer(ab, 65536/2)) {
+    for (const u8Array of iterateArrayBuffer(ab, 65536/2)) {
         if (!(i++ % 10)) {
             const timeNow = Date.now();
             if (timeNow - time > 15) {
@@ -30,17 +32,23 @@ async function unGZipJSON(input) {
                 await sleep();
             }
         }
-        inflator.push(uint8Array);
+
+        inflator.push(u8Array);
+        chunks = [...chunks, ...inflator.chunks];
+        inflator.chunks = [];
     }
     if (inflator.err) {
         console.error(inflator.msg);
     }
 
     /** @type {Uint8Array} */
-    const inflatedData = inflator.result;
+    const lastChunk = inflator.result;
+    /** @type {Uint8Array} */
+    const inflatedChunks = concat([...chunks, lastChunk]);
+
     let strings = [];
     const decoder = new TextDecoder();
-    for (const uint8Array of iterateArrayBuffer(inflatedData, 65536)) {
+    for (const uint8Array of iterateArrayBuffer(inflatedChunks, 65536)) {
         if (!(i++ % 10)) {
             const timeNow = Date.now();
             if (timeNow - time > 15) {
@@ -55,6 +63,21 @@ async function unGZipJSON(input) {
     await sleep();
 
     return JSON.parse(resultStr);
+}
+
+/**
+ * @param {Uint8Array[]} arrays
+ * @return {Uint8Array}
+ */
+function concat(arrays) {
+    const totalLength = arrays.reduce((acc, value) => acc + value.length, 0);
+    const result = new Uint8Array(totalLength);
+    let offset = 0;
+    for (const array of arrays) {
+        result.set(array, offset);
+        offset += array.length;
+    }
+    return result;
 }
 
 /**
