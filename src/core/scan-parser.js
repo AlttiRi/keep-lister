@@ -35,7 +35,26 @@ async function unGZipJSON(input) {
     if (inflator.err) {
         console.error(inflator.msg);
     }
-    return JSON.parse(new TextDecoder().decode(inflator.result));
+
+    /** @type {Uint8Array} */
+    const inflatedData = inflator.result;
+    let strings = [];
+    const decoder = new TextDecoder();
+    for (const uint8Array of iterateArrayBuffer(inflatedData, 65536)) {
+        if (!(i++ % 10)) {
+            const timeNow = Date.now();
+            if (timeNow - time > 15) {
+                time = timeNow;
+                await sleep();
+            }
+        }
+        strings.push(decoder.decode(uint8Array, {stream: true}));
+    }
+
+    const resultStr = strings.join("");
+    await sleep();
+
+    return JSON.parse(resultStr);
 }
 
 /**
