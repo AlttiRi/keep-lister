@@ -18,6 +18,9 @@ button { padding: 0 0; }
 .search {
   display: flex;
   height: 100%;
+  label {
+    display: contents;
+  }
   input {
     height: 100%;
     flex-grow: 2;
