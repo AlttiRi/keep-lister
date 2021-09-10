@@ -1,5 +1,5 @@
 import {parseFlatScan} from "./entry.js";
-import {appendScript} from "../util.js";
+import {appendScript, iterateArrayBuffer, sleep} from "../util.js";
 
 let pakoIsLoaded = false;
 async function loadPako() {
@@ -21,7 +21,17 @@ async function unGZipJSON(input) {
 
     const inflator = new pako.Inflate();
     const ab = await input.arrayBuffer();
-    inflator.push(ab);
+    let i = 0, time = 0;
+    for (const uint8Array of iterateArrayBuffer(ab, 65536/2)) {
+        if (!(i++ % 10)) {
+            const timeNow = Date.now();
+            if (timeNow - time > 15) {
+                time = timeNow;
+                await sleep();
+            }
+        }
+        inflator.push(uint8Array);
+    }
     if (inflator.err) {
         console.error(inflator.msg);
     }
