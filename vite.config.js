@@ -45,7 +45,8 @@ export default defineConfig({
     terserOptions: {
       // compress: false, // compress may broke source maps, but it looks working ok currently
       mangle: {
-        keep_classnames: true
+        keep_classnames: true,
+        keep_fnames: true,
       }
     }
   }
