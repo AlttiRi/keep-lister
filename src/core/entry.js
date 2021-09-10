@@ -132,8 +132,19 @@ export async function parseFlatScan(sEntries) {
     /** @type {Map<String, SimpleEntry[]>} */
     const hidMap = new Map();
 
+    let i = 0;
+    let time = Date.now();
+
     const rootId = 0;
     for (const entry of sEntries) {
+        if (!(i++ % 1000)) {
+            const timeNow = Date.now();
+            if (timeNow - time > 15) {
+                time = timeNow;
+                await sleep();
+            }
+        }
+
         /** @type {SimpleEntry|null}*/
         const parent = map.get(entry.pid) ?? null;
         const simpleEntry = new SimpleEntry(entry, parent);
