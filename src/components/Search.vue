@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <input type="text" v-model="search">
+    <label><input type="text" v-model="search"></label>
     <button @click="clearSearch">Clear</button>
   </div>
 </template>
