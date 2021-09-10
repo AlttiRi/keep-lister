@@ -10,16 +10,17 @@ File explorer for JSON snapshots with meta information of local files. Scanner f
 ---
 What? Just look:
 
-[Win 10 scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/win10upd.json)
+[Win 10 scan (Temporary unavailable)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/win10upd.json)
 
-[Win 10 scan (as Admin)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/win10upd-admin.json)
+**[Win 10 scan (as Admin)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/2021.09.09-wa.json.gz)**
 
-[Ubuntu scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/ubuntu.json)
+[Ubuntu scan (Temporary unavailable)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/ubuntu.json)
 
-[Ubuntu scan (as Root)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/ubuntu-admin.json)
+[Ubuntu scan (as Root) (Temporary unavailable)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/ubuntu-admin.json)
 
-[Linux Source Code scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/linux-master.json)
+[Linux Source Code scan (Temporary unavailable)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/linux-master.json)
 
+*Temporary unavailable ones use the old scan forman. I need to rescan it.
 
 ---
 
