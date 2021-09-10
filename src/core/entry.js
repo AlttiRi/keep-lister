@@ -1,4 +1,6 @@
 /** @type {ScanEntryType[]} */
+import {sleep} from "../util.js";
+
 export const entryTypes = ["folder", "file", "symlink", "fifo", "charDev", "blockDev", "socket"];
 
 export class SimpleEntry {
@@ -124,7 +126,7 @@ export class SimpleEntry {
  * @param {SerializableScanEntry[]} sEntries
  * @return {SimpleEntry}
  * */
-export function parseFlatScan(sEntries) {
+export async function parseFlatScan(sEntries) {
     /** @type {Map<Number, SimpleEntry>} */
     const map = new Map();
     /** @type {Map<String, SimpleEntry[]>} */
@@ -144,7 +146,10 @@ export function parseFlatScan(sEntries) {
             hidMap.set(entry.hid, [...array, simpleEntry]);
         }
     }
-    console.log(hidMap);
+
+    console.log("[hidMap]:", hidMap);
+    await sleep();
+    console.time("hidMap");
     for (const [hid, simpleEntries] of hidMap.entries()) {
         /** @type {Number}*/
         const totalLinks = Number(hid.split(":")[1]);
@@ -152,6 +157,8 @@ export function parseFlatScan(sEntries) {
             e.addHardlinks(simpleEntries, totalLinks);
         });
     }
+    console.timeEnd("hidMap");
+
     return map.get(rootId);
 }
 
