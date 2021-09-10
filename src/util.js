@@ -91,7 +91,10 @@ export function appendScript(src, integrity) {
     });
 }
 
-
+/**
+ * @param {ReadableStream} stream
+ * @return {AsyncGenerator<Uint8Array>}
+ */
 export async function *iterateReadableStream(stream) {
     const reader = stream.getReader();
     while (true) {
@@ -103,8 +106,13 @@ export async function *iterateReadableStream(stream) {
     }
 }
 
-// chunkSize is 65536, ReadableStream uses the same size.
-// There is no speed difference between using of different the chunk's sizes.
+/**
+ * `chunkSize` is 65536, ReadableStream uses the same size.
+ * There is no speed difference between using of different the chunk's sizes.
+ * @param {ArrayBuffer|Uint8Array} arrayBuffer
+ * @param {Number} [chunkSize=65536]
+ * @return {Generator<Uint8Array>}
+ */
 export function *iterateArrayBuffer(arrayBuffer, chunkSize = 65536) {
     const buffer = new Uint8Array(arrayBuffer);
     let index = 0;
@@ -118,9 +126,13 @@ export function *iterateArrayBuffer(arrayBuffer, chunkSize = 65536) {
     }
 }
 
-// Iterate Blob (or File)
-// Note: `chunkSize` affects the execution speed
-// It works with the same speed in Chromium, but a bit faster in Firefox (in comparison with `iterateBlob_v1`)
+/**
+ * Iterates Blob (or File).
+ * Note: `chunkSize` affects the execution speed
+ * @param {Blob} blob
+ * @param {Number} [chunkSize=2097152]
+ * @return {Generator<Promise<Uint8Array>>|AsyncGenerator<Uint8Array>}
+ */
 export function *iterateBlob(blob, chunkSize = 2 * 1024 * 1024) {
     let index = 0;
     while (true) {
@@ -136,6 +148,15 @@ export function *iterateBlob(blob, chunkSize = 2 * 1024 * 1024) {
     }
 }
 
+/**
+ * Format bytes to human readable format.
+ * Trims the tailing zeros.
+ *
+ * {@link https://stackoverflow.com/a/18650828/11468937}
+ * @param {Number} bytes
+ * @param {Number} [decimals=2]
+ * @returns {String}
+ */
 export function bytesToSize(bytes, decimals = 2) {
     if (bytes === 0) {
         return "0 B";
