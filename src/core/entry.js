@@ -148,18 +148,31 @@ export async function parseFlatScan(sEntries) {
     }
 
     console.log("[hidMap]:", hidMap);
-    await sleep();
     console.time("hidMap");
+    processHIDMapAsync(hidMap).then(() => console.timeEnd("hidMap"));
+
+    return map.get(rootId);
+}
+
+async function processHIDMapAsync(hidMap) {
+    let i = 0;
+    let time = 0; // `0` to do `sleep` on the first iteration
+
     for (const [hid, simpleEntries] of hidMap.entries()) {
+        if (!(i++ % 1000)) {
+            const timeNow = Date.now();
+            if (timeNow - time > 15) {
+                time = timeNow;
+                await sleep();
+            }
+        }
+
         /** @type {Number}*/
         const totalLinks = Number(hid.split(":")[1]);
         simpleEntries.forEach(e => {
             e.addHardlinks(simpleEntries, totalLinks);
         });
     }
-    console.timeEnd("hidMap");
-
-    return map.get(rootId);
 }
 
 /** @type {SimpleEntry} */
