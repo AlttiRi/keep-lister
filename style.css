@@ -197,17 +197,20 @@ input[data-v-23a29b76] {
 }
 /* Search.vue */
 /** reset */
-input[data-v-29aa09f9] {
+input[data-v-35dc98f8] {
   padding: 0 0;
 }
-button[data-v-29aa09f9] {
+button[data-v-35dc98f8] {
   padding: 0 0;
 }
-.search[data-v-29aa09f9] {
+.search[data-v-35dc98f8] {
   display: flex;
   height: 100%;
 }
-.search input[data-v-29aa09f9] {
+.search label[data-v-35dc98f8] {
+  display: contents;
+}
+.search input[data-v-35dc98f8] {
   height: 100%;
   flex-grow: 2;
   border: none;
@@ -215,11 +218,11 @@ button[data-v-29aa09f9] {
   border-bottom: transparent solid 1px;
   box-sizing: border-box;
 }
-.search input[data-v-29aa09f9]:focus, .search input[data-v-29aa09f9]:hover {
+.search input[data-v-35dc98f8]:focus, .search input[data-v-35dc98f8]:hover {
   outline: none;
   border-bottom: var(--blue-1) solid 1px;
 }
-.search button[data-v-29aa09f9] {
+.search button[data-v-35dc98f8] {
   height: 100%;
   padding: 0 6px;
   outline: none;
@@ -229,11 +232,11 @@ button[data-v-29aa09f9] {
   box-sizing: border-box;
   background-color: var(--gray-1);
 }
-.search button[data-v-29aa09f9]:hover {
+.search button[data-v-35dc98f8]:hover {
   border-bottom: var(--blue-1) solid 1px;
   background: var(--blue-2);
 }
-.search button[data-v-29aa09f9]:active {
+.search button[data-v-35dc98f8]:active {
   background: var(--blue-3);
 }
 /* Tabs.vue */
