@@ -29,7 +29,6 @@ const title = computed(() => {
   function doString(o) {
     function pad(str) {
       const count = 3 - Math.trunc((str.length/4));
-      console.log(str, count);
       return str + "\t".repeat(count);
     }
     return Object.entries(o)
