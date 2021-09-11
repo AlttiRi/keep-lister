@@ -52,7 +52,7 @@ async function *streamParseJSONScan(input) {
             if (timeNow - time > 15) {
                 time = timeNow;
                 await sleep();
-                console.log("sleep", i);
+                // console.log("sleep", i);
             }
         }
         const textPart = decoder.decode(uint8Array, {stream: true});
@@ -78,7 +78,7 @@ async function *parseGZippedJSONScan(input) {
             if (timeNow - time > 15) {
                 time = timeNow;
                 await sleep();
-                console.log("sleep", i);
+                // console.log("sleep", i);
             }
         }
         const textPart = decoder.decode(uint8Array, {stream: true});
