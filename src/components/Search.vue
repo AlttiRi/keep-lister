@@ -1,9 +1,11 @@
 <template>
-  <div class="search">
-    <input id="search" type="text" v-model="search">
-    <button @click="clearSearch">Clear</button>
+  <div style="display: contents">
+    <div class="search">
+      <input id="json-scan-search-input" type="text" v-model="search">
+      <button @click="clearSearch">Clear</button>
+    </div>
+    <label for="json-scan-search-input" class="fuck-off-lighthouse">.</label>
   </div>
-  <label for="search" class="fuck-off-lighthouse">.</label>
 </template>
 
 <script setup>
