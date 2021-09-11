@@ -1,5 +1,5 @@
 import {parseFlatScan} from "./entry.js";
-import {appendScript, iterateArrayBuffer, sleep} from "../util.js";
+import {appendScript, iterateArrayBuffer, iterateAsyncDataSource, sleep} from "../util.js";
 
 /**
  * @param {Blob|Response} input
@@ -58,14 +58,12 @@ export async function parseScan(input) {
  */
 async function parseGZippedJSON(input) {
     await loadPako();
-    const ab = await input.arrayBuffer();
-
     const decoder = new TextDecoder();
     let partObjects = [];
 
     const parser = new Parser();
     let i = 0, time = 0;
-    for (const uint8Array of unGZipIterator(ab)) {
+    for await (const uint8Array of unGZipAsyncIterator(input)) {
         if (!(i++ % 20)) {
             const timeNow = Date.now();
             if (timeNow - time > 15) {
@@ -80,6 +78,28 @@ async function parseGZippedJSON(input) {
     return partObjects.flat();
 }
 
+/**
+ * @param {Response|Blob} input
+ * @return {Generator<Uint8Array>}
+ */
+async function *unGZipAsyncIterator(input) {
+    let chunks = [];
+    const inflator = new pako.Inflate();
+    pako.Inflate.prototype.onData = function (chunk) {
+        chunks.push(chunk);
+    };
+    for await (const u8Array of iterateAsyncDataSource(input)) {
+        inflator.push(u8Array);
+        for (const chunk of chunks) {
+            yield chunk;
+        }
+        chunks = [];
+    }
+    yield inflator.result;
+    if (inflator.err) {
+        console.error(inflator.msg);
+    }
+}
 
 /**
  * @param {ArrayBuffer} arrayBuffer
