@@ -1,6 +1,6 @@
 import {computed, markRaw, ref, unref, watch} from "vue";
 import {clearSearch} from "./search.js";
-import {folderDummy, parseFlatScan} from "./entry.js";
+import {folderDummy} from "./entry.js";
 import {dateToDayDateString} from "../util.js";
 import {addMessage} from "./debug.js";
 import {parseScan} from "./scan-parser.js";
