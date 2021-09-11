@@ -92,21 +92,6 @@ export function appendScript(src, integrity) {
 }
 
 /**
- * @param {ReadableStream} stream
- * @return {AsyncGenerator<Uint8Array>}
- */
-export async function *iterateReadableStream(stream) {
-    const reader = stream.getReader();
-    while (true) {
-        const {done, /** @type {Uint8Array} */ value} = await reader.read();
-        if (done) {
-            break;
-        }
-        yield value;
-    }
-}
-
-/**
  * `chunkSize` is 65536, ReadableStream uses the same size.
  * There is no speed difference between using of different the chunk's sizes.
  * @param {ArrayBuffer|Uint8Array} arrayBuffer
@@ -123,6 +108,39 @@ export function *iterateArrayBuffer(arrayBuffer, chunkSize = 65536) {
         }
         yield chunk;
         index += chunkSize;
+    }
+}
+
+/**
+ * @param {Response|ReadableStream|Blob} dataSource
+ * @return {AsyncGenerator<Uint8Array>}
+ */
+export async function *iterateAsyncDataSource(dataSource) {
+    if (dataSource instanceof Response) {
+        dataSource = dataSource.body;
+    }
+    if (dataSource instanceof ReadableStream) {
+        yield *iterateReadableStream(dataSource);
+    } else if (dataSource instanceof Blob) {
+        for (const part of iterateBlob(dataSource)) {
+            yield await part;
+        }
+    }
+}
+
+
+/**
+ * @param {ReadableStream} stream
+ * @return {AsyncGenerator<Uint8Array>}
+ */
+export async function *iterateReadableStream(stream) {
+    const reader = stream.getReader();
+    while (true) {
+        const {done, /** @type {Uint8Array} */ value} = await reader.read();
+        if (done) {
+            break;
+        }
+        yield value;
     }
 }
 
