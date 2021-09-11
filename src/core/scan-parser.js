@@ -79,7 +79,7 @@ async function parseGZippedJSON(input) {
 }
 
 /**
- * @param {Response|Blob} input
+ * @param {Response|ReadableStream|Blob} input
  * @return {Generator<Uint8Array>}
  */
 async function *unGZipAsyncIterator(input) {
