@@ -16,14 +16,18 @@ async function loadPako() {
  * @param {ArrayBuffer} arrayBuffer
  * @return {Generator<Uint8Array>}
  */
-function *unZipIterator(arrayBuffer) {
+function *unGZipIterator(arrayBuffer) {
+    let chunks = [];
     const inflator = new pako.Inflate();
+    pako.Inflate.prototype.onData = function (chunk) {
+        chunks.push(chunk);
+    };
     for (const u8Array of iterateArrayBuffer(arrayBuffer, 65536/2)) {
         inflator.push(u8Array);
-        for (const chunk of inflator.chunks) {
+        for (const chunk of chunks) {
             yield chunk;
         }
-        inflator.chunks = [];
+        chunks = [];
     }
     yield inflator.result;
     if (inflator.err) {
@@ -44,7 +48,7 @@ async function unGZipJSON(input) {
 
     const parser = new Parser();
     let i = 0, time = 0;
-    for (const uint8Array of unZipIterator(ab)) {
+    for (const uint8Array of unGZipIterator(ab)) {
         if (!(i++ % 20)) {
             const timeNow = Date.now();
             if (timeNow - time > 15) {
