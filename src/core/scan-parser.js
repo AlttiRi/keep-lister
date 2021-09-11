@@ -13,56 +13,113 @@ async function loadPako() {
 }
 
 /**
+ * @param {ArrayBuffer} arrayBuffer
+ * @return {Generator<Uint8Array>}
+ */
+function *unZipIterator(arrayBuffer) {
+    const inflator = new pako.Inflate();
+    for (const u8Array of iterateArrayBuffer(arrayBuffer, 65536/2)) {
+        inflator.push(u8Array);
+        for (const chunk of inflator.chunks) {
+            yield chunk;
+        }
+        inflator.chunks = [];
+    }
+    yield inflator.result;
+    if (inflator.err) {
+        console.error(inflator.msg);
+    }
+}
+
+/**
  * @param {Response|Blob} input
  * @return {Promise<*>}
  */
 async function unGZipJSON(input) {
     await loadPako();
-
-    /** @type {Uint8Array[]} */
-    let chunks = [];
-    const inflator = new pako.Inflate();
     const ab = await input.arrayBuffer();
-    let i = 0, time = 0;
-    for (const u8Array of iterateArrayBuffer(ab, 65536/2)) {
-        if (!(i++ % 10)) {
-            const timeNow = Date.now();
-            if (timeNow - time > 15) {
-                time = timeNow;
-                await sleep();
-            }
-        }
 
-        inflator.push(u8Array);
-        chunks = [...chunks, ...inflator.chunks];
-        inflator.chunks = [];
-    }
-    if (inflator.err) {
-        console.error(inflator.msg);
-    }
-
-    /** @type {Uint8Array} */
-    const lastChunk = inflator.result;
-    /** @type {Uint8Array} */
-    const inflatedChunks = concat([...chunks, lastChunk]);
-
-    let strings = [];
     const decoder = new TextDecoder();
-    for (const uint8Array of iterateArrayBuffer(inflatedChunks, 65536)) {
-        if (!(i++ % 10)) {
+    let objectParts = [];
+
+    const parser = new Parser();
+    let i = 0, time = 0;
+    for (const uint8Array of unZipIterator(ab)) {
+        if (!(i++ % 20)) {
             const timeNow = Date.now();
             if (timeNow - time > 15) {
                 time = timeNow;
-                await sleep();
+                await sleep(); console.log("sleep");
             }
         }
-        strings.push(decoder.decode(uint8Array, {stream: true}));
+        const textPart = decoder.decode(uint8Array, {stream: true});
+        objectParts.push(parser.parse(textPart));
+    }
+    return objectParts.flat();
+}
+
+export class Parser {
+    buffer = null;
+    startHandled = false;
+    metaLines = [];
+    objects = [];
+
+    handleStart(line) {
+        if (line === "[") { // the first line
+            return;
+        }
+        if (line === "") { // meta is separated from the main content by "\n"
+            const json = this.trimComma(this.metaLines.join(""));
+            this.objects.push(JSON.parse(json));
+            this.startHandled = true;
+            return;
+        }
+        this.metaLines.push(line);
     }
 
-    const resultStr = strings.join("");
-    await sleep();
+    trimComma(text) {
+        return text.endsWith(",") ? text.slice(0, -1) : text;
+    }
 
-    return JSON.parse(resultStr);
+    handleEntry(line, isLastLine) {
+        if (isLastLine) {
+            this.buffer = line;
+            return;
+        }
+        if (this.buffer) {
+            const json = this.trimComma(this.buffer + line);
+            this.objects.push(JSON.parse(json));
+            this.buffer = null;
+        } else {
+            const json = this.trimComma(line);
+            this.objects.push(JSON.parse(json));
+        }
+    }
+
+    parse(textPart) {
+        const isLastPart = textPart.endsWith("\n]");
+        /** @type {String[]} */
+        const lines = textPart.split("\n");
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            const isLastLine = i === lines.length - 1;
+
+            if (isLastLine && isLastPart) {
+                continue;
+            }
+
+            if (!this.startHandled) {
+                this.handleStart(line, isLastLine);
+            } else {
+                this.handleEntry(line, isLastLine);
+            }
+        }
+        const result = this.objects;
+        this.objects = [];
+        return result;
+    }
+
 }
 
 /**
