@@ -40,7 +40,7 @@ async function unGZipJSON(input) {
     const ab = await input.arrayBuffer();
 
     const decoder = new TextDecoder();
-    let objectParts = [];
+    let partObjects = [];
 
     const parser = new Parser();
     let i = 0, time = 0;
@@ -49,13 +49,14 @@ async function unGZipJSON(input) {
             const timeNow = Date.now();
             if (timeNow - time > 15) {
                 time = timeNow;
-                await sleep(); console.log("sleep");
+                await sleep();
+                // console.log("sleep", i);
             }
         }
         const textPart = decoder.decode(uint8Array, {stream: true});
-        objectParts.push(parser.parse(textPart));
+        partObjects.push(parser.parse(textPart));
     }
-    return objectParts.flat();
+    return partObjects.flat();
 }
 
 export class Parser {
