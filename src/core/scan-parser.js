@@ -22,18 +22,18 @@ export async function parseScan(input) {
         /* const contentEncoding = response.headers.get("content-encoding"); */
         const contentType = response.headers.get("content-type");
         if (isGZip(contentType)/* && contentEncoding === null */) {
-            flatScan = await parseGZippedJSON(response);
+            flatScan = await parseGZippedJSONScan(response);
         } else if (isJSON(contentType)) {
-            flatScan = await response.json();
+            flatScan = await streamParseJSONScan(response);
         }
     } else if (input instanceof Blob) {
         /** @type {Blob} */
         const blob = input;
 
         if (isGZip(blob.type)) {
-            flatScan = await parseGZippedJSON(blob);
+            flatScan = await parseGZippedJSONScan(blob);
         } else if (isJSON(blob.type)) {
-            flatScan = JSON.parse(await blob.text());
+            flatScan = await streamParseJSONScan(blob);
         }
     }
     console.timeEnd("parse-json");
@@ -53,10 +53,34 @@ export async function parseScan(input) {
 }
 
 /**
+ * @param {Response|ReadableStream|Blob} input
+ * @return {Promise<*>}
+ */
+async function streamParseJSONScan(input) {
+    const decoder = new TextDecoder();
+    let partObjects = [];
+    const parser = new Parser();
+    let i = 0, time = 0;
+    for await (const uint8Array of iterateAsyncDataSource(input)) {
+        if (!(i++ % 20)) {
+            const timeNow = Date.now();
+            if (timeNow - time > 15) {
+                time = timeNow;
+                await sleep();
+                // console.log("sleep", i);
+            }
+        }
+        const textPart = decoder.decode(uint8Array, {stream: true});
+        partObjects.push(parser.parsePart(textPart));
+    }
+    return partObjects.flat();
+}
+
+/**
  * @param {Response|Blob} input
  * @return {Promise<*>}
  */
-async function parseGZippedJSON(input) {
+async function parseGZippedJSONScan(input) {
     await loadPako();
     const decoder = new TextDecoder();
     let partObjects = [];
