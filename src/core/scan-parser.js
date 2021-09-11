@@ -69,8 +69,7 @@ export class Parser {
             return;
         }
         if (line === "") { // meta is separated from the main content by "\n"
-            const json = this.trimComma(this.metaLines.join(""));
-            this.objects.push(JSON.parse(json));
+            this.objects.push(this.metaLines.join(""));
             this.startHandled = true;
             return;
         }
@@ -87,12 +86,10 @@ export class Parser {
             return;
         }
         if (this.buffer) {
-            const json = this.trimComma(this.buffer + line);
-            this.objects.push(JSON.parse(json));
+            this.objects.push(this.buffer + line);
             this.buffer = null;
         } else {
-            const json = this.trimComma(line);
-            this.objects.push(JSON.parse(json));
+            this.objects.push(line);
         }
     }
 
@@ -115,7 +112,7 @@ export class Parser {
                 this.handleEntry(line, isLastLine);
             }
         }
-        const result = this.objects;
+        const result = JSON.parse(`[${this.trimComma(this.objects.join(""))}]`);;
         this.objects = [];
         return result;
     }
