@@ -2,7 +2,7 @@
 
 Work in progress.
 
-File explorer for JSON snapshots with meta information of local files. Scanner for creating of snapshots is included.
+File explorer for JSON snapshots with meta information _(`name`, `type`, `size`, `mtime`, ...*)_ of local files. Scanner for creating of snapshots is included.
 
 ![Screenshot](https://user-images.githubusercontent.com/16310547/132210358-6cead24f-0530-423a-8fbb-383a790bdf3e.png)
 
@@ -30,4 +30,8 @@ Search by file type, for example: `/type:folder/query`
 (`folder`, `file`, `symlink` for Windows and `fifo`, `charDev`, `blockDev`, `socket` in additional for other platforms).
 
 Only up to 1000 rows are displayed.
+
+---
+
+*It also contains information about symlinks (where it go) and hard links (count of it).
 
