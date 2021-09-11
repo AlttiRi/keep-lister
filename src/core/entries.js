@@ -1,6 +1,6 @@
 import {computed, ref} from "vue";
 import {search, searchResult} from "./search.js";
-import {openedFolder} from "./folders.js";
+import {openedFolder, openedFolderStateNumber} from "./folders.js";
 
 
 export const sort = ref(true);
@@ -17,15 +17,20 @@ export function comparator(pre, cur) {
 }
 
 // grouped by type
-export const entries = computed(() => [
-    ...openedFolder.value.folders.sort(comparator),
-    ...openedFolder.value.files.sort(comparator),
-    ...openedFolder.value.symlinks.sort(comparator),
-    ...openedFolder.value.fifos.sort(comparator),
-    ...openedFolder.value.charDevs.sort(comparator),
-    ...openedFolder.value.blockDevs.sort(comparator),
-    ...openedFolder.value.sockets.sort(comparator),
-]);
+export const entries = computed(() => {
+    if (openedFolderStateNumber.value) {
+        // force recomputing of change
+    }
+    return [
+        ...openedFolder.value.folders.sort(comparator),
+        ...openedFolder.value.files.sort(comparator),
+        ...openedFolder.value.symlinks.sort(comparator),
+        ...openedFolder.value.fifos.sort(comparator),
+        ...openedFolder.value.charDevs.sort(comparator),
+        ...openedFolder.value.blockDevs.sort(comparator),
+        ...openedFolder.value.sockets.sort(comparator),
+    ]
+});
 
 
 /** @type {number} */

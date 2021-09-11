@@ -122,47 +122,52 @@ export class SimpleEntry {
     }
 }
 
-/**
- * @param {SerializableScanEntry[]} sEntries
- * @return {SimpleEntry}
- * */
-export async function parseFlatScan(sEntries) {
-    /** @type {Map<Number, SimpleEntry>} */
-    const map = new Map();
-    /** @type {Map<String, SimpleEntry[]>} */
-    const hidMap = new Map();
 
-    let i = 0;
-    let time = Date.now();
+export class EntryStreamParser {
+    constructor() {
+        this.rootId = 0;
+        /** @type {Map<Number, SimpleEntry>} */
+        this.map = new Map();
+        /** @type {Map<String, SimpleEntry[]>} */
+        this.hidMap = new Map();
+    }
 
-    const rootId = 0;
-    for (const entry of sEntries) {
-        if (!(i++ % 1000)) {
-            const timeNow = Date.now();
-            if (timeNow - time > 15) {
-                time = timeNow;
-                await sleep();
+    /** @param {SerializableScanEntry[]} sEntriesPart
+     * @return {{root: SimpleEntry, rootUpdated: boolean}}
+     */
+    parse(sEntriesPart) {
+        let rootUpdated = false;
+        for (const entry of sEntriesPart) {
+            /** @type {SimpleEntry|null}*/
+            const parent = this.map.get(entry.pid) ?? null;
+            const simpleEntry = new SimpleEntry(entry, parent);
+            if (entry.type === "folder") {
+                this.map.set(entry.id, simpleEntry);
+            }
+            parent?.addChild(simpleEntry);
+            if (entry.hid) {
+                const array = this.hidMap.get(entry.hid) || [];
+                this.hidMap.set(entry.hid, [...array, simpleEntry]);
+            }
+            if (entry.pid === this.rootId) {
+                rootUpdated = true;
             }
         }
-
-        /** @type {SimpleEntry|null}*/
-        const parent = map.get(entry.pid) ?? null;
-        const simpleEntry = new SimpleEntry(entry, parent);
-        if (entry.type === "folder") {
-            map.set(entry.id, simpleEntry);
-        }
-        parent?.addChild(simpleEntry);
-        if (entry.hid) {
-            const array = hidMap.get(entry.hid) || [];
-            hidMap.set(entry.hid, [...array, simpleEntry]);
+        return {
+            root: this.map.get(this.rootId),
+            rootUpdated
         }
     }
 
-    console.log("[hidMap]:", hidMap);
-    console.time("hidMap");
-    processHIDMapAsync(hidMap).then(() => console.timeEnd("hidMap"));
-
-    return map.get(rootId);
+    processHIDMapAsync() {
+        if (!this.hidMap.size) {
+            return;
+        }
+        console.log("[hidMap]:", this.hidMap);
+        console.time("hidMap");
+        processHIDMapAsync(this.hidMap)
+            .then(() => console.timeEnd("hidMap"));
+    }
 }
 
 async function processHIDMapAsync(hidMap) {

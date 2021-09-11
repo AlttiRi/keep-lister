@@ -1,91 +1,76 @@
-import {parseFlatScan} from "./entry.js";
-import {appendScript, iterateArrayBuffer, iterateAsyncDataSource, sleep} from "../util.js";
+import {EntryStreamParser} from "./entry.js";
+import {appendScript, iterateAsyncDataSource, sleep} from "../util.js";
+
 
 /**
  * @param {Blob|Response} input
- * @return {Promise<{meta: ScanMeta, root: SimpleEntry}>}
+ * @return {AsyncGenerator<{meta:ScanMeta, root: SimpleEntry, rootUpdated: boolean}>}
  */
-export async function parseScan(input) {
-    /**
-     * @see FlatScanResult
-     * @type {Object[]} flatScan */
-    let flatScan;
+export async function *parseScan(input) {
+    const parser = new EntryStreamParser();
 
-    console.time("parse-json");
+    let contentType;
     if (input instanceof Response) {
-        /** @type {Response} */
-        const response = input;
-
-        // If "content-type" is "application/json" or "application/json; charset=utf-8"
-        // and "content-encoding" is "gzip"
-        // the browser will unGZip it itself.
-        /* const contentEncoding = response.headers.get("content-encoding"); */
-        const contentType = response.headers.get("content-type");
-        if (isGZip(contentType)/* && contentEncoding === null */) {
-            flatScan = await parseGZippedJSONScan(response);
-        } else if (isJSON(contentType)) {
-            flatScan = await streamParseJSONScan(response);
-        }
+        contentType = input.headers.get("content-type");
     } else if (input instanceof Blob) {
-        /** @type {Blob} */
-        const blob = input;
-
-        if (isGZip(blob.type)) {
-            flatScan = await parseGZippedJSONScan(blob);
-        } else if (isJSON(blob.type)) {
-            flatScan = await streamParseJSONScan(blob);
+        contentType = input.type;
+    }
+    /** @type {ScanMeta} */
+    let meta;
+    if (isGZip(contentType)) {
+        console.log("parseGZippedJSONScan");
+        for await (const obj of parseGZippedJSONScan(input)) {
+            if (!meta) {
+                meta = /** @type {ScanMeta} */ obj.shift();
+            }
+            yield {meta, ...parser.parse(/** @type {SerializableScanEntry[]} */ obj)};
+        }
+    } else if (isJSON(contentType)) {
+        console.log("streamParseJSONScan");
+        for await (const array of streamParseJSONScan(input)) {
+            if (!meta) {
+                meta = /** @type {ScanMeta} */ array.shift();
+            }
+            yield {meta, ...parser.parse(/** @type {SerializableScanEntry[]} */ array)};
         }
     }
-    console.timeEnd("parse-json");
-
-    /** @type {ScanMeta} */
-    const meta = flatScan[0];
-    /** @type {SerializableScanEntry[]} */
-    const sEntries = flatScan.slice(1);
-
-
-    console.time("parseEntries");
-    /** @type {SimpleEntry} */
-    const root = await parseFlatScan(sEntries);
-    console.timeEnd("parseEntries");
-
-    return {meta, root};
+    parser.processHIDMapAsync();
 }
+
 
 /**
  * @param {Response|ReadableStream|Blob} input
- * @return {Promise<*>}
+ * @return {AsyncGenerator<FlatScanResultEntry[]>}
  */
-async function streamParseJSONScan(input) {
+async function *streamParseJSONScan(input) {
     const decoder = new TextDecoder();
-    let partObjects = [];
-    const parser = new Parser();
+    const textParser = new TextParser();
     let i = 0, time = 0;
     for await (const uint8Array of iterateAsyncDataSource(input)) {
-        if (!(i++ % 20)) {
+        if (!(i++ % 10)) {
             const timeNow = Date.now();
             if (timeNow - time > 15) {
                 time = timeNow;
                 await sleep();
-                // console.log("sleep", i);
+                console.log("sleep", i);
             }
         }
         const textPart = decoder.decode(uint8Array, {stream: true});
-        partObjects.push(parser.parsePart(textPart));
+        const scanResultEntries = textParser.parsePart(textPart);
+        if (scanResultEntries.length) {
+            yield scanResultEntries;
+        }
     }
-    return partObjects.flat();
 }
 
 /**
  * @param {Response|Blob} input
- * @return {Promise<*>}
+ * @return {AsyncGenerator<FlatScanResultEntry[]>}
  */
-async function parseGZippedJSONScan(input) {
+async function *parseGZippedJSONScan(input) {
     await loadPako();
     const decoder = new TextDecoder();
-    let partObjects = [];
-
-    const parser = new Parser();
+    const textParser = new TextParser();
     let i = 0, time = 0;
     for await (const uint8Array of unGZipAsyncIterator(input)) {
         if (!(i++ % 20)) {
@@ -93,13 +78,15 @@ async function parseGZippedJSONScan(input) {
             if (timeNow - time > 15) {
                 time = timeNow;
                 await sleep();
-                // console.log("sleep", i);
+                console.log("sleep", i);
             }
         }
         const textPart = decoder.decode(uint8Array, {stream: true});
-        partObjects.push(parser.parsePart(textPart));
+        const scanResultEntries = textParser.parsePart(textPart);
+        if (scanResultEntries.length) {
+            yield scanResultEntries;
+        }
     }
-    return partObjects.flat();
 }
 
 /**
@@ -125,34 +112,16 @@ async function *unGZipAsyncIterator(input) {
     }
 }
 
-/**
- * @param {ArrayBuffer} arrayBuffer
- * @return {Generator<Uint8Array>}
- */
-function *unGZipIterator(arrayBuffer) {
-    let chunks = [];
-    const inflator = new pako.Inflate();
-    pako.Inflate.prototype.onData = function (chunk) {
-        chunks.push(chunk);
-    };
-    for (const u8Array of iterateArrayBuffer(arrayBuffer, 65536/2)) {
-        inflator.push(u8Array);
-        for (const chunk of chunks) {
-            yield chunk;
-        }
-        chunks = [];
-    }
-    yield inflator.result;
-    if (inflator.err) {
-        console.error(inflator.msg);
-    }
-}
 
-export class Parser {
-    buffer = null;
+export class TextParser {
+    buffer = "";
     startHandled = false;
     metaLines = [];
     objects = [];
+
+    trimComma(text) {
+        return text.endsWith(",") ? text.slice(0, -1) : text;
+    }
 
     handleStart(line) {
         if (line === "[") { // the first line
@@ -166,23 +135,28 @@ export class Parser {
         this.metaLines.push(line);
     }
 
-    trimComma(text) {
-        return text.endsWith(",") ? text.slice(0, -1) : text;
-    }
-
-    handleEntry(line, isLastLine) {
+    /**
+     * @param {String} line
+     * @param isLastLine
+     */
+    handleLine(line, isLastLine) {
         if (isLastLine) {
-            this.buffer = line;
+            this.buffer += line;
             return;
         }
         if (this.buffer) {
             this.objects.push(this.buffer + line);
-            this.buffer = null;
+            this.buffer = "";
         } else {
             this.objects.push(line);
         }
     }
 
+    /**
+     * May return an empty array
+     * @param {String} textPart
+     * @return {FlatScanResultEntry[]}
+     * */
     parsePart(textPart) {
         const isLastPart = textPart.endsWith("\n]");
         /** @type {String[]} */
@@ -199,12 +173,21 @@ export class Parser {
             if (!this.startHandled) {
                 this.handleStart(line, isLastLine);
             } else {
-                this.handleEntry(line, isLastLine);
+                this.handleLine(line, isLastLine);
             }
         }
-        const result = JSON.parse(`[${this.trimComma(this.objects.join(""))}]`);
-        this.objects = [];
-        return result;
+        try {
+            /** @type {FlatScanResultEntry[]} */
+            const result = JSON.parse(`[${this.trimComma(this.objects.join(""))}]`);
+            this.objects = [];
+            return result;
+        } catch (e) {
+            console.log(`[${this.trimComma(this.objects.join(""))}]`);
+            console.log(this.objects);
+            console.log(this, {isLastPart, textPart});
+            throw e;
+        }
+
     }
 
 }

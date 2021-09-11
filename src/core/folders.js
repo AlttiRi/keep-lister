@@ -1,4 +1,4 @@
-import {computed, markRaw, ref, unref, watch} from "vue";
+import {computed, markRaw, ref, unref, watch, } from "vue";
 import {clearSearch} from "./search.js";
 import {folderDummy} from "./entry.js";
 import {dateToDayDateString} from "../util.js";
@@ -11,21 +11,35 @@ export const meta = ref(null);
 /** @type {import("vue").Ref<SimpleEntry>} */
 const root = ref(null);
 
+// A hack to run recomputing of a computed property
+export const openedFolderStateNumber = ref(0);
+
 /**
  * @param {Blob|Response} input
  * @return {Promise<void>}
  */
 export async function setScan(input) {
-    const {
-        meta: scanMeta,
-        root: rootEntry
-    } = await parseScan(input);
+    let metaInited = false;
+    let rootInited = false;
 
-    meta.value = markRaw(scanMeta);
-    root.value = markRaw(rootEntry);
-    globalThis.json = rootEntry;
+    console.time("setScan");
+    for await (const {meta: scanMeta, root: rootEntry, rootUpdated: rootContentUpdated} of parseScan(input)) {
+        if (!metaInited && scanMeta) {
+            meta.value = markRaw(scanMeta);
+            metaInited = true;
+        }
+        if (!rootInited && rootEntry) {
+            root.value = markRaw(rootEntry);
+            globalThis.json = rootEntry;
+            openFolder(rootEntry);
+            rootInited = true;
+        }
+        if (rootContentUpdated) {
+            openedFolderStateNumber.value = openedFolderStateNumber.value + 1;
+        }
+    }
+    console.timeEnd("setScan");
 
-    openFolder(rootEntry);
     clearSearch();
 }
 
