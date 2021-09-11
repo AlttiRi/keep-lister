@@ -112,26 +112,11 @@ export class Parser {
                 this.handleEntry(line, isLastLine);
             }
         }
-        const result = JSON.parse(`[${this.trimComma(this.objects.join(""))}]`);;
+        const result = JSON.parse(`[${this.trimComma(this.objects.join(""))}]`);
         this.objects = [];
         return result;
     }
 
-}
-
-/**
- * @param {Uint8Array[]} arrays
- * @return {Uint8Array}
- */
-function concat(arrays) {
-    const totalLength = arrays.reduce((acc, value) => acc + value.length, 0);
-    const result = new Uint8Array(totalLength);
-    let offset = 0;
-    for (const array of arrays) {
-        result.set(array, offset);
-        offset += array.length;
-    }
-    return result;
 }
 
 /**

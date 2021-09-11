@@ -168,3 +168,18 @@ export function bytesToSize(bytes, decimals = 2) {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(decimals)) + " " + sizes[i];
 }
+
+/**
+ * @param {Uint8Array[]} arrays
+ * @return {Uint8Array}
+ */
+export function concat(arrays) {
+    const totalLength = arrays.reduce((acc, value) => acc + value.length, 0);
+    const result = new Uint8Array(totalLength);
+    let offset = 0;
+    for (const array of arrays) {
+        result.set(array, offset);
+        offset += array.length;
+    }
+    return result;
+}
