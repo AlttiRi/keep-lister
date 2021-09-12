@@ -2,19 +2,24 @@
   <tr class="row"
       @click="onClick"
       @mousedown="onMousedown"
+      @mouseover="onMouseover"
+      @mouseleave="onMouseleave"
       :title="title"
       :class="{error}"
   >
       <td class="icon">{{icon}}</td>
       <td class="name">{{entry.name}}</td>
+      <td class="size">{{bytesToSize(entry.size)}}</td>
 <!--      <td class="type">{{entry.type}}</td>-->
+<!--      <td class="filler"></td>-->
   </tr>
 </template>
 
 <script setup>
 import {toRefs, computed} from "vue";
 import {meta, openFolder, separator} from "../core/folders.js";
-import {isImage, isVideo} from "../util.js";
+import {bytesToSize, isImage, isVideo} from "../util.js";
+import {hoveredEntry} from "../core/entries.js";
 
 const props = defineProps(["entry"]);
 
@@ -75,11 +80,20 @@ function onMousedown(event) {
   }
 }
 
+function onMouseover(event) {
+  hoveredEntry.value = entry.value;
+}
+function onMouseleave(event) {
+  hoveredEntry.value = null;
+}
 </script>
 
 <style lang="scss" scoped>
 .row {
   width: 100%;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
   &:hover {
     background-color: var(--blue-2);
   }
@@ -89,21 +103,29 @@ function onMousedown(event) {
     white-space: nowrap;
   }
   td {
-    max-width: 0; // no scroll for long names
     &.icon {
       border-left: 2px solid transparent;
-      width: 2.5%;
-      min-width: 22px;
+      width: 24px;
+      text-align: center;
       user-select: none;
     }
     &.name {
-      width: 100%;
+      display: block;
+      width: 1000px;
       white-space: pre; // to display tailing spaces
     }
+    &.size {
+      text-align: end;
+      min-width: 80px;
+    }
     &.type {
-      min-width: 58px;
+      text-align: end;
+      width: 58px;
       user-select: none;
     }
+    //&.filler {
+    //  width: inherit;
+    //}
   }
   &.error {
     .icon {

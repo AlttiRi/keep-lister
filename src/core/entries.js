@@ -54,3 +54,6 @@ export const count = computed(() => {
     }
     return list.value.length;
 });
+
+/** @type {import("vue").Ref<SimpleEntry>} */
+export const hoveredEntry = ref(null);

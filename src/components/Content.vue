@@ -3,7 +3,9 @@
        @contextmenu="onContextMenu"
   >
     <table class="rows" v-if="listLimited.length">
-      <Row v-for="entry of listLimited" :entry="entry"/>
+      <tbody>
+        <Row v-for="entry of listLimited" :entry="entry"/>
+      </tbody>
     </table>
     <div class="empty-message" v-if="empty && !error">
       <span>The folder is empty.</span>
