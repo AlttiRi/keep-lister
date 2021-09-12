@@ -99,15 +99,15 @@
   display: none;
 }
 /* Content.vue */
-.content[data-v-47520d98] {
+.content[data-v-1fc6a295] {
   width: 100%;
   overflow: auto;
 }
-.content .rows[data-v-47520d98] {
+.content .rows[data-v-1fc6a295] {
   width: 100%;
   overflow: auto;
 }
-.content .empty-message[data-v-47520d98] {
+.content .empty-message[data-v-1fc6a295] {
   height: 100%;
   width: 100%;
   display: flex;
@@ -115,7 +115,7 @@
   align-items: center;
   color: var(--gray-2);
 }
-.content .error-message[data-v-47520d98] {
+.content .error-message[data-v-1fc6a295] {
   height: 100%;
   width: 100%;
   display: flex;
@@ -124,15 +124,15 @@
   flex-direction: column;
   color: var(--red-1);
 }
-.content .error-message div h2[data-v-47520d98] {
+.content .error-message div h2[data-v-1fc6a295] {
   margin: 0;
   padding-bottom: 6px;
   padding-left: 2px;
 }
-.content .error-message div pre[data-v-47520d98] {
+.content .error-message div pre[data-v-1fc6a295] {
   display: inline;
 }
-.content .error-message div td[data-v-47520d98] {
+.content .error-message div td[data-v-1fc6a295] {
   padding-right: 3px;
 }
 /* FileSelect.vue */
@@ -164,35 +164,41 @@ input[data-v-23a29b76] {
   background-color: white;
 }
 /* Row.vue */
-.row[data-v-e9f0ab3e] {
+.row[data-v-943e3414] {
   width: 100%;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
 }
-.row[data-v-e9f0ab3e]:hover {
+.row[data-v-943e3414]:hover {
   background-color: var(--blue-2);
 }
-.row *[data-v-e9f0ab3e] {
+.row *[data-v-943e3414] {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
-.row td[data-v-e9f0ab3e] {
-  max-width: 0;
-}
-.row td.icon[data-v-e9f0ab3e] {
+.row td.icon[data-v-943e3414] {
   border-left: 2px solid transparent;
-  width: 2.5%;
-  min-width: 22px;
+  width: 24px;
+  text-align: center;
   user-select: none;
 }
-.row td.name[data-v-e9f0ab3e] {
-  width: 100%;
+.row td.name[data-v-943e3414] {
+  display: block;
+  width: 1000px;
   white-space: pre;
 }
-.row td.type[data-v-e9f0ab3e] {
-  min-width: 58px;
+.row td.size[data-v-943e3414] {
+  text-align: end;
+  min-width: 80px;
+}
+.row td.type[data-v-943e3414] {
+  text-align: end;
+  width: 58px;
   user-select: none;
 }
-.row.error .icon[data-v-e9f0ab3e] {
+.row.error .icon[data-v-943e3414] {
   border-left: 2px solid red;
 }
 /* Search.vue */
