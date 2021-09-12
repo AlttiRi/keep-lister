@@ -1,9 +1,10 @@
 import {computed, markRaw, ref, unref, watch, } from "vue";
 import {clearSearch} from "./search.js";
 import {folderDummy} from "./entry.js";
-import {dateToDayDateString} from "../util.js";
+import {dateToDayDateString, sleep} from "../util.js";
 import {addMessage} from "./debug.js";
 import {parseScan} from "./scan-parser.js";
+import {limit} from "./entries.js";
 
 
 /** @type {import("vue").Ref<ScanMeta>} */
@@ -12,7 +13,7 @@ export const meta = ref(null);
 const root = ref(null);
 
 // A hack to run recomputing of a computed property
-export const openedFolderStateNumber = ref(0);
+export const parsingStateNumber = ref(0);
 
 /**
  * @param {Blob|Response} input
@@ -23,6 +24,10 @@ export async function setScan(input) {
     let rootInited = false;
 
     console.time("setScan");
+    const limitTemp = limit.value;
+    limit.value = 25;
+
+    let time = Date.now();
     for await (const {meta: scanMeta, root: rootEntry, rootUpdated: rootContentUpdated} of parseScan(input)) {
         if (!metaInited && scanMeta) {
             meta.value = markRaw(scanMeta);
@@ -34,10 +39,15 @@ export async function setScan(input) {
             openFolder(rootEntry);
             rootInited = true;
         }
-        if (rootContentUpdated) {
-            openedFolderStateNumber.value = openedFolderStateNumber.value + 1;
+        const now = Date.now();
+        if (rootContentUpdated || now - time > 100) {
+            time = now;
+            parsingStateNumber.value++;
+            await sleep();
         }
     }
+    limit.value = limitTemp;
+    parsingStateNumber.value++;
     console.timeEnd("setScan");
 
     clearSearch();

@@ -9,7 +9,7 @@
   >
       <td class="icon">{{icon}}</td>
       <td class="name">{{entry.name}}</td>
-      <td class="size">{{bytesToSize(entry.size)}}</td>
+      <td class="size">{{size}}</td>
 <!--      <td class="type">{{entry.type}}</td>-->
 <!--      <td class="filler"></td>-->
   </tr>
@@ -17,11 +17,18 @@
 
 <script setup>
 import {toRefs, computed} from "vue";
-import {meta, openFolder, separator} from "../core/folders.js";
+import {meta, openFolder, parsingStateNumber, separator} from "../core/folders.js";
 import {bytesToSize, isImage, isVideo} from "../util.js";
 import {hoveredEntry} from "../core/entries.js";
 
 const props = defineProps(["entry"]);
+
+const size = computed(() => {
+  if (parsingStateNumber.value) {
+    // force recomputing on change
+  }
+  return bytesToSize(entry.value.size);
+});
 
 /** @type {import("vue").Ref<SimpleEntry>} */
 const entry = toRefs(props).entry;

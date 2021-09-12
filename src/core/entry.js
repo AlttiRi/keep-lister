@@ -51,6 +51,7 @@ export class SimpleEntry {
             this.children = [];
         }
         this.children.push(entry);
+        this.increaseContentSize(entry.size);
     }
     /** @param {SimpleEntry[]} entries
      *  @param {Number} total */
@@ -61,9 +62,22 @@ export class SimpleEntry {
         this.hardlinksTotal = total;
     }
 
+    increaseContentSize(size) {
+        if (!size) {
+            return;
+        }
+        if (!this._contentSize) {
+            this._contentSize = 0;
+        }
+        this._contentSize += size;
+        if (this.parent && size) {
+            this.parent.increaseContentSize(size);
+        }
+    }
     get size() {
         if (this.type === "folder") {
-            return -0; // todo
+            return this._contentSize || 0;
+            // return this.children?.reduce((pre, cur) => pre + cur.size, 0) || 0;
         }
         return this._size || 0;
     }

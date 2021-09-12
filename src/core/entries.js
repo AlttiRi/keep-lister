@@ -1,6 +1,6 @@
 import {computed, ref} from "vue";
 import {search, searchResult} from "./search.js";
-import {openedFolder, openedFolderStateNumber} from "./folders.js";
+import {openedFolder, parsingStateNumber} from "./folders.js";
 
 
 export const sort = ref(true);
@@ -18,8 +18,8 @@ export function comparator(pre, cur) {
 
 // grouped by type
 export const entries = computed(() => {
-    if (openedFolderStateNumber.value) {
-        // force recomputing of change
+    if (parsingStateNumber.value) {
+        // force recomputing on change
     }
     return [
         ...openedFolder.value.folders.sort(comparator),
@@ -33,8 +33,8 @@ export const entries = computed(() => {
 });
 
 
-/** @type {number} */
-const limit = 1000;
+/** @type {import("vue").Ref<Number>} */
+export const limit = ref(1000);
 
 /** @type {import("vue").ComputedRef<SimpleEntry[]>} */
 export const list = computed(() => {
@@ -45,11 +45,11 @@ export const list = computed(() => {
 });
 /** @type {import("vue").ComputedRef<SimpleEntry[]>} */
 export const listLimited = computed(() => {
-    return list.value.slice(0, limit);
+    return list.value.slice(0, limit.value);
 });
 /** @type {import("vue").ComputedRef<Number>} */
 export const count = computed(() => {
-    if (searchResult.value.length > limit) {
+    if (searchResult.value.length > limit.value) {
         return searchResult.value.length;
     }
     return list.value.length;
