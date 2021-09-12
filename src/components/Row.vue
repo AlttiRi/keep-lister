@@ -21,6 +21,7 @@ import {toRefs, computed} from "vue";
 import {meta, openFolder, parsingStateNumber, separator} from "../core/folders.js";
 import {bytesToSize, dateToDayDateTimeString, isImage, isVideo} from "../util.js";
 import {hoveredEntry} from "../core/entries.js";
+import {debugMessageFromEntry} from "../core/debug.js";
 
 const props = defineProps(["entry"]);
 
@@ -76,11 +77,10 @@ const icon = computed(() => {
 });
 
 function onClick(event) {
+  debugMessageFromEntry(entry.value);
+
   if (entry.value.type === "folder") {
-    console.log("openFolder", entry.value);
     openFolder(entry.value);
-  } else {
-    console.log(entry.value);
   }
 }
 
@@ -137,7 +137,7 @@ function onMouseleave(event) {
     }
     &.mtime {
       text-align: end;
-      width: 150px;
+      width: 145px;
       user-select: none;
     }
     &.type {

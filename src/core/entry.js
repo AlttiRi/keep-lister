@@ -74,10 +74,11 @@ export class SimpleEntry {
             this.parent.increaseContentSize(size);
         }
     }
+
+    /** @return {Number} */
     get size() {
         if (this.type === "folder") {
             return this._contentSize || 0;
-            // return this.children?.reduce((pre, cur) => pre + cur.size, 0) || 0;
         }
         return this._size || 0;
     }

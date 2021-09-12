@@ -14,5 +14,7 @@ const size = computed(() => hoveredEntry.value?.size && bytesToSize(hoveredEntry
 </script>
 
 <style scoped>
-
+.status {
+  padding: 2px 2px 2px 6px;
+}
 </style>

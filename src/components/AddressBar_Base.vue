@@ -13,6 +13,7 @@
 import {computed} from "vue";
 import {scanRootPath, openedFolders, separator, openedFolder, openFolder, meta} from "../core/folders.js";
 import {dateToDayDateString} from "../util.js";
+import {debugMessageFromEntry} from "../core/debug.js";
 
 const title = computed(() => {
   if (!meta.value) {
@@ -71,7 +72,9 @@ const showSep = computed(() => {
 });
 
 function goToRoot() {
-  openFolder(openedFolder.value.root);
+  const root = openedFolder.value.root;
+  debugMessageFromEntry(root);
+  openFolder(root);
 }
 
 </script>

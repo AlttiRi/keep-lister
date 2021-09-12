@@ -11,6 +11,7 @@
 <script setup>
 import {computed, toRefs} from "vue";
 import {openFolder, separator} from "../core/folders.js";
+import {debugMessageFromEntry} from "../core/debug.js";
 
 const props = defineProps(["index", "count", "entry"]);
 const {index, count, entry} = toRefs(props);
@@ -26,6 +27,7 @@ const part2 = computed(() => {
 });
 
 function onClick() {
+  debugMessageFromEntry(entry.value);
   openFolder(entry.value);
 }
 </script>
