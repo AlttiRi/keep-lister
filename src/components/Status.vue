@@ -1,7 +1,7 @@
 <template>
   <div class="status">
-    <span>Item count: {{count}}</span>
-    <span v-show="hoveredEntry">. Size: {{size}}</span>
+    <span>Items count: {{count}}</span>
+    <span v-show="hoveredEntry">. Hover item's size: {{size}}</span>
   </div>
 </template>
 

@@ -50,7 +50,10 @@ export function debounce(runnable, ms = 50) {
 // "Sun, 10 Jan 2021 22:22:22 GMT" -> "2021.01.10"
 export function dateToDayDateString(dateValue, utc = true) {
     const _date = new Date(dateValue);
-    function pad(str) {
+    if (_date.toString() === "Invalid Date") {
+        console.warn("Invalid Date value: ", dateValue);
+    }
+    function pad2(str) {
         return str.toString().padStart(2, "0");
     }
     const _utc = utc ? "UTC" : "";
@@ -58,14 +61,24 @@ export function dateToDayDateString(dateValue, utc = true) {
     const month = _date[`get${_utc}Month`]() + 1;
     const date  = _date[`get${_utc}Date`]();
 
-    // if server error (or missed)
-    if (Number(_date) === 0) {
-        console.warn("date is 1970.01.01");
-        return "";
-    }
-
-    return year + "." + pad(month) + "." + pad(date);
+    return year + "." + pad2(month) + "." + pad2(date);
 }
+
+// "Sun, 10 Jan 2021 22:22:22 GMT" -> "2021.01.10 22:22:22Z"
+export function dateToDayDateTimeString(dateValue, utc = true) {
+    const _date = new Date(dateValue);
+    function pad2(str) {
+        return str.toString().padStart(2, "0");
+    }
+    const _utc = utc ? "UTC" : "";
+    const hours    = _date[`get${_utc}Hours`]();
+    const minutes  = _date[`get${_utc}Minutes`]();
+    const seconds  = _date[`get${_utc}Seconds`]();
+
+    const time = pad2(hours)+ ":" + pad2(minutes) + ":" + pad2(seconds);
+    return dateToDayDateString(_date, utc) + " " + time + (utc ? "Z" : "");
+}
+
 
 export function structuredClone(object) {
     return new Promise(resolve => {
