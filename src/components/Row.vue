@@ -28,7 +28,7 @@ const size = computed(() => {
   if (parsingStateNumber.value) {
     // force recomputing on change
   }
-  return bytesToSize(entry.value.size);
+  return entry.value.hasErrors ? "" : bytesToSize(entry.value.size);
 });
 
 /** @type {import("vue").Ref<SimpleEntry>} */
