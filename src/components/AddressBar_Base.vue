@@ -55,6 +55,9 @@ const root = computed(() => {
   if (str.startsWith("//")) { // for unix
     return str.slice(1);
   }
+  if (meta.value?.platform === "win32") { // uppercase win drive letter
+    return str[0].toUpperCase() + str.slice(1);
+  }
   return str;
 });
 const part1 = computed(() => {
