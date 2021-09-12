@@ -9,7 +9,7 @@
   >
       <td class="icon">{{icon}}</td>
       <td class="name">{{entry.name}}</td>
-      <td class="size">{{size}}</td>
+      <td class="size" :class="sizeClass">{{size}}</td>
       <td class="mtime">{{mtime}}</td>
 <!--      <td class="type">{{entry.type}}</td>-->
 <!--      <td class="filler"></td>-->
@@ -30,6 +30,13 @@ const size = computed(() => {
     // force recomputing on change
   }
   return entry.value.hasErrors ? "" : bytesToSize(entry.value.size);
+});
+
+const sizeClass = computed(() => {
+  if (size.value === "0 B") {
+    return "Z";
+  }
+  return size.value.split(" ")[1];
 });
 
 /** @type {import("vue").Ref<SimpleEntry>} */
@@ -134,6 +141,24 @@ function onMouseleave(event) {
     &.size {
       text-align: end;
       min-width: 80px;
+      &.Z {
+        color: #777;
+      }
+      &.B {
+        color: #000;
+      }
+      &.KB {
+        color: #0b0;
+      }
+      &.MB {
+        color: #0070dd;
+      }
+      &.GB {
+        color: #a335ee;
+      }
+      &.TB {
+        color: #ff8000;
+      }
     }
     &.mtime {
       text-align: end;
