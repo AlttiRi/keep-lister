@@ -82,12 +82,12 @@ export function appendScript(src, integrity) {
         const script = document.createElement("script");
         script.onload = resolve;
         script.src = src;
-        script.setAttribute("async", "");
+        script.async = true;
         if (integrity) {
             script.integrity = integrity;
-            script.setAttribute("crossorigin", "anonymous");
+            script.crossOrigin = "anonymous";
         }
-        document.querySelector("body").append(script);
+        document.body.append(script);
     });
 }
 
