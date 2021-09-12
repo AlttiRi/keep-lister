@@ -78,9 +78,10 @@ export function structuredClone(object) {
 }
 
 export function appendScript(src, integrity) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.onload = resolve;
+        script.onerror = event => reject({message: "Failed to load script", src, integrity, event});
         script.src = src;
         script.async = true;
         if (integrity) {
