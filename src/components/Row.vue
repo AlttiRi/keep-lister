@@ -19,7 +19,7 @@
 <script setup>
 import {toRefs, computed} from "vue";
 import {meta, openFolder, parsingStateNumber, separator} from "../core/folders.js";
-import {bytesToSize, dateToDayDateString, isImage, isVideo} from "../util.js";
+import {bytesToSize, dateToDayDateTimeString, isImage, isVideo} from "../util.js";
 import {hoveredEntry} from "../core/entries.js";
 
 const props = defineProps(["entry"]);
@@ -41,7 +41,11 @@ const error = computed(() => {
 
 /** @type {import("vue").ComputedRef<String>} */
 const mtime = computed(() => {
-  return entry.value.mtime !== undefined ? dateToDayDateString(entry.value.mtime) : "";
+  if (entry.value.mtime === undefined) {
+    return "";
+  }
+  const time = dateToDayDateTimeString(entry.value.mtime, false);
+  return time.slice(0, -3); // trim seconds
 });
 
 /** @type {import("vue").ComputedRef<String>} */
@@ -124,7 +128,7 @@ function onMouseleave(event) {
     }
     &.name {
       display: block;
-      width: 920px;
+      width: 880px;
       white-space: pre; // to display tailing spaces
     }
     &.size {
@@ -133,7 +137,7 @@ function onMouseleave(event) {
     }
     &.mtime {
       text-align: end;
-      width: 90px;
+      width: 150px;
       user-select: none;
     }
     &.type {
