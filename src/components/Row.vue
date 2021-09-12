@@ -10,6 +10,7 @@
       <td class="icon">{{icon}}</td>
       <td class="name">{{entry.name}}</td>
       <td class="size">{{size}}</td>
+      <td class="mtime">{{mtime}}</td>
 <!--      <td class="type">{{entry.type}}</td>-->
 <!--      <td class="filler"></td>-->
   </tr>
@@ -18,7 +19,7 @@
 <script setup>
 import {toRefs, computed} from "vue";
 import {meta, openFolder, parsingStateNumber, separator} from "../core/folders.js";
-import {bytesToSize, isImage, isVideo} from "../util.js";
+import {bytesToSize, dateToDayDateString, isImage, isVideo} from "../util.js";
 import {hoveredEntry} from "../core/entries.js";
 
 const props = defineProps(["entry"]);
@@ -36,6 +37,11 @@ const entry = toRefs(props).entry;
 /** @type {import("vue").Ref<Boolean>} */
 const error = computed(() => {
   return entry.value.hasErrors;
+});
+
+/** @type {import("vue").ComputedRef<String>} */
+const mtime = computed(() => {
+  return entry.value.mtime !== undefined ? dateToDayDateString(entry.value.mtime) : "";
 });
 
 /** @type {import("vue").ComputedRef<String>} */
@@ -118,12 +124,17 @@ function onMouseleave(event) {
     }
     &.name {
       display: block;
-      width: 1000px;
+      width: 920px;
       white-space: pre; // to display tailing spaces
     }
     &.size {
       text-align: end;
       min-width: 80px;
+    }
+    &.mtime {
+      text-align: end;
+      width: 90px;
+      user-select: none;
     }
     &.type {
       text-align: end;
