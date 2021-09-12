@@ -164,46 +164,46 @@ input[data-v-23a29b76] {
   background-color: white;
 }
 /* Row.vue */
-.row[data-v-0e9a0c97] {
+.row[data-v-338f8da1] {
   width: 100%;
   min-height: 28px;
   display: flex;
   align-items: center;
 }
-.row[data-v-0e9a0c97]:hover {
+.row[data-v-338f8da1]:hover {
   background-color: var(--blue-2);
 }
-.row *[data-v-0e9a0c97] {
+.row *[data-v-338f8da1] {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
-.row td.icon[data-v-0e9a0c97] {
+.row td.icon[data-v-338f8da1] {
   border-left: 2px solid transparent;
   width: 24px;
   text-align: center;
   user-select: none;
 }
-.row td.name[data-v-0e9a0c97] {
+.row td.name[data-v-338f8da1] {
   display: block;
-  width: 920px;
+  width: 880px;
   white-space: pre;
 }
-.row td.size[data-v-0e9a0c97] {
+.row td.size[data-v-338f8da1] {
   text-align: end;
   min-width: 80px;
 }
-.row td.mtime[data-v-0e9a0c97] {
+.row td.mtime[data-v-338f8da1] {
   text-align: end;
-  width: 90px;
+  width: 150px;
   user-select: none;
 }
-.row td.type[data-v-0e9a0c97] {
+.row td.type[data-v-338f8da1] {
   text-align: end;
   width: 58px;
   user-select: none;
 }
-.row.error .icon[data-v-0e9a0c97] {
+.row.error .icon[data-v-338f8da1] {
   border-left: 2px solid red;
 }
 /* Search.vue */
