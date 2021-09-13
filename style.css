@@ -99,15 +99,18 @@
   display: none;
 }
 /* Content.vue */
-.content[data-v-1fc6a295] {
+[data-v-02cd44d4] .row .name {
+  width: var(--8f9392ba);
+}
+.content[data-v-02cd44d4] {
   width: 100%;
   overflow: auto;
 }
-.content .rows[data-v-1fc6a295] {
+.content .rows[data-v-02cd44d4] {
   width: 100%;
   overflow: auto;
 }
-.content .empty-message[data-v-1fc6a295] {
+.content .empty-message[data-v-02cd44d4] {
   height: 100%;
   width: 100%;
   display: flex;
@@ -115,7 +118,7 @@
   align-items: center;
   color: var(--gray-2);
 }
-.content .error-message[data-v-1fc6a295] {
+.content .error-message[data-v-02cd44d4] {
   height: 100%;
   width: 100%;
   display: flex;
@@ -124,15 +127,15 @@
   flex-direction: column;
   color: var(--red-1);
 }
-.content .error-message div h2[data-v-1fc6a295] {
+.content .error-message div h2[data-v-02cd44d4] {
   margin: 0;
   padding-bottom: 6px;
   padding-left: 2px;
 }
-.content .error-message div pre[data-v-1fc6a295] {
+.content .error-message div pre[data-v-02cd44d4] {
   display: inline;
 }
-.content .error-message div td[data-v-1fc6a295] {
+.content .error-message div td[data-v-02cd44d4] {
   padding-right: 3px;
 }
 /* Debug.vue */
@@ -169,64 +172,63 @@ input[data-v-23a29b76] {
   background-color: white;
 }
 /* Row.vue */
-.row[data-v-aaaff7cc] {
+.row[data-v-54eb98be] {
   width: 100%;
   min-height: 28px;
   display: flex;
   align-items: center;
 }
-.row[data-v-aaaff7cc]:hover {
+.row[data-v-54eb98be]:hover {
   background-color: var(--blue-2);
 }
-.row *[data-v-aaaff7cc] {
+.row *[data-v-54eb98be] {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
-.row td.icon[data-v-aaaff7cc] {
+.row td.icon[data-v-54eb98be] {
   border-left: 2px solid transparent;
   width: 24px;
   text-align: center;
   user-select: none;
 }
-.row td.name[data-v-aaaff7cc] {
+.row td.name[data-v-54eb98be] {
   display: block;
-  width: 880px;
   white-space: pre;
 }
-.row td.size[data-v-aaaff7cc] {
+.row td.size[data-v-54eb98be] {
   text-align: end;
   min-width: 80px;
 }
-.row td.size.Z[data-v-aaaff7cc] {
+.row td.size.Z[data-v-54eb98be] {
   color: #777;
 }
-.row td.size.B[data-v-aaaff7cc] {
+.row td.size.B[data-v-54eb98be] {
   color: #000;
 }
-.row td.size.KB[data-v-aaaff7cc] {
+.row td.size.KB[data-v-54eb98be] {
   color: #0b0;
 }
-.row td.size.MB[data-v-aaaff7cc] {
+.row td.size.MB[data-v-54eb98be] {
   color: #0070dd;
 }
-.row td.size.GB[data-v-aaaff7cc] {
+.row td.size.GB[data-v-54eb98be] {
   color: #a335ee;
 }
-.row td.size.TB[data-v-aaaff7cc] {
+.row td.size.TB[data-v-54eb98be] {
   color: #ff8000;
 }
-.row td.mtime[data-v-aaaff7cc] {
+.row td.mtime[data-v-54eb98be] {
   text-align: end;
   width: 145px;
-  user-select: none;
+  color: grey;
 }
-.row td.type[data-v-aaaff7cc] {
+.row td.type[data-v-54eb98be] {
   text-align: end;
   width: 58px;
   user-select: none;
 }
-.row.error .icon[data-v-aaaff7cc] {
+.row.error .icon[data-v-54eb98be] {
   border-left: 2px solid red;
 }
 /* Search.vue */
