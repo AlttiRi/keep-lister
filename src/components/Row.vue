@@ -19,7 +19,7 @@
 <script setup>
 import {toRefs, computed} from "vue";
 import {meta, openFolder, parsingStateNumber, separator} from "../core/folders.js";
-import {bytesToSize, dateToDayDateTimeString, isImage, isVideo} from "../util.js";
+import {bytesToSizeWinLike, dateToDayDateTimeString, isImage, isVideo} from "../util.js";
 import {hoveredEntry} from "../core/entries.js";
 import {debugMessageFromEntry} from "../core/debug.js";
 
@@ -29,7 +29,7 @@ const size = computed(() => {
   if (parsingStateNumber.value) {
     // force recomputing on change
   }
-  return entry.value.hasErrors ? "" : bytesToSize(entry.value.size);
+  return entry.value.hasErrors ? "" : bytesToSizeWinLike(entry.value.size);
 });
 
 const sizeClass = computed(() => {

@@ -189,16 +189,58 @@ export function *iterateBlob(blob, chunkSize = 2 * 1024 * 1024) {
  * @param {Number} [decimals=2]
  * @returns {String}
  */
-export function bytesToSize(bytes, decimals = 2) {
-    if (bytes === 0) {
-        return "0 B";
-    }
+export function bytesToSize0(bytes, decimals = 2) {
+    if (bytes === 0) { return "0 B"; }
     const k = 1024;
     decimals = decimals < 0 ? 0 : decimals;
     const sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(decimals)) + " " + sizes[i];
+}
+
+/**
+ * Formats bytes mostly like Windows does,
+ * but in some rare cases the result is different.
+ * Check the file with tests.
+ * @see win-like-file-sizes.test.js
+ * @param {Number} bytes
+ * @return {string}
+ */
+export function bytesToSizeWinLike(bytes) {
+    if (bytes < 1024) { return bytes + " B"; }
+    const sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    let i = Math.floor(Math.log(bytes) / Math.log(1024));
+    let result = (bytes / Math.pow(1024, i));
+    if (result >= 1000) {
+        i++;
+        result /= 1024;
+    }
+    return toTruncPrecision3(result) + " " + sizes[i];
+}
+
+/**
+ * @see trunc-with-precision-3.test.js
+ * @param {Number} number
+ * @return {string}
+ */
+export function toTruncPrecision3(number) {
+    let result = number;
+    if (number < 10) {
+        result = Math.trunc(result * 100)/100;
+    }
+    else if (result < 100) {
+        result = Math.trunc(result * 10)/10;
+    }
+    else if (result < 1000) {
+        result = Math.trunc(result);
+    }
+    if (number < 0.1) {
+        return result.toPrecision(1);
+    }
+    else if (number < 1) {
+        return result.toPrecision(2);
+    }
+    return result.toPrecision(3);
 }
 
 /**

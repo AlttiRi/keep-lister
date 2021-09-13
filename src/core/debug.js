@@ -1,5 +1,5 @@
 import {ref} from "vue";
-import {bytesToSize, dateToDayDateTimeString} from "../util.js";
+import {bytesToSizeWinLike, dateToDayDateTimeString} from "../util.js";
 
 export const debugMessage = ref("");
 export function addMessage(message) {
@@ -23,7 +23,7 @@ export function debugMessageFromEntry(entry) {
         message += "mtime " + `"${dateToDayDateTimeString(entry.mtime, false)}"`;
         message += " —  btime " + `"${dateToDayDateTimeString(entry.btime, false)}"`;
 
-        message += ` — ${name} — ${entry.size} (${bytesToSize(entry.size)})`;
+        message += ` — ${name} — ${entry.size} (${bytesToSizeWinLike(entry.size)})`;
         debugMessage.value = message;
     }
 }

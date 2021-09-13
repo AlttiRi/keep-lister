@@ -8,9 +8,9 @@
 <script setup>
 import {count, hoveredEntry} from "../core/entries.js";
 import {computed} from "vue";
-import {bytesToSize} from "../util.js";
+import {bytesToSizeWinLike} from "../util.js";
 
-const size = computed(() => hoveredEntry.value?.size && bytesToSize(hoveredEntry.value.size));
+const size = computed(() => hoveredEntry.value?.size && bytesToSizeWinLike(hoveredEntry.value.size));
 </script>
 
 <style scoped>
