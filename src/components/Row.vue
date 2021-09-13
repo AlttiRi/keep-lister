@@ -135,7 +135,7 @@ function onMouseleave(event) {
     }
     &.name {
       display: block;
-      width: 880px;
+      //width: 880px; // gets it from the parent
       white-space: pre; // to display tailing spaces
     }
     &.size {
@@ -163,7 +163,7 @@ function onMouseleave(event) {
     &.mtime {
       text-align: end;
       width: 145px;
-      user-select: none;
+      color: grey;
     }
     &.type {
       text-align: end;

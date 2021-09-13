@@ -36,7 +36,7 @@
 import Row from "./Row.vue";
 import {goBack, empty, openedFolder} from "../core/folders.js";
 import {listLimited} from "../core/entries.js";
-import {computed} from "vue";
+import {computed, onMounted, ref} from "vue";
 
 /** @type {ComputedRef<ScanError>} */
 const error = computed(() => {
@@ -50,9 +50,25 @@ function onContextMenu(event) {
   event.preventDefault();
   goBack();
 }
+
+const nameElemWidth = ref("880px");
+onMounted(() => {
+  const w = document.body.offsetWidth;
+  if (w < 1280) {
+    let px = 880 - (1280 - w);
+    px = px < 140 ? 140 : px;
+    nameElemWidth.value = `${px}px`;
+  }
+});
+
 </script>
 
+
 <style lang="scss" scoped>
+::v-deep(.row .name) {
+  width: v-bind(nameElemWidth);
+}
+
 .content {
   width: 100%;
   overflow: auto;
