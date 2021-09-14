@@ -189,7 +189,7 @@ export function *iterateBlob(blob, chunkSize = 2 * 1024 * 1024) {
  * @param {Number} [decimals=2]
  * @returns {String}
  */
-export function bytesToSize0(bytes, decimals = 2) {
+export function bytesToSize(bytes, decimals = 2) {
     if (bytes === 0) { return "0 B"; }
     const k = 1024;
     decimals = decimals < 0 ? 0 : decimals;
@@ -210,7 +210,7 @@ export function bytesToSizeWinLike(bytes) {
     if (bytes < 1024) { return bytes + " B"; }
     const sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     let i = Math.floor(Math.log(bytes) / Math.log(1024));
-    let result = (bytes / Math.pow(1024, i));
+    let result = bytes / Math.pow(1024, i);
     if (result >= 1000) {
         i++;
         result /= 1024;
