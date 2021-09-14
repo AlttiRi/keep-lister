@@ -18,6 +18,11 @@ function eq(name, result, expected) {
         console.log("---");
     }
 }
+function report() {
+    console.log();
+    console.log(`Failed ${failed.length}`);
+    console.log(`Passed ${passed.length}`);
+}
 
 
 
@@ -206,20 +211,4 @@ eq("xxx-2", bytesToSizeWinLike(2873328), "2.73 MB"); // failed
 eq("xxx-4", bytesToSizeWinLike(3177467), "3.02 MB"); // failed
 
 
-
-
-/*
-
-
-
-
-
-
-
-
- */
-
-
-console.log();
-console.log(`Failed ${failed.length}`);
-console.log(`Passed ${passed.length}`);
+report();

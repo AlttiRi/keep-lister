@@ -17,7 +17,11 @@ function eq(name, result, expected) {
         console.log("---");
     }
 }
-
+function report() {
+    console.log();
+    console.log(`Failed ${failed.length}`);
+    console.log(`Passed ${passed.length}`);
+}
 
 
 
@@ -34,6 +38,4 @@ eq("9", toTruncPrecision3(0.099), "0.09");
 
 
 
-console.log();
-console.log(`Failed ${failed.length}`);
-console.log(`Passed ${passed.length}`);
+report();
