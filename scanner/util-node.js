@@ -83,7 +83,7 @@ export async function *listFiles(settings = {}) {
         depthBreadthRoot: false,
         _deep: 0,
     }, settings);
-    console.log(settings._deep, settings.filepath);
+    // console.log(settings._deep, settings.filepath);
 
     try {
         /** @type {import("fs/promises").Dirent[]} */
