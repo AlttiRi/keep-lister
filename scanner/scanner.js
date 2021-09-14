@@ -43,8 +43,9 @@ const scanObject = new FlatScanObject(rootEntry, scanDirName);
 for await (const /** @type {ListEntry} */ listEntry of listFiles({
     filepath: scanFolderPath,
     recursively: true,
-    emitDirectories: true
-}, false)) {
+    emitDirectories: true,
+    breadthFirst: false
+})) {
     const scanEntry = await handleListEntry(listEntry);
     meta.increaseErrorCounter(scanEntry);
     meta.handleStats(scanEntry);
