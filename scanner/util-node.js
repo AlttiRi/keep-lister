@@ -56,15 +56,20 @@ export async function isSymLooped(filepath) {
  */
 
 /**
+ * An entry of the listing of the content of a directory.
+ * @typedef {Object} FileListingSetting
+ * @property {string}  [filepath = process.cwd()]
+ * @property {boolean} [recursively = true]
+ * @property {boolean} [emitDirectories = false]
+ * @property {Number}  [_deep = 0]
+ * @property {boolean} [breadthFirst = false]
+ */
+
+/**
  * Not follows symlinks
  * May return an entry with readdir error (entry type is folder)
  *
- * @param {object} [settings = {}] - Config object
- * @param {string} [settings.filepath = process.cwd()]
- * @param {boolean} [settings.recursively = true]
- * @param {boolean} [settings.emitDirectories = false]
- * @param {Number} [settings._deep = 0]
- * @param {boolean} [settings.breadthFirst = false]
+ * @param {FileListingSetting} [settings = {}] - Config object
  * @return {AsyncGenerator<ListEntry>}
  */
 export async function *listFiles(settings = {}) {
@@ -94,13 +99,13 @@ export async function *listFiles(settings = {}) {
         yield {
             /** @type {IOError} */
             error, // `readdir()` error (`scandir` call)
-            path: filepath
+            path: settings.filepath
         }
     }
 }
 
 /**
- * @param settings
+ * @param {FileListingSetting} settings
  * @param {import("fs/promises").Dirent} dirEntry
  * @return {ListEntry}
  */
@@ -114,11 +119,7 @@ function toListEntry(dirEntry, settings) {
 }
 
 /**
- * @param {object} [settings = {}] - Config object
- * @param {string} [settings.filepath = process.cwd()]
- * @param {boolean} [settings.recursively = true]
- * @param {boolean} [settings.emitDirectories = false]
- * @param {Number} [settings._deep = 0]
+ * @param {FileListingSetting} settings
  * @param {ListEntry[]} listEntries
  * @return {AsyncGenerator<ListEntry>}
  */
@@ -139,11 +140,7 @@ async function *depthFirstList(settings, listEntries) {
 }
 
 /**
- * @param {object} [settings = {}] - Config object
- * @param {string} [settings.filepath = process.cwd()]
- * @param {boolean} [settings.recursively = true]
- * @param {boolean} [settings.emitDirectories = false]
- * @param {Number} [settings._deep = 0]
+ * @param {FileListingSetting} settings
  * @param {ListEntry[]} listEntries
  * @return {AsyncGenerator<ListEntry>}
  */
