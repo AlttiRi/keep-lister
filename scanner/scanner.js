@@ -45,6 +45,7 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
     recursively: true,
     emitDirectories: true,
     breadthFirst: false,
+    depthBreadthRoot: true,
 })) {
     const scanEntry = await handleListEntry(listEntry);
     meta.increaseErrorCounter(scanEntry);

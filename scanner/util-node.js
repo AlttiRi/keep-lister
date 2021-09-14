@@ -63,6 +63,7 @@ export async function isSymLooped(filepath) {
  * @property {boolean} [emitDirectories = false]
  * @property {Number}  [_deep = 0]
  * @property {boolean} [breadthFirst = false]
+ * @property {boolean} [depthBreadthRoot = false] - to list at the start all entries of the root folder.
  */
 
 /**
@@ -79,9 +80,10 @@ export async function *listFiles(settings = {}) {
         // followSymbol: false,  // [unused] // if loop? // if other hard drive? //
         emitDirectories: false,
         breadthFirst: false,
+        depthBreadthRoot: false,
         _deep: 0,
     }, settings);
-    // console.log(settings._deep, settings.filepath);
+    console.log(settings._deep, settings.filepath);
 
     try {
         /** @type {import("fs/promises").Dirent[]} */
@@ -91,7 +93,11 @@ export async function *listFiles(settings = {}) {
         /** @type {ListEntry[]} */
         const listEntries = dirEntries.map(dirEntry => toListEntry(dirEntry, settings));
         if (!settings.breadthFirst) {
-            yield *depthFirstList(settings, listEntries);
+            if (settings.depthBreadthRoot && settings._deep === 0) {
+                yield *depthBreadthFirstList(settings, listEntries);
+            } else {
+                yield *depthFirstList(settings, listEntries);
+            }
         } else {
             yield *breadthFirstList(settings, listEntries);
         }
@@ -138,6 +144,34 @@ async function *depthFirstList(settings, listEntries) {
         }
     }
 }
+
+/**
+ * Yields all directory's entries and only then goes to deep.
+ * @param {FileListingSetting} settings
+ * @param {ListEntry[]} listEntries
+ * @return {AsyncGenerator<ListEntry>}
+ */
+async function *depthBreadthFirstList(settings, listEntries) {
+    /** @type {ListEntry[]} */
+    let queue = [];
+    const _deep = settings._deep + 1;
+    for (const listEntry of listEntries) {
+        if (!listEntry.dirent.isDirectory()) {
+            yield listEntry;
+        } else {
+            if (settings.emitDirectories) {
+                yield listEntry;
+            }
+            if (settings.recursively) {
+                queue.push(listEntry);
+            }
+        }
+    }
+    for (const listEntry of queue) {
+        yield *listFiles({...settings, _deep, filepath: listEntry.path});
+    }
+}
+
 
 /**
  * @param {FileListingSetting} settings
