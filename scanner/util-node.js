@@ -67,83 +67,22 @@ export async function isSymLooped(filepath) {
  * @return {AsyncGenerator<ListEntry>}
  */
 export async function *listFiles(settings = {}, breadthFirst = false) {
-    const {
-        filepath,
-        recursively,
-        // followSymbol, // [unused] // if loop? // if other hard drive? //
-        emitDirectories,
-    } = Object.assign({
+    Object.assign({
         filepath: process.cwd(),
         recursively: true,
-        // followSymbol: false,
+        // followSymbol: false,  // [unused] // if loop? // if other hard drive? //
         emitDirectories: false,
     }, settings);
 
     try {
         /** @type {import("fs/promises").Dirent[]} */
-        const dirEntries = await fs.readdir(filepath, { // can throws an error
+        const dirEntries = await fs.readdir(settings.filepath, { // can throws an error
             withFileTypes: true
         });
-
-        if (!breadthFirst) { // Depth-first
-            for (const dirEntry of dirEntries) {
-                const entryFilepath = path.resolve(filepath, dirEntry.name);
-                /** @type {ListEntry} */
-                const listEntry = {
-                    path: entryFilepath,
-                    dirent: dirEntry
-                };
-                if (!dirEntry.isDirectory()) {
-                    yield listEntry;
-                } else {
-                    if (emitDirectories) {
-                        yield listEntry;
-                    }
-                    if (recursively) {
-                        yield *listFiles({...settings, filepath: entryFilepath});
-                    }
-                }
-            }
-        } else { // Breadth-first
-            /** @type {ListEntry[]} */
-            const queue = [];
-            for (const dirEntry of dirEntries) {
-                const entryFilepath = path.resolve(filepath, dirEntry.name);
-                const listEntry = {
-                    path: entryFilepath,
-                    dirent: dirEntry
-                };
-                if (dirEntry.isDirectory()) {
-                    queue.push(listEntry);
-                    if (emitDirectories) {
-                        yield listEntry;
-                    }
-                } else {
-                    yield listEntry;
-                }
-            }
-            /** @type {ListEntry|undefined} */
-            let entry;
-            while (entry = queue.shift()) {
-                for await (const listEntry of listFiles({
-                    ...settings,
-                    filepath: entry.path,
-                    recursively: false,
-                })) {
-                    if (listEntry.error) {
-                        yield listEntry;
-                        continue;
-                    }
-                    if (listEntry.dirent.isDirectory()) {
-                        if (emitDirectories) {
-                            yield listEntry;
-                        }
-                        queue.push(listEntry);
-                    } else {
-                        yield listEntry;
-                    }
-                }
-            }
+        if (!breadthFirst) {
+            yield *depthFirstList(settings, dirEntries);
+        } else {
+            yield *breadthFirstList(settings, dirEntries);
         }
     } catch (error) {
         yield {
@@ -153,6 +92,86 @@ export async function *listFiles(settings = {}, breadthFirst = false) {
         }
     }
 }
+
+/**
+ * @param {object} [settings = {}] - Config object
+ * @param {string} [settings.filepath = process.cwd()]
+ * @param {boolean} [settings.recursively = true]
+ * @param {boolean} [settings.emitDirectories = false]
+ * @param {import("fs/promises").Dirent[]} dirEntries
+ * @return {AsyncGenerator<ListEntry>}
+ */
+async function *depthFirstList(settings, dirEntries) {
+    for (const dirEntry of dirEntries) {
+        const entryFilepath = path.resolve(settings.filepath, dirEntry.name);
+        /** @type {ListEntry} */
+        const listEntry = {
+            path: entryFilepath,
+            dirent: dirEntry
+        };
+        if (!dirEntry.isDirectory()) {
+            yield listEntry;
+        } else {
+            if (settings.emitDirectories) {
+                yield listEntry;
+            }
+            if (settings.recursively) {
+                yield *listFiles({...settings, filepath: entryFilepath});
+            }
+        }
+    }
+}
+
+/**
+ * @param {object} [settings = {}] - Config object
+ * @param {string} [settings.filepath = process.cwd()]
+ * @param {boolean} [settings.recursively = true]
+ * @param {boolean} [settings.emitDirectories = false]
+ * @param {import("fs/promises").Dirent[]} dirEntries
+ * @return {AsyncGenerator<ListEntry>}
+ */
+async function *breadthFirstList(settings, dirEntries) {
+    /** @type {ListEntry[]} */
+    const queue = [];
+    for (const dirEntry of dirEntries) {
+        const entryFilepath = path.resolve(settings.filepath, dirEntry.name);
+        const listEntry = {
+            path: entryFilepath,
+            dirent: dirEntry
+        };
+        if (dirEntry.isDirectory()) {
+            queue.push(listEntry);
+            if (settings.emitDirectories) {
+                yield listEntry;
+            }
+        } else {
+            yield listEntry;
+        }
+    }
+    /** @type {ListEntry|undefined} */
+    let entry;
+    while (entry = queue.shift()) {
+        for await (const listEntry of listFiles({
+            ...settings,
+            filepath: entry.path,
+            recursively: false,
+        })) {
+            if (listEntry.error) {
+                yield listEntry;
+                continue;
+            }
+            if (listEntry.dirent.isDirectory()) {
+                if (settings.emitDirectories) {
+                    yield listEntry;
+                }
+                queue.push(listEntry);
+            } else {
+                yield listEntry;
+            }
+        }
+    }
+}
+
 
 const _ANSI_RESET = "\u001B[0m";
 export const ANSI_BLUE = text => "\u001B[34m" + text + _ANSI_RESET;
