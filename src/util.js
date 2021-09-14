@@ -224,20 +224,17 @@ export function bytesToSizeWinLike(bytes) {
  * @return {string}
  */
 export function toTruncPrecision3(number) {
-    let result = number;
+    let result;
     if (number < 10) {
-        result = Math.trunc(result * 100)/100;
-    }
-    else if (result < 100) {
-        result = Math.trunc(result * 10)/10;
-    }
-    else if (result < 1000) {
-        result = Math.trunc(result);
+        result = Math.trunc(number * 100) / 100;
+    } else if (number < 100) {
+        result = Math.trunc(number * 10) / 10;
+    } else if (number < 1000) {
+        result = Math.trunc(number);
     }
     if (number < 0.1) {
         return result.toPrecision(1);
-    }
-    else if (number < 1) {
+    } else if (number < 1) {
         return result.toPrecision(2);
     }
     return result.toPrecision(3);
