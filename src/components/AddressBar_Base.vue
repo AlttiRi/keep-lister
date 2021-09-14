@@ -56,7 +56,7 @@ const root = computed(() => {
   if (str.startsWith("//")) { // for unix
     return str.slice(1);
   }
-  if (meta.value?.platform === "win32") { // uppercase win drive letter
+  if (meta.value?.platform === "win32") { // uppercase win drive letter // todo remove as unnecessary
     return str[0].toUpperCase() + str.slice(1);
   }
   return str;

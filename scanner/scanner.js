@@ -24,7 +24,10 @@ const doGZip = true;
 const logging = false;
 
 const scanFolderPath = ".";
-const scanFolderAbsolutePath = path.resolve(scanFolderPath);
+let scanFolderAbsolutePath = path.resolve(scanFolderPath);
+if (os.platform() === "win32") { // Upper case the hard drive's letter
+    scanFolderAbsolutePath = scanFolderAbsolutePath[0].toUpperCase() + scanFolderAbsolutePath.slice(1);
+}
 
 const pathChunks = chunkifyPath(scanFolderAbsolutePath);
 const scanPath = pathChunks.slice(0, -1);
