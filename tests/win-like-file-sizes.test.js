@@ -1,29 +1,7 @@
 import {bytesToSizeWinLike} from "../src/util.js";
-import {ANSI_GREEN, ANSI_RED_BOLD} from "../scanner/util-node.js";
 
-const passed = [];
-const failed = [];
-function eq(name, result, expected) {
-    if (result === expected) {
-        passed.push(name);
-        console.log(ANSI_GREEN(`Test ${name} passed`));
-        console.log("Result   : ", result);
-        console.log("Expected : ", expected);
-        console.log("---");
-    } else {
-        failed.push(name);
-        console.log(ANSI_RED_BOLD(`Test ${name} failed`));
-        console.log("Result   : ", result);
-        console.log("Expected : ", expected);
-        console.log("---");
-    }
-}
-function report() {
-    console.log();
-    console.log(`Failed ${failed.length}`);
-    console.log(`Passed ${passed.length}`);
-}
-
+import {Tester} from "./tester.js";
+const {eq, report} = new Tester().destructible();
 
 
 eq("1023", bytesToSizeWinLike(1023), "1023 B");
