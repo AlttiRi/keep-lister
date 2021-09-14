@@ -44,7 +44,7 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
     filepath: scanFolderPath,
     recursively: true,
     emitDirectories: true,
-    breadthFirst: false
+    breadthFirst: false,
 })) {
     const scanEntry = await handleListEntry(listEntry);
     meta.increaseErrorCounter(scanEntry);
@@ -309,5 +309,5 @@ function debugLinuxHID() {
             console.log(k, " - ", v);
         }
     }
-    console.log("total:", map.size);
+    console.log("HID total:", map.size);
 }
