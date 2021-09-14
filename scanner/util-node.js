@@ -140,7 +140,9 @@ async function *breadthFirstList(settings, dirEntries) {
             dirent: dirEntry
         };
         if (dirEntry.isDirectory()) {
-            queue.push(listEntry);
+            if (settings.recursively) {
+                queue.push(listEntry);
+            }
             if (settings.emitDirectories) {
                 yield listEntry;
             }
