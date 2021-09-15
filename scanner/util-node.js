@@ -61,9 +61,9 @@ export async function isSymLooped(filepath) {
  * @property {string}  [filepath = process.cwd()]
  * @property {boolean} [recursively = true]
  * @property {boolean} [emitDirectories = false]
- * @property {Number}  [_deep = 0]
  * @property {boolean} [breadthFirst = false]
  * @property {boolean} [depthBreadthRoot = false] - to list at the start all entries of the root folder.
+ * @property {Number}  [_deep = 0]
  */
 
 /** @type {FileListingSetting} */
