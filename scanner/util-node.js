@@ -66,6 +66,17 @@ export async function isSymLooped(filepath) {
  * @property {boolean} [depthBreadthRoot = false] - to list at the start all entries of the root folder.
  */
 
+/** @type {FileListingSetting} */
+const defaultFileListingSetting = {
+    filepath: process.cwd(),
+    recursively: true,
+    // followSymbol: false,  // [unused] // if loop? // if other hard drive? //
+    emitDirectories: false,
+    breadthFirst: false,
+    depthBreadthRoot: false,
+    _deep: 0,
+};
+
 /**
  * Not follows symlinks
  * May return an entry with readdir error (entry type is folder)
@@ -74,15 +85,7 @@ export async function isSymLooped(filepath) {
  * @return {AsyncGenerator<ListEntry>}
  */
 export async function *listFiles(settings = {}) {
-    settings = Object.assign({
-        filepath: process.cwd(),
-        recursively: true,
-        // followSymbol: false,  // [unused] // if loop? // if other hard drive? //
-        emitDirectories: false,
-        breadthFirst: false,
-        depthBreadthRoot: false,
-        _deep: 0,
-    }, settings);
+    settings = Object.assign(defaultFileListingSetting, settings);
     // console.log(settings._deep, settings.filepath);
 
     try {
