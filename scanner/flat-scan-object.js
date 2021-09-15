@@ -24,6 +24,7 @@ export class FlatScanObject {
     /* Incremental IDs used in entries */
     id = 0;
     hid = 0; // hardlink id
+    eid = 0; // error id
 
     /** @type {SerializableScanEntry[]} */
     values = [];
@@ -33,6 +34,9 @@ export class FlatScanObject {
     /** "dev:inode" to "hid:nlink"
      * @type {Map<String, String>} */
     hardlinkMap = new Map();
+    /** "code:syscall:errno" to id
+     * @type {Map<String, Number>} */
+    errorsMap = new Map();
 
     /** @type {ScanEntry} */
     constructor(rootEntry, name) {
@@ -49,8 +53,16 @@ export class FlatScanObject {
      * @param {SerializableScanEntry} sEntry
      * @param {ScanError} error
      */
-    static insertError(sEntry, error) {
-        (sEntry.errors || (sEntry.errors = [])).push(error);
+    insertError(sEntry, error) {
+        const key = `${error.code}:${error.syscall}:${error.errno}`;
+
+        if (!this.errorsMap.has(key)) {
+            const eid = this.eid++;
+            this.errorsMap.set(key, eid);
+        }
+        const eid = this.errorsMap.get(key);
+
+        (sEntry.errors || (sEntry.errors = [])).push(eid);
     }
 
     /** @param {ScanEntry} entry */
@@ -58,7 +70,7 @@ export class FlatScanObject {
         const {relativePath} = this.parsePath(entry);
         if (entry.error) { // `readdir` error (scandir)
             const sEntry = this.foldersMap.get(relativePath);
-            FlatScanObject.insertError(sEntry, entry.error);
+            this.insertError(sEntry, entry.error);
             return sEntry;
         }
 
@@ -106,7 +118,7 @@ export class FlatScanObject {
 
         if (statsInfo) {
             if (statsInfo.error) {
-                FlatScanObject.insertError(sEntry, entry.error);
+                this.insertError(sEntry, statsInfo.error);
             } else {
                 /**@type {import("fs").Stats} */
                 const stats = statsInfo.stats;
@@ -136,7 +148,7 @@ export class FlatScanObject {
 
         if (linkInfo) {
             if (linkInfo.error) {
-                FlatScanObject.insertError(sEntry, entry.error);
+                this.insertError(sEntry, linkInfo.error);
             } else {
                 sEntry.pathTo = linkInfo.pathTo;
                 sEntry.content = linkInfo.content;

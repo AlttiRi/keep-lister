@@ -19,6 +19,7 @@ import os from "os";
  * @property {Number} errors
  * @property {Number} mHardLinks
  * @property {Number} mHardLinksTotal
+ * @property {Object<String, Number>} errorsMap
  */
 
 
@@ -55,6 +56,22 @@ export class Meta {
         this.mHardLinks = 0;      // count of unique files with nlink > 1
         /** @type {number} */
         this.mHardLinksTotal = 0; //  total count of files with nlink > 1
+    }
+
+    /**
+     * Map(4) {
+     *    'EBUSY:lstat:-4082' => 0,
+     *    'EPERM:lstat:-4048' => 1,
+     *    'EPERM:scandir:-4048' => 2
+     *    'ENOENT:lstat:-4058' => 3
+     *  }
+     *
+     * "code:syscall:errno" to id
+     * @param {Map<String, Number>} errorsMap
+     */
+    putErrorsMap(errorsMap) {
+        /** @type {Object<String, Number>} */
+        this.errorsMap = Object.fromEntries(errorsMap.entries());
     }
 
     finalizeHardlinkInfo() {

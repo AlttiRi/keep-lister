@@ -56,6 +56,7 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
     scanObject.add(scanEntry);
 }
 
+meta.putErrorsMap(scanObject.errorsMap);
 meta.finalizeHardlinkInfo();
 meta.logTable();
 
