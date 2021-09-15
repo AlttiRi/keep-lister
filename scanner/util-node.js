@@ -90,7 +90,7 @@ export async function *listFiles(settings = {}) {
 
     try {
         /** @type {import("fs/promises").Dirent[]} */
-        const dirEntries = await fs.readdir(settings.filepath, { // can throws an error
+        const dirEntries = await fs.readdir(settings.filepath, { // can throw an error
             withFileTypes: true
         });
         /** @type {ListEntry[]} */
