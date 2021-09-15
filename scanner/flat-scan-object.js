@@ -45,12 +45,20 @@ export class FlatScanObject {
         this.values.push(sEntry);
     }
 
+    /**
+     * @param {SerializableScanEntry} sEntry
+     * @param {ScanError} error
+     */
+    static insertError(sEntry, error) {
+        (sEntry.errors || (sEntry.errors = [])).push(error);
+    }
+
     /** @param {ScanEntry} entry */
     add(entry) {
         const {relativePath} = this.parsePath(entry);
         if (entry.error) { // `readdir` error (scandir)
             const sEntry = this.foldersMap.get(relativePath);
-            (sEntry.errors || (sEntry.errors = [])).push(entry.error);
+            FlatScanObject.insertError(sEntry, entry.error);
             return sEntry;
         }
 
@@ -98,7 +106,7 @@ export class FlatScanObject {
 
         if (statsInfo) {
             if (statsInfo.error) {
-                sEntry.errors = [statsInfo.error];
+                FlatScanObject.insertError(sEntry, entry.error);
             } else {
                 /**@type {import("fs").Stats} */
                 const stats = statsInfo.stats;
@@ -128,7 +136,7 @@ export class FlatScanObject {
 
         if (linkInfo) {
             if (linkInfo.error) {
-                (sEntry.errors || (sEntry.errors = [])).push(linkInfo.error);
+                FlatScanObject.insertError(sEntry, entry.error);
             } else {
                 sEntry.pathTo = linkInfo.pathTo;
                 sEntry.content = linkInfo.content;
