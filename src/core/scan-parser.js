@@ -68,7 +68,6 @@ async function *streamParseJSONScan(input) {
  * @return {AsyncGenerator<FlatScanResultEntry[]>}
  */
 async function *parseGZippedJSONScan(input) {
-    await loadPako();
     const decoder = new TextDecoder();
     const textParser = new TextParser();
     let i = 0, time = 0;
@@ -94,6 +93,9 @@ async function *parseGZippedJSONScan(input) {
  * @return {Generator<Uint8Array>}
  */
 async function *unGZipAsyncIterator(input) {
+    if (!isPakoLoaded()) {
+        await loadPako();
+    }
     let chunks = [];
     const inflator = new pako.Inflate();
     pako.Inflate.prototype.onData = function (chunk) {
@@ -202,6 +204,9 @@ async function loadPako() {
         pakoIsLoaded = true;
         console.log("pako is loaded");
     }
+}
+function isPakoLoaded() {
+    return pakoIsLoaded;
 }
 
 
