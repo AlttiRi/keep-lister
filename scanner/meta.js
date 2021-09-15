@@ -1,5 +1,6 @@
 import path from "path";
 import os from "os";
+import {dateToDayDateTimeString} from "./util-node.js";
 
 /**
  * Scan result representation of Meta class.
@@ -35,7 +36,7 @@ export class Meta {
         /** @type {String} */
         this.separator = path.sep;
         /** @type {String} */
-        this.scanDate = new Date().toISOString();
+        this.scanDate = dateToDayDateTimeString(new Date(), true);
         /** @type {String} */
         this.platform = os.platform();
 
