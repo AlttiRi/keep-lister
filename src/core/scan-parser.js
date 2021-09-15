@@ -22,6 +22,7 @@ export async function *parseScan(input) {
         for await (const obj of parseGZippedJSONScan(input)) {
             if (!meta) {
                 meta = /** @type {ScanMeta} */ obj.shift();
+                parser.setMeta(meta);
             }
             yield {meta, ...parser.parse(/** @type {SerializableScanEntry[]} */ obj)};
         }
@@ -30,6 +31,7 @@ export async function *parseScan(input) {
         for await (const array of streamParseJSONScan(input)) {
             if (!meta) {
                 meta = /** @type {ScanMeta} */ array.shift();
+                parser.setMeta(meta);
             }
             yield {meta, ...parser.parse(/** @type {SerializableScanEntry[]} */ array)};
         }

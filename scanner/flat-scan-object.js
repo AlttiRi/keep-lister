@@ -9,7 +9,7 @@ import path from "path";
  * @property {String} [hid] - "uniqueID:hardlinksCount" (some hardlinks can be out of the scan)
  * @property {Number|null} pid - parent's ID
  *
- * @property {ScanError[]} [errors]
+ * @property {Number[]} [errors] - error IDs
  *
  * @property {String} [pathTo] - absolute path where the link goes
  * @property {String} [content] - the original text content

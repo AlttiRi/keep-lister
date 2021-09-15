@@ -8,8 +8,9 @@ export class SimpleEntry {
     /**
      * @param {SerializableScanEntry} entry
      * @param {SimpleEntry|null} parent
+     * @param {Map<Number, SimpleScanError>} [errorsIDMap]
      */
-    constructor(entry, parent) {
+    constructor(entry, parent, errorsIDMap) {
         /** @type {String} */
         this.name = entry.name;
         /** @type {SimpleEntry|null} */
@@ -31,8 +32,8 @@ export class SimpleEntry {
         }
 
         if (entry.errors) {
-            /** @type {ScanError[]|undefined} */
-            this.errors = entry.errors;
+            /** @type {SimpleScanError[]}|undefined} */
+            this.errors = entry.errors.map(id => errorsIDMap.get(id));
         }
 
         if (entry.pathTo) {
@@ -137,6 +138,13 @@ export class SimpleEntry {
     }
 }
 
+/**
+ * Like `ScanError`, but without `path`.
+ * @typedef {Object} SimpleScanError
+ * @property {String} code
+ * @property {String} syscall
+ * @property {Number} errno
+ **/
 
 export class EntryStreamParser {
     constructor() {
@@ -147,6 +155,23 @@ export class EntryStreamParser {
         this.hidMap = new Map();
     }
 
+    /** @param {ScanMeta} meta */
+    setMeta(meta) {
+        /** @type {ScanMeta} */
+        this.meta = meta;
+        /** @type {Object<String, Number>} */
+        const errorsMap = meta.errorsMap;
+        if (!errorsMap) {
+            return;
+        }
+        /** @type {Map<Number, SimpleScanError>|undefined} */
+        this.errorsIDMap = new Map(Object.entries(errorsMap)
+            .map(([k, v]) => {
+                const [code, syscall, errno] = k.split(":");
+                return [v, {code, syscall, errno: Number(errno)}];
+            }));
+    }
+
     /** @param {SerializableScanEntry[]} sEntriesPart
      * @return {{root: SimpleEntry, rootUpdated: boolean}}
      */
@@ -155,7 +180,7 @@ export class EntryStreamParser {
         for (const entry of sEntriesPart) {
             /** @type {SimpleEntry|null}*/
             const parent = this.map.get(entry.pid) ?? null;
-            const simpleEntry = new SimpleEntry(entry, parent);
+            const simpleEntry = new SimpleEntry(entry, parent, this.errorsIDMap);
             if (entry.type === "folder") {
                 this.map.set(entry.id, simpleEntry);
             }
