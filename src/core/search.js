@@ -20,10 +20,22 @@ function clearSearchResult() {
 function setSearchResult(result) {
     searchResult.value = markRaw(result);
 
-    console.log("globalThis.search:", globalThis.search = result);
+    /** @type {SimpleEntry[]} */
+    globalThis.search = result;
+    console.log("globalThis.search:", result);
     Object.defineProperty(globalThis.search, "download", {
         get() {
             console.log("download"); // todo
+        }
+    });
+    Object.defineProperty(globalThis.search, "names", {
+        get() {
+            return globalThis.search.map(entry => entry.name);
+        }
+    });
+    Object.defineProperty(globalThis.search, "namelist", {
+        get() {
+            return globalThis.search.map(entry => entry.name).join("\n");
         }
     });
 }
