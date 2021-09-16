@@ -21,7 +21,7 @@ export function debugMessageFromEntry(entry) {
 
         let message = "";
         message += "mtime " + `"${dateToDayDateTimeString(entry.mtime, false)}"`;
-        message += " —  btime " + `"${dateToDayDateTimeString(entry.btime, false)}"`;
+        message += " —  btime " + `"${dateToDayDateTimeString(entry.btime ?? 0, false)}"`;
 
         message += ` — ${name} — ${entry.size} (${bytesToSizeWinLike(entry.size)})`;
         debugMessage.value = message;
