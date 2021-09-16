@@ -8,19 +8,16 @@ File explorer for JSON snapshots with meta information _(`name`, `type`, `size`,
 
 
 ---
+
 What? Just look:
 
---> **[Win 10 scan (as Admin)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/2021.09.09-wa.json.gz)** <--
+**[Win 10 scan (as Admin)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz)** | 
+[Win 10 scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows.json.gz)
 
-[Win 10 scan (Temporary unavailable)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/win10upd.json)
+**[Ubuntu scan (as Root)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/ubuntu-admin.json.gz)** | 
+[Ubuntu scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/ubuntu.json.gz)
 
-[Ubuntu scan (Temporary unavailable)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/ubuntu.json)
-
-[Ubuntu scan (as Root) (Temporary unavailable)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/ubuntu-admin.json)
-
-[Linux Source Code scan (Temporary unavailable)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-scans/linux-master.json)
-
-*Temporary unavailable ones use the old scan format. I need to rescan it.
+[Linux Source Code scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/linux-master.json.gz)
 
 ---
 
