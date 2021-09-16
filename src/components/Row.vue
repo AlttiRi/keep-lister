@@ -142,10 +142,10 @@ function onMouseleave(event) {
       text-align: end;
       min-width: 80px;
       &.Z {
-        color: #777;
+        color: #888;
       }
       &.B {
-        color: #000;
+        color: #666;
       }
       &.KB {
         color: #0b0;
@@ -163,7 +163,7 @@ function onMouseleave(event) {
     &.mtime {
       text-align: end;
       width: 145px;
-      color: grey;
+      color: #777;
     }
     &.type {
       text-align: end;
