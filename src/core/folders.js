@@ -40,7 +40,7 @@ export async function setScan(input) {
             rootInited = true;
         }
         const now = Date.now();
-        if (rootContentUpdated || now - time > 100) {
+        if (rootContentUpdated || now - time > 50) {
             time = now;
             parsingStateNumber.value++;
             await sleep();
