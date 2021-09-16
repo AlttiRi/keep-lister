@@ -303,6 +303,9 @@ function debugLinuxStats(scanEntry) {
     }
 }
 function debugLinuxHID() {
+    if (os.platform() === "win32") {
+        return;
+    }
     const map = new Map();
     scanEntries.forEach(e => {
         if (e.type === "folder" && e.hid) {
