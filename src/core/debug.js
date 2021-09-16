@@ -1,4 +1,4 @@
-import {ref} from "vue";
+import {ref, toRaw, isProxy} from "vue";
 import {bytesToSizeWinLike, dateToDayDateTimeString} from "../util.js";
 
 export const debugMessage = ref("");
@@ -13,7 +13,7 @@ export function appendMessage(message) {
  * @param {SimpleEntry} entry
  */
 export function debugMessageFromEntry(entry) {
-    console.log(entry);
+    console.log(isProxy(entry) ? "Proxy:" : "Raw:", toRaw(entry));
     if (entry.hasErrors) {
         debugMessage.value = "";
     } else {

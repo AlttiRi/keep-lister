@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-const demoFilepath = "./demo-scans/2021.09.07.json.gz";
+const demoFilepath = "./demo-scans/2021.09.16.json.gz";
 
 export default defineConfig({
   plugins: [
