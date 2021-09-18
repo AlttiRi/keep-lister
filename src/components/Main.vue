@@ -19,16 +19,22 @@ import Status from "./Status.vue";
 import Debug from "./Debug.vue";
 import {onMounted} from "vue";
 import {setScan} from "../core/folders.js";
+import {search} from "../core/search.js";
 
 
 // Already opened directory, no need to open with input
 onMounted(async () => {
-  //todo search
-  const filepath = new URL(location.href).searchParams.get("filepath");
+  const url = new URL(location.href);
+  const filepath = url.searchParams.get("filepath");
   if (filepath) {
     /** @type {Response} */
     const response = await fetch(filepath);
-    return setScan(response);
+    await setScan(response);
+  }
+  const _search = url.searchParams.get("search");
+  console.error(_search);
+  if (_search) {
+    search.value = _search;
   }
 });
 
