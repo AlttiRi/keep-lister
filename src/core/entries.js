@@ -34,7 +34,7 @@ export const entries = computed(() => {
 
 
 /** @type {import("vue").Ref<Number>} */
-export const limit = ref(1000);
+export const limit = ref(50);
 
 /** @type {import("vue").ComputedRef<SimpleEntry[]>} */
 export const list = computed(() => {

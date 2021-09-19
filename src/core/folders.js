@@ -24,9 +24,6 @@ export async function setScan(input) {
     let rootInited = false;
 
     console.time("setScan");
-    const limitTemp = limit.value;
-    limit.value = 25;
-
     let time = Date.now();
     for await (const {meta: scanMeta, root: rootEntry, rootUpdated: rootContentUpdated} of parseScan(input)) {
         if (!metaInited && scanMeta) {
@@ -46,7 +43,6 @@ export async function setScan(input) {
             await sleep();
         }
     }
-    limit.value = limitTemp;
     parsingStateNumber.value++;
     console.timeEnd("setScan");
 
@@ -74,6 +70,7 @@ export const openedFolders = computed(() => {
 export function openFolder(entry) {
     clearSearch();
     openedFolder.value = markRaw(unref(entry));
+    limit.value = 50;
 }
 export function goBack() {
     if (openedFolder.value.parent) {

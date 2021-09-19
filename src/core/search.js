@@ -1,7 +1,7 @@
 import {isReactive, markRaw, ref, toRaw, watch} from "vue";
 import {debounce, sleep} from "../util.js";
 import {openedFolder} from "./folders.js";
-import {comparator} from "./entries.js";
+import {comparator, limit} from "./entries.js";
 import * as debug from "./debug.js";
 import {entryTypes} from "./entry.js";
 
@@ -18,11 +18,13 @@ function clearSearchResult() {
 }
 /** * @param {SimpleEntry[]} result */
 function setSearchResult(result) {
-    searchResult.value = markRaw(result);
+    const rawResult = toRaw(result);
+    searchResult.value = rawResult;
+    limit.value = 50;
 
     /** @type {SimpleEntry[]} */
-    globalThis.search = result;
-    console.log("globalThis.search:", result);
+    globalThis.search = rawResult;
+    console.log("globalThis.search:", rawResult);
     Object.defineProperty(globalThis.search, "download", {
         get() {
             console.log("download"); // todo

@@ -5,6 +5,7 @@
     <table class="rows" v-if="listLimited.length">
       <tbody>
         <Row v-for="entry of listLimited" :entry="entry"/>
+        <IntersectionRow/>
       </tbody>
     </table>
     <div class="empty-message" v-if="empty && !error">
@@ -34,11 +35,12 @@
 
 <script setup>
 import Row from "./Row.vue";
+import IntersectionRow from "./IntersectionRow.vue";
 import {goBack, empty, openedFolder} from "../core/folders.js";
 import {listLimited} from "../core/entries.js";
 import {computed, onMounted, ref} from "vue";
 
-/** @type {ComputedRef<ScanError>} */
+/** @type {import("vue").ComputedRef<ScanError>} */
 const error = computed(() => {
   if (openedFolder.value.hasErrors) {
     return openedFolder.value.errors[0];
