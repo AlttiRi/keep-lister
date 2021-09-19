@@ -42,8 +42,6 @@ function setSearchResult(result) {
     });
 }
 
-//todo search by type
-// /type:folder/
 //todo check linked list perf for large search
 const performSearchDebounced = debounce(performSearch, 300);
 async function performSearch() {
@@ -77,7 +75,10 @@ async function performSearch() {
  * @param {string} search
  * @return {Promise<SimpleEntry[]|false>}
  */
-async function searcher(folder, search) {
+async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćęéйeё".normalize("NFD").replace(/\p{Diacritic}/gu, "")
+    if (search.startsWith("//")) {
+        return justSearch(search.slice(2));
+    }
     if (search.startsWith("/")) {
         const {type, word} = search.match(/\/type:(?<type>[^\/]+)\/?(?<word>[^\/]*)/)?.groups || {};
         if (type) {
@@ -88,12 +89,24 @@ async function searcher(folder, search) {
                 });
             }
         }
-    } else {
+    } else if (search.includes(" ")) {
+        const parts = search.split(" ").filter(o => o);
+        if (parts.length > 1) {
+            let result = await justSearch(parts.shift());
+            let curWord;
+            while (curWord = parts.shift()) {
+                result = result.filter(entry => entry.name.includes(curWord));
+            }
+            return result;
+        }
+    }
+    return justSearch(search);
+
+    function justSearch(search) {
         return findAll(folder, (entry) => {
             return entry.name.includes(search);
         });
     }
-    return false;
 }
 
 watch(search, async (newValue, oldValue) => {
