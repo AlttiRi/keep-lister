@@ -32,7 +32,6 @@ onMounted(async () => {
     await setScan(response);
   }
   const _search = url.searchParams.get("search");
-  console.error(_search);
   if (_search) {
     search.value = _search;
   }
