@@ -45,9 +45,9 @@ Only up to 1000 rows are displayed.
 # How to use.
 
 In short.
-- [Installed Node.js](https://nodejs.org/en/download/current/) is required.
-- Download the scanner file — [zz-dir-scanner.mjs](https://github.com/AlttiRi/directory-snapshot-explorer/releases/download/0.2.0/zz-dir-scanner.mjs)
-- Open a terminal (CMD.exe, for example) in a folder to scan. 
+- [Installed Node.js](https://nodejs.org/en/download/current/) is required,
+- Download the scanner file — [zz-dir-scanner.mjs](https://github.com/AlttiRi/directory-snapshot-explorer/releases/download/0.2.0/zz-dir-scanner.mjs),
+- Open a terminal (CMD.exe, for example) in a folder to scan, 
 - Type in a terminal _(for Windows with CMD)_:
 ```cmd
 node C:\%HOMEPATH%\Downloads\zz-dir-scanner.mjs
@@ -56,12 +56,26 @@ node C:\%HOMEPATH%\Downloads\zz-dir-scanner.mjs
 
 The result will be in your download folder.
 
-_Note: replace `C:\%HOMEPATH%\Downloads\zz-dir-scanner.mjs` with the path to scanner file if you have moved it from the download folder to other place._
+---
 
+_Note: replace `C:\%HOMEPATH%\Downloads\zz-dir-scanner.mjs` with the path to the scanner file if you have moved it from the download folder to an other place._
 
+To explore the scan result use https://alttiri.github.io/directory-snapshot-explorer/ site.
+
+Or run it locally:
+- Download the source code [directory-snapshot-explorer-master.zip](https://github.com/AlttiRi/directory-snapshot-explorer/archive/refs/heads/master.zip),
+- Unpack it,
+- Open terminal in `directory-snapshot-explorer-master` folder,
+- Type `npm ci`,
+- Then type `npm run build`,
+- Then type `npm run serve`.
+
+The site will be available on http://localhost:5000/. Use `Ctrl+C` in the console to stop the server. Next time you only need to type `npm run serve` to start the server.
 
 
 ---
 
-## Similar software:
+## Similar software
 - [Snap2HTML](https://github.com/rlv-dan/Snap2HTML)
+ 
+Technically I also can generate a standalone HTML file as output, but do you need it?
