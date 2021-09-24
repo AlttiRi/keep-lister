@@ -77,7 +77,7 @@ The site will be available on http://localhost:5000/. Use `Ctrl+C` in the consol
 
 # About
 
-There is a lot of thing that to do. But the core functional is.
+There is a lot of things that to do to improve it. But the core functional is.
 
 
 ## Similar software
