@@ -77,6 +77,8 @@ The site will be available on http://localhost:5000/. Use `Ctrl+C` in the consol
 
 # About
 
+JSON scans can be noticeable in size, so they are gzipped to reduce the size in 5-10 times. For example, [Windows' disk C scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz) (300k files, 90k folders) takes 5.8 MB gzipped (55 MB of raw JSON). The explorer handles the scan in stream way, so it displays the result as soon as the first bytes of the scan are read.
+
 There is a lot of things that to do to improve it. But the core functional is.
 
 
