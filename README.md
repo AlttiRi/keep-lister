@@ -42,4 +42,26 @@ Search by file type, for example: `/type:folder/query`
 Only up to 1000 rows are displayed.
 
 ---
+# How to use.
 
+In short.
+- [Installed Node.js](https://nodejs.org/en/download/current/) is required.
+- Download the scanner file — [zz-dir-scanner.mjs](https://github.com/AlttiRi/directory-snapshot-explorer/releases/download/0.2.0/zz-dir-scanner.mjs)
+- Open a terminal (CMD.exe, for example) in a folder to scan. 
+- Type in a terminal _(for Windows with CMD)_:
+```cmd
+node C:\%HOMEPATH%\Downloads\zz-dir-scanner.mjs
+```
+- Type enter.
+
+The result will be in your download folder.
+
+_Note: replace `C:\%HOMEPATH%\Downloads\zz-dir-scanner.mjs` with the path to scanner file if you have moved it from the download folder to other place._
+
+
+
+
+---
+
+## Similar software:
+- [Snap2HTML](https://github.com/rlv-dan/Snap2HTML)
