@@ -75,6 +75,11 @@ The site will be available on http://localhost:5000/. Use `Ctrl+C` in the consol
 
 ---
 
+# About
+
+There is a lot of thing that to do. But the core functional is.
+
+
 ## Similar software
 - [Snap2HTML](https://github.com/rlv-dan/Snap2HTML)
  
