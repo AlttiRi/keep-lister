@@ -1,10 +1,14 @@
 # directory-snapshot-explorer
+There is two parts of the software:
 
-Work in progress.
+- The scanner. It creates a JSON snapshots with meta information _(`name`, `type`, `size`, `mtime`, `crtime`, `hardlink`/`symlink` info)_ of your local files.
+- The explorer for these JSON snapshots.
 
-File explorer for JSON snapshots with meta information _(`name`, `type`, `size`, `mtime`, `crtime`, ...*)_ of local files. Scanner for creating of snapshots is included.
+You can create a snapshot of your external hard drive's content and use the explorer for the created scnapshot to check the content of the hard drive when it's detached.
 
-What? Just look:
+---
+
+Just look at the examples:
 
 **[Win 10 scan (as Admin)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz)** | 
 [Win 10 scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows.json.gz)
@@ -38,6 +42,4 @@ Search by file type, for example: `/type:folder/query`
 Only up to 1000 rows are displayed.
 
 ---
-
-*It also contains information about symlinks (where it go) and hard links (count of it).
 
