@@ -81,8 +81,60 @@ JSON scans can be noticeable in size, so they are gzipped to reduce the size in 
 
 It uses Windows-like file size formatting (`1133158 bytes` → `1.08 MB`). In most cases the result is equal to Windows Explorer result, but in very rare cases is not. See [the test file](https://github.com/AlttiRi/directory-snapshot-explorer/blob/master/tests/win-like-file-sizes.test.js).
 
+### JSON format
+
+JSON snapshot is a valid JSON file, but it is special formatted to simplify the stream parsing. Just look at the example.
+
+The example _(Note: some lines are trimmed to reduce size)_:
+```json
+[
+{
+ "path": ["C:", "Users", "User", "Downloads"],
+ "separator": "\\",
+ "scanDate": "2021.09.24 23:52:02Z",
+ "platform": "win32",
+ "files": 37,
+ "folders": 7,
+ "symlinks": 0,
+ "fifos": 0,
+ "charDevs": 0,
+ "blockDevs": 0,
+ "sockets": 0,
+ "total": 44,
+ "errors": 0,
+ "mHardLinks": 0,
+ "mHardLinksTotal": 0,
+ "errorsMap": {}
+},
+
+{"type":"folder","name":"directory-snapshot-explorer-master","pid":null,"id":0,"mtime":1632527508334,"btime":1632527508312},
+{"type":"folder","name":".github","pid":0,"id":1,"mtime":1632526451000,"btime":1632527508312},
+{"type":"file","name":".gitignore","pid":0,"mtime":1632526451000,"btime":1632527508314,"size":53},
+{"type":"file","name":"index.html","pid":0,"mtime":1632526451000,"btime":1632527508315,"size":843},
+{"type":"file","name":"package-lock.json","pid":0,"mtime":1632526451000,"btime":1632527508315,"size":70293},
+{"type":"file","name":"package.json","pid":0,"mtime":1632526451000,"btime":1632527508316,"size":874},
+{"type":"file","name":"README.md","pid":0,"mtime":1632526451000,"btime":1632527508314,"size":4437},
+{"type":"folder","name":"scanner","pid":0,"id":2,"mtime":1632526451000,"btime":1632527508316},
+{"type":"folder","name":"src","pid":0,"id":3,"mtime":1632526451000,"btime":1632527508319},
+{"type":"folder","name":"tests","pid":0,"id":4,"mtime":1632526451000,"btime":1632527508332},
+{"type":"file","name":"vite.config.js","pid":0,"mtime":1632526451000,"btime":1632527508334,"size":5379},
+{"type":"folder","name":"workflows","pid":1,"id":5,"mtime":1632526451000,"btime":1632527508313},
+{"type":"file","name":"blank.yml","pid":5,"mtime":1632526451000,"btime":1632527508313,"size":3260},
+{"type":"file","name":"flat-scan-object.js","pid":2,"mtime":1632526451000,"btime":1632527508316,"size":5087},
+{"type":"file","name":"meta.js","pid":2,"mtime":1632526451000,"btime":1632527508317,"size":4119},
+{"type":"file","name":"scanner.js","pid":2,"mtime":1632526451000,"btime":1632527508318,"size":8607},
+{"type":"file","name":"util-node.js","pid":2,"mtime":1632526451000,"btime":1632527508318,"size":7314},
+{"type":"file","name":"App.vue","pid":3,"mtime":1632526451000,"btime":1632527508319,"size":288},
+{"type":"folder","name":"components","pid":3,"id":6,"mtime":1632526451000,"btime":1632527508319},
+{"type":"file","name":"AddressBar.vue","pid":6,"mtime":1632526451000,"btime":1632527508320,"size":854}
+]
+```
+
+---
+
 There are a lot of things that to do to improve it. But the core functional is ready.
 
+---
 
 ## Similar software
 - [Snap2HTML](https://github.com/rlv-dan/Snap2HTML)
