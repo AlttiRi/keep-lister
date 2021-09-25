@@ -127,15 +127,19 @@ new Set(
 ).size
 ```
 
-### JSON size
-JSON scans can be noticeable in size, so they are gzipped to reduce the size in 5-10 times. 
-For example, [Windows' disk C scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz) (300k files, 90k folders) takes 5.8 MB gzipped (55 MB of raw JSON). 
-The explorer handles the scan in stream way, so it displays the result as soon as the first bytes of the scan are read.
 
 ### File size formating
 
 It uses Windows-like file size formatting (`1133158 bytes` → `1.08 MB`). 
 In most cases the result is equal to Windows Explorer result, but in very rare cases is not. See [the test file](https://github.com/AlttiRi/directory-snapshot-explorer/blob/master/tests/win-like-file-sizes.test.js).
+
+
+### JSON size
+
+JSON scans can be noticeable in size, so they are gzipped to reduce the size in 5-10 times. 
+For example, [Windows' disk C scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz) (300k files, 90k folders) takes 5.8 MB gzipped (55 MB of raw JSON). 
+The explorer handles the scan in stream way, so it displays the result as soon as the first bytes of the scan are read.
+
 
 ### JSON format
 
