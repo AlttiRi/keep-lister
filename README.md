@@ -83,7 +83,7 @@ The site will be available on http://localhost:5000/. Use `Ctrl + C` in the cons
 
 ### Global variables
 
-There are `folder` and `search` variables in the browser console to hadle entries of "an opened folder"/"search result" in program way.
+There are `folder` and `search` variables in the browser console to handle entries of "opened folder"/"search result" in program way.
 
 For example:
 
