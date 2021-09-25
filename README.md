@@ -39,7 +39,9 @@ Search by file type, for example: `/type:folder/query`
 
 ![Screenshot Search Folder](https://user-images.githubusercontent.com/16310547/133657180-9fc03183-d50d-47ff-badc-252fcdfe6952.png)
 
-Only up to 1000 rows are displayed.
+---
+
+To list all items of opened folder use [`//`](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=//) search.
 
 ---
 # How to use
