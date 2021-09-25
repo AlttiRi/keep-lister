@@ -110,6 +110,7 @@ If you have files with the special filenames (see [@AlttiRi/twitter-click-and-sa
 
 First list all files of certain author, for example, with `[twitter] SpaceX` search and then:
 ```js
+// Parse the post ID from the filenames, then count the number of unique IDs.
 new Set(
     search
         .filter(entry => entry.type === "file")
