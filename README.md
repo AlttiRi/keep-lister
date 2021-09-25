@@ -115,14 +115,14 @@ new Set(
         .filter(entry => entry.type === "file")
         .map(entry => entry.name)
         .map(name => {
-            const result = name.match(/\[twitter\] (?<author>.+)—(?<date>\d{4}\.\d{2}\.\d{2})—(?<tweetId>\d+)—(?<filename>.+)/);
+            const result = name.match(/\[twitter\] (?<author>.+)—(?<date>\d{4}\.\d{2}\.\d{2})—(?<postId>[^—]+)—(?<filename>.+)/);
             if (result) {
                 return result.groups;
             }
             return null;
         })
         .filter(result => result)
-        .map(result => result.tweetId)
+        .map(result => result.postId)
 ).size
 ```
 
