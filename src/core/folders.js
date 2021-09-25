@@ -71,6 +71,10 @@ export function openFolder(entry) {
     clearSearch();
     openedFolder.value = markRaw(unref(entry));
     limit.value = 50;
+
+    /** @type {SimpleEntry} */
+    globalThis.folder = entry;
+    console.log("globalThis.folder:", entry);
 }
 export function goBack() {
     if (openedFolder.value.parent) {
