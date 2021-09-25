@@ -60,6 +60,8 @@ The result will be in your download folder.
 
 _Note: replace `C:\%HOMEPATH%\Downloads\zz-dir-scanner.mjs` with the path to the scanner file if you have moved it from the download folder to an other place._
 
+---
+
 To explore the scan result use https://alttiri.github.io/directory-snapshot-explorer/ site.
 
 Or run it locally:
@@ -67,10 +69,10 @@ Or run it locally:
 - Unpack it,
 - Open terminal in `directory-snapshot-explorer-master` folder,
 - Type `npm ci`,
-- Then type `npm run build`,
-- Then type `npm run serve`.
+- Then `npm run build`,
+- Then `npm run serve`.
 
-The site will be available on http://localhost:5000/. Use `Ctrl+C` in the console to stop the server. Next time you only need to type `npm run serve` to start the server.
+The site will be available on http://localhost:5000/. Use `Ctrl + C` in the console to stop the server. Next time you only need to type `npm run serve` to start the server.
 
 
 ---
