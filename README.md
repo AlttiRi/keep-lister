@@ -42,7 +42,7 @@ Search by file type, for example: `/type:folder/query`
 Only up to 1000 rows are displayed.
 
 ---
-# How to use.
+# How to use
 
 In short.
 - [Installed Node.js](https://nodejs.org/en/download/current/) is required,
