@@ -79,6 +79,33 @@ The site will be available on http://localhost:5000/. Use `Ctrl + C` in the cons
 
 # About
 
+### Global variables
+
+There are `folder` and `search` variables in the browser console to hadle entries of "an opened folder"/"search result" in program way.
+
+For example:
+
+```js
+// List names of files in an opened folder as one string
+folder.files.map(e => e.name).join("\n")
+```
+```js
+// Find the most long filenames
+// (Use "//" (two slashed) in search input to list all files of the scan)
+search.reduce((acc, entry) => {
+    const name = entry.name;
+    const length = acc[0].length;
+    if (name.length > length) {
+        return [name];
+    }
+    if (name.length === length) {
+        acc.push(name);
+        return acc;
+    }
+    return acc;
+}, [""])
+```
+
 ### JSON size
 JSON scans can be noticeable in size, so they are gzipped to reduce the size in 5-10 times. 
 For example, [Windows' disk C scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz) (300k files, 90k folders) takes 5.8 MB gzipped (55 MB of raw JSON). 
