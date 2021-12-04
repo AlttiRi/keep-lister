@@ -119,6 +119,17 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
         return justSearch(search.slice(2));
     }
 
+    /**
+     * @example
+     * /size:0       - find 0 byte size entries
+     * /size/120     - the same, find 120 bytes size entries
+     * /size:120+80  - find from 120 to 200
+     * /size:120+80  - find from 120 to 200
+     * /size:120+-20 - find from 100 to 120
+     * /size:120~20  - find from  80 to 140
+     * /size:120-220 - find from 120 to 220
+     * /size:220-120 - find from 120 to 220
+     */
     if (search.startsWith("/size")) {
         const {
             /** @type {String|undefined} */
