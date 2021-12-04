@@ -42,7 +42,7 @@ function setSearchResult(result) {
     });
 }
 
-//todo check linked list perf for large search
+//todo check linked list perf for large search // do search after scan parsing ended
 const performSearchDebounced = debounce(performSearch, 300);
 async function performSearch() {
     const folder = openedFolder.value;
