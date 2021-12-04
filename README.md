@@ -39,7 +39,9 @@ Search by file type, for example: `/type:folder/query`
 
 ![Screenshot Search Folder](https://user-images.githubusercontent.com/16310547/133657180-9fc03183-d50d-47ff-badc-252fcdfe6952.png)
 
-Only up to 1000 rows are displayed.
+---
+
+To list all items of opened folder use [`//`](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=//) search.
 
 ---
 # How to use
@@ -79,15 +81,67 @@ The site will be available on http://localhost:5000/. Use `Ctrl + C` in the cons
 
 # About
 
-### JSON size
-JSON scans can be noticeable in size, so they are gzipped to reduce the size in 5-10 times. 
-For example, [Windows' disk C scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz) (300k files, 90k folders) takes 5.8 MB gzipped (55 MB of raw JSON). 
-The explorer handles the scan in stream way, so it displays the result as soon as the first bytes of the scan are read.
+### Global variables
+
+There are `folder` and `search` variables in the browser console to handle entries of "opened folder"/"search result" in program way.
+
+For example:
+
+```js
+// List names of files in an opened folder as one string
+folder.files.map(e => e.name).join("\n")
+```
+```js
+// Find the most long filenames
+// (Use "//" (two slashed) in search input to list all files of the scan)
+search.reduce((acc, entry) => {
+    const name = entry.name;
+    const length = acc[0].length;
+    if (name.length > length) {
+        return [name];
+    }
+    if (name.length === length) {
+        acc.push(name);
+        return acc;
+    }
+    return acc;
+}, [""])
+```
+
+If you have files with the special filenames (see [@AlttiRi/twitter-click-and-save#filename-format](https://github.com/AlttiRi/twitter-click-and-save#filename-format)) which include some additional information about the file it's not a problem, for example, to count downloaded posts (one post can have multiple files):
+
+First list all files of certain author, for example, with `[twitter] SpaceX` search and then:
+```js
+// Parse the post ID from the filenames, then count the number of unique IDs.
+new Set(
+    search
+        .filter(entry => entry.type === "file")
+        .map(entry => entry.name)
+        .map(name => {
+            const result = name.match(/\[twitter\] (?<author>.+)—(?<date>\d{4}\.\d{2}\.\d{2})—(?<postId>[^—]+)—(?<filename>.+)/);
+            if (result) {
+                return result.groups;
+            }
+            return null;
+        })
+        .filter(result => result)
+        .map(result => result.postId)
+).size
+```
+
 
 ### File size formating
 
 It uses Windows-like file size formatting (`1133158 bytes` → `1.08 MB`). 
 In most cases the result is equal to Windows Explorer result, but in very rare cases is not. See [the test file](https://github.com/AlttiRi/directory-snapshot-explorer/blob/master/tests/win-like-file-sizes.test.js).
+
+
+### JSON size
+
+JSON scans can be noticeable in size, so they are gzipped to reduce the size in 5-10 times. 
+For example, [Windows' disk C scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz) (300k files, 90k folders) takes 5.8 MB gzipped (55 MB of raw JSON). 
+The explorer handles the scan in stream way, so it displays the result as soon as the first bytes of the scan are read.
+
 
 ### JSON format
 

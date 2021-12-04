@@ -82,8 +82,8 @@ function sourceMapsPathChangerPlugin(pathsMapping = []) {
  * NOTE: Works only in module project [!] Since it uses `import()`
  *
  * NOTES FOR VITE.JS:
- * - `removeCode` works only if it used as Vite plugin;
- * - `overwriteBundle` works only if it used as Rollup plugin (and did not use `removeCode`);
+ * - `removeCode` works only if it is used as Vite plugin;
+ * - `overwriteBundle` works only if it is used as Rollup plugin (and `removeCode` is not used, of course);
  *
  * @param options
  * @param options.callback - function to handle the result CSS bundle. Use to write CSS to disk, ot just for debug.
