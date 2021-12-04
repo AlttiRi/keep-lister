@@ -18,10 +18,16 @@ function clearSearchResult() {
 }
 /** * @param {SimpleEntry[]} result */
 function setSearchResult(result) {
+    /** @type {SimpleEntry[]} */
     const rawResult = toRaw(result);
     searchResult.value = rawResult;
     limit.value = 50;
 
+    addSearchResultToGlobalThis(rawResult);
+}
+
+/** @param {SimpleEntry[]} rawResult */
+function addSearchResultToGlobalThis(rawResult) {
     /** @type {SimpleEntry[]} */
     globalThis.search = rawResult;
     console.log("globalThis.search:", rawResult);
