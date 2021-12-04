@@ -126,10 +126,12 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
             /** @type {String|undefined} */
             plus,
             /** @type {String|undefined} */
-            range
-        } = search.match(/\/size[:\/](?<size>\d+)((\+(?<plus>(\d+)|(-\d+)))|~(?<range>\d+))?/)?.groups || {};
+            plusRange,
+            /** @type {String|undefined} */
+            range,
+        } = search.match(/\/size[:\/](?<size>\d+)(\+(?<plus>(\d+)|(-\d+))|~(?<plusRange>\d+)|-(?<range>\d+))?/)?.groups || {};
         if (size) {
-            console.log({size, plus, range});
+            console.log({size, plus, plusRange, range});
             const _size = Number(size);
             if (plus) {
                 const _plus = _size + Number(plus);
@@ -139,8 +141,15 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
                 });
             }
             if (range) {
-                const min = _size - Number(range);
-                const max = _size + Number(range);
+                const _range = Number(range);
+                const {min, max} = _size < _range ? {min: _size, max: _range} : {min: _range, max: _size};
+                return findAll(folder, entry => {
+                    return entry.size >= min && entry.size <= max;
+                });
+            }
+            if (plusRange) {
+                const min = _size - Number(plusRange);
+                const max = _size + Number(plusRange);
                 return findAll(folder, entry => {
                     return entry.size >= min && entry.size <= max;
                 });
