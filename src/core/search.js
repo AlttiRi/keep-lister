@@ -72,11 +72,11 @@ async function performSearch() {
     debug.appendMessage(`Sort time: ${sortTime.toFixed(2)} ms; `);
     await sleep();
 
-    console.time("sizes");
+    console.time("search result size computing");
     const resultSet = new Set(result);
     const allSize = result.reduce((acc, val) => computeEntrySize(val, resultSet) + acc, 0);
     const filesSize = result.filter(entry => entry.type !== "folder").reduce((acc, val) => val.size + acc, 0);
-    console.timeEnd("sizes");
+    console.timeEnd("search result size computing");
     console.log(allSize, filesSize);
 
     setSearchResult(sortedResult);
@@ -118,12 +118,27 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
     if (search.startsWith("//")) {
         return justSearch(search.slice(2));
     }
+
+    if (search.startsWith("/size")) {
+        const {
+            /** @type {String|undefined} */
+            size
+        } = search.match(/\/size[:\/](?<size>\d+)/)?.groups || {};
+        if (size) {
+            console.log(size);
+            return findAll(folder, entry => {
+                return entry.size.toString() === (size);
+            });
+        } else {
+            console.log("no size to search");
+        }
+    }
     if (search.startsWith("/")) {
         const {type, word} = search.match(/\/type:(?<type>[^\/]+)\/?(?<word>[^\/]*)/)?.groups || {};
         if (type) {
             console.log({type, word});
             if (entryTypes.includes(type)) {
-                return findAll(folder, (entry) => {
+                return findAll(folder, entry => {
                     return entry.type === type && entry.name.includes(word);
                 });
             }
