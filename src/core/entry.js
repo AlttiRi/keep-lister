@@ -48,7 +48,10 @@ export class SimpleEntry {
     /** @param {SimpleEntry} entry */
     addChild(entry) {
         if (!this.children) {
-            /** @type {SimpleEntry[]|undefined} */
+            /**
+             * `undefined` if there is no child
+             * @type {SimpleEntry[]|undefined}
+             */
             this.children = [];
         }
         this.children.push(entry);
@@ -76,7 +79,10 @@ export class SimpleEntry {
         }
     }
 
-    /** @return {Number} */
+    /**
+     * Note: the folder size is computed on the creation step.
+     * @return {Number}
+     */
     get size() {
         if (this.type === "folder") {
             return this._contentSize || 0;

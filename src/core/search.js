@@ -1,5 +1,5 @@
 import {isReactive, markRaw, ref, toRaw, watch} from "vue";
-import {debounce, sleep} from "../util.js";
+import {bytesToSizeWinLike, debounce, sleep} from "../util.js";
 import {openedFolder} from "./folders.js";
 import {comparator, limit} from "./entries.js";
 import * as debug from "./debug.js";
@@ -72,8 +72,41 @@ async function performSearch() {
     debug.appendMessage(`Sort time: ${sortTime.toFixed(2)} ms; `);
     await sleep();
 
+    console.time("sizes");
+    const resultSet = new Set(result);
+    const allSize = result.reduce((acc, val) => computeEntrySize(val, resultSet) + acc, 0);
+    const filesSize = result.filter(entry => entry.type !== "folder").reduce((acc, val) => val.size + acc, 0);
+    console.timeEnd("sizes");
+    console.log(allSize, filesSize);
+
     setSearchResult(sortedResult);
-    debug.appendMessage(`${result.length} items; search: ${request}`);
+    debug.appendMessage(`${result.length} items; size: ${bytesToSizeWinLike(filesSize)} (${bytesToSizeWinLike(allSize)});  search: ${request}`);
+}
+
+
+/**
+ * The recursive size computing of an `SimpleEntry`.
+ * Skips the entries of `excludeSet`.
+ * @param {SimpleEntry} entry
+ * @param {Set<SimpleEntry>} excludeSet
+ * @return {Number}
+ */
+function computeEntrySize(entry, excludeSet) {
+    if (entry.type !== "folder") {
+        return entry.size;
+    }
+    let childrenSize = 0;
+    for (const child of entry.children || []) {
+        if (excludeSet.has(entry)) {
+            continue;
+        }
+        if (child.type === "folder") {
+            childrenSize += computeEntrySize(child, excludeSet);
+        } else {
+            childrenSize += child.size;
+        }
+    }
+    return childrenSize;
 }
 
 /**
