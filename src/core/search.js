@@ -122,12 +122,31 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
     if (search.startsWith("/size")) {
         const {
             /** @type {String|undefined} */
-            size
-        } = search.match(/\/size[:\/](?<size>\d+)/)?.groups || {};
+            size,
+            /** @type {String|undefined} */
+            plus,
+            /** @type {String|undefined} */
+            range
+        } = search.match(/\/size[:\/](?<size>\d+)((\+(?<plus>(\d+)|(-\d+)))|~(?<range>\d+))?/)?.groups || {};
         if (size) {
-            console.log(size);
+            console.log({size, plus, range});
+            const _size = Number(size);
+            if (plus) {
+                const _plus = _size + Number(plus);
+                const {min, max} = _size < _plus ? {min: _size, max: _plus} : {min: _plus, max: _size};
+                return findAll(folder, entry => {
+                    return entry.size >= min && entry.size <= max;
+                });
+            }
+            if (range) {
+                const min = _size - Number(range);
+                const max = _size + Number(range);
+                return findAll(folder, entry => {
+                    return entry.size >= min && entry.size <= max;
+                });
+            }
             return findAll(folder, entry => {
-                return entry.size.toString() === (size);
+                return entry.size === _size;
             });
         } else {
             console.log("no size to search");
