@@ -129,6 +129,10 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
      * /size:120~20  - find from  80 to 140
      * /size:120-220 - find from 120 to 220
      * /size:220-120 - find from 120 to 220
+     * //todo
+     * /size:120~    - find from 120 -5% to 120 +5%
+     * /size:120~~   - find from 120-10% to 120+10%
+     * /size:120~~~  - find from 120-15% to 120+15%
      */
     if (search.startsWith("/size")) {
         const {
