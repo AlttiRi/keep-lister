@@ -1,5 +1,5 @@
 <template>
-  <div style="display: contents">
+  <div class="search-wrapper">
     <div class="search">
       <input id="json-scan-search-input" type="text" v-model="search">
       <button @click="clearSearch">Clear</button>
@@ -22,6 +22,9 @@ button { padding: 0 0; }
   position: absolute;
   top:-1000px;
   left:-1000px;
+}
+.search-wrapper {
+  display: contents;
 }
 
 .search {

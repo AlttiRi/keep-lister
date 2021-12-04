@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div        style="grid-area: switch;"></div>
+    <Switch     style="grid-area: switch;"/>
     <AddressBar style="grid-area: address;"/>
     <Search     style="grid-area: search;"/>
     <Tabs       style="grid-area: tabs;"/>
@@ -16,6 +16,7 @@ import Search from "./Search.vue";
 import Tabs from "./Tabs.vue";
 import Content from "./Content.vue";
 import Status from "./Status.vue";
+import Switch from "./Switch.vue";
 import Debug from "./Debug.vue";
 import {onMounted} from "vue";
 import {setScan} from "../core/folders.js";
