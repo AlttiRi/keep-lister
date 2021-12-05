@@ -151,6 +151,7 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
             if (plus) {
                 const _plus = _size + Number(plus);
                 const {min, max} = _size < _plus ? {min: _size, max: _plus} : {min: _plus, max: _size};
+                console.log(`Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`);
                 return findAll(folder, entry => {
                     return entry.size >= min && entry.size <= max;
                 });
@@ -158,6 +159,7 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
             if (range) {
                 const _range = Number(range);
                 const {min, max} = _size < _range ? {min: _size, max: _range} : {min: _range, max: _size};
+                console.log(`Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`);
                 return findAll(folder, entry => {
                     return entry.size >= min && entry.size <= max;
                 });
@@ -165,10 +167,12 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
             if (plusRange) {
                 const min = _size - Number(plusRange);
                 const max = _size + Number(plusRange);
+                console.log(`Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`);
                 return findAll(folder, entry => {
                     return entry.size >= min && entry.size <= max;
                 });
             }
+            console.log(`Size search ${bytesToSizeWinLike(_size)}`);
             return findAll(folder, entry => {
                 return entry.size === _size;
             });
