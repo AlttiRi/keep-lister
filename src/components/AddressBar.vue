@@ -24,7 +24,7 @@ import {meta, openedFolder, openedFolders, separator} from "../core/folders.js";
 /** @param {MouseEvent} event */
 async function onContextmenu(event) {
   event.preventDefault();
-  const folderPath = [meta.value.path, ...openedFolder.value.path.map(entry => entry.name)].join(separator.value);
+  const folderPath = [...meta.value.path, ...openedFolder.value.path.map(entry => entry.name)].join(separator.value);
   console.log("Copy to clipboard:", folderPath);
   await navigator.clipboard.writeText(folderPath);
 }
