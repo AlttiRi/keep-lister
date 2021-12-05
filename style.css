@@ -85,13 +85,13 @@
   text-overflow: ellipsis;
 }
 /* AddressBar.vue */
-.address[data-v-55c28eea] {
+.address[data-v-e73567ac] {
   display: flex;
   overflow-x: scroll;
   padding-left: 6px;
   scrollbar-width: none;
 }
-.address[data-v-55c28eea]::-webkit-scrollbar {
+.address[data-v-e73567ac]::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 0;
   height: 0;
