@@ -254,3 +254,19 @@ export function concat(arrays) {
     }
     return result;
 }
+
+export function red(text) {
+    return [`%c${text}`,  "color: #f44336; font-weight: bold;"];
+}
+export function orange(text) {
+    return [`%c${text}`,  "color: #ff9800; font-weight: bold;"];
+}
+export function green(text) {
+    return [`%c${text}`,  "color: #4caf50; font-weight: bold;"];
+}
+export function cyan(text) {
+    return [`%c${text}`,  "color: #00bcd4; font-weight: bold;"];
+}
+export function blue(text) {
+    return [`%c${text}`,  "color: #2196f3; font-weight: bold;"];
+}

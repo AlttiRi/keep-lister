@@ -1,5 +1,5 @@
 import {isReactive, markRaw, ref, toRaw, watch} from "vue";
-import {bytesToSizeWinLike, debounce, sleep} from "../util.js";
+import {blue, bytesToSizeWinLike, debounce, sleep} from "../util.js";
 import {openedFolder} from "./folders.js";
 import {comparator, limit} from "./entries.js";
 import * as debug from "./debug.js";
@@ -80,7 +80,8 @@ async function performSearch() {
     console.log(allSize, filesSize);
 
     setSearchResult(sortedResult);
-    debug.appendMessage(`${result.length} items; size: ${bytesToSizeWinLike(filesSize)} (${bytesToSizeWinLike(allSize)});  search: ${request}`);
+    const searchText = result.customSearchText || request;
+    debug.appendMessage(`${result.length} items; size: ${bytesToSizeWinLike(filesSize)} (${bytesToSizeWinLike(allSize)});  search: ${searchText}`);
 }
 
 
@@ -147,35 +148,45 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
         } = search.match(/\/size[:\/](?<size>\d+)(\+(?<plus>(\d+)|(-\d+))|~(?<plusRange>\d+)|-(?<range>\d+))?/)?.groups || {};
         if (size) {
             console.log({size, plus, plusRange, range});
+
+            let text;
+            let result;
             const _size = Number(size);
+
             if (plus) {
                 const _plus = _size + Number(plus);
                 const {min, max} = _size < _plus ? {min: _size, max: _plus} : {min: _plus, max: _size};
-                console.log(`Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`);
-                return findAll(folder, entry => {
+                text = `Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`;
+                result = await findAll(folder, entry => {
                     return entry.size >= min && entry.size <= max;
                 });
-            }
+            } else
             if (range) {
                 const _range = Number(range);
                 const {min, max} = _size < _range ? {min: _size, max: _range} : {min: _range, max: _size};
-                console.log(`Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`);
-                return findAll(folder, entry => {
+                text = `Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`;
+                result = await findAll(folder, entry => {
                     return entry.size >= min && entry.size <= max;
                 });
-            }
+            } else
             if (plusRange) {
                 const min = _size - Number(plusRange);
                 const max = _size + Number(plusRange);
-                console.log(`Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`);
-                return findAll(folder, entry => {
+                text = `Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`;
+                result = await findAll(folder, entry => {
                     return entry.size >= min && entry.size <= max;
                 });
+            } else {
+                text = `Size search ${bytesToSizeWinLike(_size)}`;
+                result = await findAll(folder, entry => {
+                    return entry.size === _size;
+                });
             }
-            console.log(`Size search ${bytesToSizeWinLike(_size)}`);
-            return findAll(folder, entry => {
-                return entry.size === _size;
+            console.log(...blue(text));
+            Object.defineProperty(result, "customSearchText", {
+                value: text
             });
+            return result;
         } else {
             console.log("no size to search");
         }
