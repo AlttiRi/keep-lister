@@ -1,5 +1,5 @@
 <template>
-<div class="address">
+<div class="address" @contextmenu="onContextmenu">
   <AddressBar_Part>
     <AddressBar_Base/>
   </AddressBar_Part>
@@ -19,7 +19,15 @@
 import AddressBar_Base from "./AddressBar_Base.vue";
 import AddressBar_Folder from "./AddressBar_Folder.vue";
 import AddressBar_Part from "./AddressBar_Part.vue";
-import {openedFolders} from "../core/folders.js";
+import {meta, openedFolder, openedFolders, separator} from "../core/folders.js";
+
+/** @param {MouseEvent} event */
+async function onContextmenu(event) {
+  event.preventDefault();
+  const folderPath = [meta.value.path, ...openedFolder.value.path.map(entry => entry.name)].join(separator.value);
+  console.log("Copy to clipboard:", folderPath);
+  await navigator.clipboard.writeText(folderPath);
+}
 </script>
 
 <style lang="scss" scoped>
