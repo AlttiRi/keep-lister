@@ -18,7 +18,7 @@
 
 <script setup>
 import {toRefs, computed} from "vue";
-import {meta, openFolder, parsingStateNumber, separator} from "../core/folders.js";
+import {meta, openedFolder, openFolder, parsingStateNumber, separator} from "../core/folders.js";
 import {bytesToSizeWinLike, dateToDayDateTimeString, isImage, isVideo} from "../util.js";
 import {hoveredEntry} from "../core/entries.js";
 import {debugMessageFromEntry} from "../core/debug.js";
@@ -101,6 +101,10 @@ function onMousedown(event) {
         entry.value,
         [...meta.value.path,...entry.value.path.map(e => e.name)].join(separator.value).replace("//", "/")
     );
+    
+    if (openedFolder.value !== entry.value.parent) {
+      openFolder(entry.value.parent);
+    }
   }
 }
 
