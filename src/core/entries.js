@@ -6,7 +6,7 @@ import {openedFolder, parsingStateNumber} from "./folders.js";
 export const sort = ref(true);
 
 /** @type {import("vue").Ref<("name"|"size"|"mtime")>} */
-export const orderBy = ref("mtime");
+export const orderBy = ref("name");
 export const orders = ref({
     name: false,
     size: false,
