@@ -48,7 +48,9 @@ button { padding: 0 0; }
   button {
     height: 100%;
     padding: 0 6px;
-    outline: none;
+    //outline: none;
+    outline-width: 1px;
+    outline-color: var(--blue-1);
     border: none;
     border-bottom: transparent solid 1px;
     border-left: var(--gray-2) solid 1px;

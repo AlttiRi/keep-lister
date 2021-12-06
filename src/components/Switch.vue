@@ -44,16 +44,30 @@ function onD() {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .switch {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-button {
-  margin: 1px 3px;
-}
 button.active {
   font-weight: bold;
+}
+
+button {
+  margin: 1px 3px;
+  padding: 2px 6px;
+  outline-width: 1px;
+  outline-color: var(--blue-1);
+  border: 1px solid var(--gray-2);
+  box-sizing: border-box;
+  background-color: var(--gray-1);
+  &:hover {
+    border-bottom: var(--blue-1) solid 1px;
+    background: var(--blue-2);
+  }
+  &:active {
+    background: var(--blue-3);
+  }
 }
 </style>
