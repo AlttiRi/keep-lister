@@ -1,5 +1,5 @@
 # directory-snapshot-explorer
-There is two parts of the software:
+There are two parts of the software:
 
 - The scanner. It creates a JSON snapshots with meta information _(`name`, `type`, `size`, `mtime`, `crtime`, `hardlink`/`symlink` info)_ of your local files. (See: [how to use](#how-to-use) ↓)
 - [The explorer](https://alttiri.github.io/directory-snapshot-explorer/) for these JSON snapshots. 
