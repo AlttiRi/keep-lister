@@ -240,28 +240,28 @@ input[data-v-23a29b76] {
 }
 /* Search.vue */
 /** reset */
-input[data-v-1214a5e5] {
+input[data-v-618aa3a3] {
   padding: 0 0;
 }
-button[data-v-1214a5e5] {
+button[data-v-618aa3a3] {
   padding: 0 0;
 }
-.fuck-off-lighthouse[data-v-1214a5e5] {
+.fuck-off-lighthouse[data-v-618aa3a3] {
   position: absolute;
   top: -1000px;
   left: -1000px;
 }
-.search-wrapper[data-v-1214a5e5] {
+.search-wrapper[data-v-618aa3a3] {
   display: contents;
 }
-.search[data-v-1214a5e5] {
+.search[data-v-618aa3a3] {
   display: flex;
   height: 100%;
 }
-.search label[data-v-1214a5e5] {
+.search label[data-v-618aa3a3] {
   display: contents;
 }
-.search input[data-v-1214a5e5] {
+.search input[data-v-618aa3a3] {
   height: 100%;
   flex-grow: 2;
   border: none;
@@ -269,25 +269,26 @@ button[data-v-1214a5e5] {
   border-bottom: transparent solid 1px;
   box-sizing: border-box;
 }
-.search input[data-v-1214a5e5]:focus, .search input[data-v-1214a5e5]:hover {
+.search input[data-v-618aa3a3]:focus, .search input[data-v-618aa3a3]:hover {
   outline: none;
   border-bottom: var(--blue-1) solid 1px;
 }
-.search button[data-v-1214a5e5] {
+.search button[data-v-618aa3a3] {
   height: 100%;
   padding: 0 6px;
-  outline: none;
+  outline-width: 1px;
+  outline-color: var(--blue-1);
   border: none;
   border-bottom: transparent solid 1px;
   border-left: var(--gray-2) solid 1px;
   box-sizing: border-box;
   background-color: var(--gray-1);
 }
-.search button[data-v-1214a5e5]:hover {
+.search button[data-v-618aa3a3]:hover {
   border-bottom: var(--blue-1) solid 1px;
   background: var(--blue-2);
 }
-.search button[data-v-1214a5e5]:active {
+.search button[data-v-618aa3a3]:active {
   background: var(--blue-3);
 }
 /* Status.vue */
@@ -296,12 +297,30 @@ button[data-v-1214a5e5] {
 }
 
 /* Switch.vue */
-.switch[data-v-241a52aa] {
+.switch[data-v-148ea483] {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
+button.active[data-v-148ea483] {
+  font-weight: bold;
+}
+button[data-v-148ea483] {
+  margin: 1px 3px;
+  padding: 2px 6px;
+  outline-width: 1px;
+  outline-color: var(--blue-1);
+  border: 1px solid var(--gray-2);
+  box-sizing: border-box;
+  background-color: var(--gray-1);
+}
+button[data-v-148ea483]:hover {
+  border-bottom: var(--blue-1) solid 1px;
+  background: var(--blue-2);
+}
+button[data-v-148ea483]:active {
+  background: var(--blue-3);
+}
 /* Tabs.vue */
 .tabs[data-v-4cf83322] {
   display: flex;
