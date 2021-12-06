@@ -1,4 +1,4 @@
-import t from "ava"; const test = t; // npm install ava -D
+import t from "ava"; const test = t; // npm install ava -D // todo: rewrite this file
 import {shuffle} from "../src/util.js";
 import {comparator} from "../src/core/entries.js";
 

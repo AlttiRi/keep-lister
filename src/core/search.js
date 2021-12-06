@@ -1,7 +1,7 @@
-import {isReactive, markRaw, ref, toRaw, watch} from "vue";
+import {isReactive, ref, toRaw, watch} from "vue";
 import {blue, bytesToSizeWinLike, debounce, sleep} from "../util.js";
 import {openedFolder} from "./folders.js";
-import {comparator, limit} from "./entries.js";
+import {comparator, limit, orderBy,  reverseOrder} from "./entries.js";
 import * as debug from "./debug.js";
 import {entryTypes} from "./entry.js";
 
@@ -25,6 +25,15 @@ function setSearchResult(result) {
 
     addSearchResultToGlobalThis(rawResult);
 }
+
+watch([orderBy, reverseOrder], () => {
+    if (searchResult.value.length) {
+        console.time("sort searchResult");
+        searchResult.value = searchResult.value.sort(comparator);
+        console.timeEnd("sort searchResult");
+        //todo sort by parts
+    }
+});
 
 /** @param {SimpleEntry[]} rawResult */
 function addSearchResultToGlobalThis(rawResult) {
