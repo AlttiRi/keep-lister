@@ -25,7 +25,8 @@ import {meta, setScan} from "../core/folders.js";
 import {search} from "../core/search.js";
 
 
-const showGuide = computed(() => !meta.value); // some kind of hack, but okay
+// some kind of hack, but okay // don't show if a file selected, or remote scan is loading
+const showGuide = computed(() => !meta.value && !new URL(location.href).searchParams.get("filepath"));
 
 
 // Already opened directory, no need to open with input
