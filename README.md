@@ -1,14 +1,16 @@
 # directory-snapshot-explorer
+
+You can create a snapshot of your external hard drive's content and use this explorer to check the content of the hard drive when it's detached. For the local hard drives it is pretty too, it can be an alternative for Windows Explorer' search thing.
+
 There are two parts of the software:
 
-- The scanner. It creates a JSON snapshots with meta information _(`name`, `type`, `size`, `mtime`, `crtime`, `hardlink`/`symlink` info)_ of your local files. (See: [how to use](#how-to-use) ↓)
-- [The explorer](https://alttiri.github.io/directory-snapshot-explorer/) for these JSON snapshots. 
+- The scanner. It creates a JSON snapshots with meta information _(`name`, `type`, `size`, `mtime`, `crtime`, `hardlink`/`symlink` info)_ of your local files. (See: [how to use ↓](#how-to-use)))
+- [The explorer](https://alttiri.github.io/directory-snapshot-explorer/) to open these JSON snapshots. 
 
-You can create a snapshot of your external hard drive's content and use the explorer for the created scnapshot to check the content of the hard drive when it's detached.
 
 ---
 
-Just look at the examples:
+Just look at the examples (click on the links to open the site with the demo scans):
 
 **[Win 10 scan (as Admin)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz)** | 
 [Win 10 scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows.json.gz)
@@ -26,11 +28,13 @@ Just look at the examples:
 
 ---
 
-Search is case sensitive.
+Search is case sensitive currenty. Some examples:
 
 [.exe](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=.exe)
 
 ![Screenshot Search](https://user-images.githubusercontent.com/16310547/133657172-685801b2-5895-4876-8730-b11b8553f168.png)
+
+### Search by type
 
 Search by file type, for example: `/type:folder/query`
 (`folder`, `file`, `symlink` for Windows and `fifo`, `charDev`, `blockDev`, `socket` in additional for other platforms).
@@ -41,7 +45,54 @@ Search by file type, for example: `/type:folder/query`
 
 ---
 
+### List everything
+
 To list all items of opened folder use [`//`](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=//) search.
+
+---
+
+### URL Search
+
+You can search by pasting URL in the search fiels, if the URL's pathname ends with an information included in file names you will find it, for example:
+
+Search `https://i.imgur.com/x09ICAM.jpeg` will list:
+- [imgur] 2015.09.18—x09ICAM—3456.jpg
+
+Search `https://pbs.twimg.com/media/FFyAEbTUYAEUm9p?format=jpg&name=4096x4096` will list:
+- [twitter] SpaceX—2021.12.04—1467202583840243712—FFyAEbTUYAEUm9p.jpg
+
+Search `https://twitter.com/SpaceX/status/1463536409667530755` will list:
+- [twitter] SpaceX—2021.11.24—1463536409667530755—FE-GSYWUcAgc9BN.jpg
+- [twitter] SpaceX—2021.11.24—1463536409667530755—FE-GWCKVgAorchy.jpg
+- [twitter] SpaceX—2021.11.24—1463536409667530755—FE-GXQYUYAcfvUl.jpg
+
+_BTW, look at [this thing](https://github.com/AlttiRi/twitter-click-and-save)._
+
+
+Search `https://gfycat.com/incompletealarmedicelandichorse` will **not** list:
+
+- [gfycat] blaze0044—2021.03.27—IncompleteAlarmedIcelandichorse—Space X rocket breakup.mp4
+- [gfycat] blaze0044—2021.03.27—IncompleteAlarmedIcelandichorse—Space X rocket breakup.webm
+
+_Currently._ TODO: implement the case insensitive search.
+
+_BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#readme). It will CamelSace `incompletealarmedicelandichorse` to `IncompleteAlarmedIcelandichorse`. And you find it by the search._
+
+---
+
+### Size search
+
+
+
+
+- `/size:0`       — find 0 byte size entries
+- `/size/120`     — the same, find 120 bytes size entries
+- `/size:120+80`  — find from 120 to 200
+- `/size:120+80`  — find from 120 to 200
+- `/size:120+-20` — find from 100 to 120
+- `/size:120~20`   — find from  80 to 140
+- `/size:120-220` — find from 120 to 220
+- `/size:220-120` — find from 120 to 220
 
 ---
 # How to use
@@ -49,12 +100,12 @@ To list all items of opened folder use [`//`](https://alttiri.github.io/director
 In short.
 - [Installed Node.js](https://nodejs.org/en/download/current/) is required,
 - Download the scanner file — [zz-dir-scanner.mjs](https://github.com/AlttiRi/directory-snapshot-explorer/releases/download/0.2.0/zz-dir-scanner.mjs),
-- Open a terminal (CMD.exe, for example) in a folder to scan, 
-- Type in a terminal _(for Windows with CMD)_:
+- Open a terminal (CMD.exe, for example) in a folder you want to scan, 
+- Run the scanner (JS file) with Node.js: type in a terminal _(for Windows with CMD)_:
 ```cmd
 node C:\%HOMEPATH%\Downloads\zz-dir-scanner.mjs
 ```
-- Type enter.
+- Don't forget to type enter.
 
 The result will be in your download folder.
 
