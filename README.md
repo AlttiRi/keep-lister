@@ -34,6 +34,8 @@ Search is case sensitive currenty. Some examples:
 
 ![Screenshot Search](https://user-images.githubusercontent.com/16310547/133657172-685801b2-5895-4876-8730-b11b8553f168.png)
 
+### Search by type
+
 Search by file type, for example: `/type:folder/query`
 (`folder`, `file`, `symlink` for Windows and `fifo`, `charDev`, `blockDev`, `socket` in additional for other platforms).
 
@@ -42,6 +44,8 @@ Search by file type, for example: `/type:folder/query`
 ![Screenshot Search Folder](https://user-images.githubusercontent.com/16310547/133657180-9fc03183-d50d-47ff-badc-252fcdfe6952.png)
 
 ---
+
+### List everything
 
 To list all items of opened folder use [`//`](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=//) search.
 
@@ -63,6 +67,22 @@ Search `https://twitter.com/SpaceX/status/1463536409667530755` will list:
 - [twitter] SpaceX—2021.11.24—1463536409667530755—FE-GXQYUYAcfvUl.jpg
 
 _BTW, look at [this thing](https://github.com/AlttiRi/twitter-click-and-save)._
+
+---
+
+### Size search
+
+
+
+
+- `/size:0`       — find 0 byte size entries
+- `/size/120`     — the same, find 120 bytes size entries
+- `/size:120+80`  — find from 120 to 200
+- `/size:120+80`  — find from 120 to 200
+- `/size:120+-20` — find from 100 to 120
+- `/size:120~20`   — find from  80 to 140
+- `/size:120-220` — find from 120 to 220
+- `/size:220-120` — find from 120 to 220
 
 ---
 # How to use
