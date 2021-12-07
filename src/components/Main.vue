@@ -4,7 +4,8 @@
     <AddressBar style="grid-area: address;"/>
     <Search     style="grid-area: search;"/>
     <Tabs       style="grid-area: tabs;"/>
-    <Content    style="grid-area: content;"/>
+    <Guide      style="grid-area: content;" v-if="showGuide"/>
+    <Content    style="grid-area: content;" v-else/>
     <Status     style="grid-area: status;"/>
     <Debug      style="grid-area: debug;"/>
   </div>
@@ -18,9 +19,13 @@ import Content from "./Content.vue";
 import Status from "./Status.vue";
 import Switch from "./Switch.vue";
 import Debug from "./Debug.vue";
-import {onMounted} from "vue";
+import Guide from "./Guide.vue";
+import {computed, onMounted} from "vue";
 import {setScan} from "../core/folders.js";
 import {search} from "../core/search.js";
+import {entries} from "../core/entries.js";
+
+const showGuide = computed(() => !entries.value.length);
 
 
 // Already opened directory, no need to open with input
