@@ -140,7 +140,13 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
             name: resName,
             ext: resExt,
         } = resourceFullName.match(/(?<name>.+)(\.(?<ext>.+))$/)?.groups || {name: resourceFullName};
-        return justSearch(resName);
+
+        const searchText = resName;
+        const result = await justSearch(searchText);
+        Object.defineProperty(result, "customSearchText", {
+            value: searchText
+        });
+        return result;
     }
 
 
