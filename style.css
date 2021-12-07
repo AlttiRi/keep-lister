@@ -191,7 +191,7 @@ input[data-v-23a29b76] {
 }
 
 /* Main.vue */
-.main[data-v-2454fb66] {
+.main[data-v-54f6b6b8] {
   grid-template-areas: "switch address search " "tabs   content content" "status status  status " "debug  debug   debug  ";
   display: grid;
   grid-template-columns: 7em 2fr 1fr;
@@ -205,7 +205,7 @@ input[data-v-23a29b76] {
   border: 1px solid var(--gray-2);
   background-color: var(--gray-2);
 }
-.main *[data-v-2454fb66] {
+.main *[data-v-54f6b6b8] {
   background-color: white;
 }
 /* Row.vue */
