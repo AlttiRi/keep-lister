@@ -76,7 +76,7 @@ Search `https://gfycat.com/incompletealarmedicelandichorse` will **not** list:
 
 _Currently._ TODO: implement the case insensitive search.
 
-_BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#readme). It will CamelSace `incompletealarmedicelandichorse` to `IncompleteAlarmedIcelandichorse`. And you find it by the search._
+_BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#readme). It will CamelCase `incompletealarmedicelandichorse` to `IncompleteAlarmedIcelandichorse`. And you find it by the search._
 
 ---
 
