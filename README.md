@@ -1,10 +1,12 @@
 # directory-snapshot-explorer
+
+You can create a snapshot of your external hard drive's content and use this explorer to check the content of the hard drive when it's detached. For the local hard drives it is pretty too, it can be an alternative for Windows Explorer' search thing.
+
 There are two parts of the software:
 
 - The scanner. It creates a JSON snapshots with meta information _(`name`, `type`, `size`, `mtime`, `crtime`, `hardlink`/`symlink` info)_ of your local files. (See: [how to use ↓](#how-to-use)))
 - [The explorer](https://alttiri.github.io/directory-snapshot-explorer/) for these JSON snapshots. 
 
-You can create a snapshot of your external hard drive's content and use the explorer for the created scnapshot to check the content of the hard drive when it's detached.
 
 ---
 
@@ -49,12 +51,12 @@ To list all items of opened folder use [`//`](https://alttiri.github.io/director
 In short.
 - [Installed Node.js](https://nodejs.org/en/download/current/) is required,
 - Download the scanner file — [zz-dir-scanner.mjs](https://github.com/AlttiRi/directory-snapshot-explorer/releases/download/0.2.0/zz-dir-scanner.mjs),
-- Open a terminal (CMD.exe, for example) in a folder to scan, 
-- Type in a terminal _(for Windows with CMD)_:
+- Open a terminal (CMD.exe, for example) in a folder you want to scan, 
+- Run the scanner (JS file) with Node.js: type in a terminal _(for Windows with CMD)_:
 ```cmd
 node C:\%HOMEPATH%\Downloads\zz-dir-scanner.mjs
 ```
-- Type enter.
+- Don't forget to type enter.
 
 The result will be in your download folder.
 
