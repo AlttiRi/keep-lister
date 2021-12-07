@@ -3,7 +3,7 @@
     <div class="text-wrapper">
       <h2>No scan selected</h2>
       <div>Use you own directory scan file (created with
-        <a href="https://github.com/AlttiRi/directory-snapshot-explorer#how-to-use">the scanner</a>).
+        <a href="https://github.com/AlttiRi/directory-snapshot-explorer#how-to-use" target="_blank">the scanner</a>).
       </div>
       <div class="">Or use the demo scans to take a look at the program work:
         <ul>
@@ -12,7 +12,7 @@
           <li><a href="./?filepath=https://alttiri.github.io/json-flat-scans/linux-master.json.gz">Linux Source Code scan</a></li>
         </ul>
       </div>
-      <div>For more info see the <a href="https://github.com/AlttiRi/directory-snapshot-explorer#directory-snapshot-explorer">Readme</a>.</div>
+      <div>For more info see the <a href="https://github.com/AlttiRi/directory-snapshot-explorer#directory-snapshot-explorer" target="_blank">Readme</a>.</div>
     </div>
   </div>
 </template>
