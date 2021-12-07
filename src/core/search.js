@@ -129,6 +129,18 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
         return justSearch(search.slice(2));
     }
 
+
+    if (["https://", "http://"].some(prefix => search.startsWith(prefix))) {
+        const url = new URL(search);
+        const resourceFullName = url.pathname.match(/[^\/]+$/)?.[0];
+        const {
+            name: resName,
+            ext: resExt,
+        } = resourceFullName.match(/(?<name>.+)(\.(?<ext>.+))$/)?.groups || {name: resourceFullName};
+        return justSearch(resName);
+    }
+
+
     /**
      * @example
      * /size:0       - find 0 byte size entries
