@@ -153,6 +153,33 @@
 input[data-v-23a29b76] {
   display: none;
 }
+/* Guide.vue */
+.guide[data-v-e3772524] {
+  animation: appear 2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.guide .text-wrapper[data-v-e3772524] {
+  min-width: 50%;
+}
+.guide div[data-v-e3772524] {
+  margin-top: 15px;
+}
+.text-wrapper[data-v-e3772524] {
+  animation: fadein-e3772524 1.5s linear 1 forwards;
+}
+@keyframes fadein-e3772524 {
+0% {
+    opacity: 0;
+}
+50% {
+    opacity: 0;
+}
+100% {
+    opacity: 1;
+}
+}
 /* IntersectionRow.vue */
 .intersection[data-v-5baedc86] {
   width: 100%;
@@ -161,7 +188,7 @@ input[data-v-23a29b76] {
 }
 
 /* Main.vue */
-.main[data-v-76a0a2a1] {
+.main[data-v-29e440ec] {
   grid-template-areas: "switch address search " "tabs   content content" "status status  status " "debug  debug   debug  ";
   display: grid;
   grid-template-columns: 7em 2fr 1fr;
@@ -175,7 +202,7 @@ input[data-v-23a29b76] {
   border: 1px solid var(--gray-2);
   background-color: var(--gray-2);
 }
-.main *[data-v-76a0a2a1] {
+.main *[data-v-29e440ec] {
   background-color: white;
 }
 /* Row.vue */
