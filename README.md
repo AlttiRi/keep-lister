@@ -68,6 +68,16 @@ Search `https://twitter.com/SpaceX/status/1463536409667530755` will list:
 
 _BTW, look at [this thing](https://github.com/AlttiRi/twitter-click-and-save)._
 
+
+Search `https://gfycat.com/incompletealarmedicelandichorse` will **not** list:
+
+- [gfycat] blaze0044—2021.03.27—IncompleteAlarmedIcelandichorse—Space X rocket breakup.mp4
+- [gfycat] blaze0044—2021.03.27—IncompleteAlarmedIcelandichorse—Space X rocket breakup.webm
+
+_Currently._ TODO: implement the case insensitive search.
+
+_BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#readme). It will CamelSace `incompletealarmedicelandichorse` to `IncompleteAlarmedIcelandichorse`. And you find it by the search._
+
 ---
 
 ### Size search
