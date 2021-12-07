@@ -5,7 +5,7 @@ You can create a snapshot of your external hard drive's content and use this exp
 There are two parts of the software:
 
 - The scanner. It creates a JSON snapshots with meta information _(`name`, `type`, `size`, `mtime`, `crtime`, `hardlink`/`symlink` info)_ of your local files. (See: [how to use ↓](#how-to-use)))
-- [The explorer](https://alttiri.github.io/directory-snapshot-explorer/) for these JSON snapshots. 
+- [The explorer](https://alttiri.github.io/directory-snapshot-explorer/) to open these JSON snapshots. 
 
 
 ---
