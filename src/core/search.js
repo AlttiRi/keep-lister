@@ -133,6 +133,9 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
     if (["https://", "http://"].some(prefix => search.startsWith(prefix))) {
         const url = new URL(search);
         const resourceFullName = url.pathname.match(/[^\/]+$/)?.[0];
+        if (!resourceFullName) {
+            return [];
+        }
         const {
             name: resName,
             ext: resExt,
