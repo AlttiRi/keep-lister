@@ -107,7 +107,7 @@ function computeEntrySize(entry, excludeSet) {
     }
     let childrenSize = 0;
     for (const child of entry.children || []) {
-        if (excludeSet.has(entry)) {
+        if (excludeSet.has(child)) {
             continue;
         }
         if (child.type === "folder") {
