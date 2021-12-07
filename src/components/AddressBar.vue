@@ -44,5 +44,8 @@ async function onContextmenu(event) {
     background: transparent;
     display: none;
   }
+  &:active { // todo only on onContextmenu event do it
+    border-right: var(--blue-1) solid 1px;
+  }
 }
 </style>
