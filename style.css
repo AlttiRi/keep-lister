@@ -85,18 +85,21 @@
   text-overflow: ellipsis;
 }
 /* AddressBar.vue */
-.address[data-v-63da6b8a] {
+.address[data-v-304c3618] {
   display: flex;
   overflow-x: scroll;
   padding-left: 6px;
   scrollbar-width: none;
 }
-.address[data-v-63da6b8a]::-webkit-scrollbar {
+.address[data-v-304c3618]::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 0;
   height: 0;
   background: transparent;
   display: none;
+}
+.address[data-v-304c3618]:active {
+  border-right: var(--blue-1) solid 1px;
 }
 /* Content.vue */
 [data-v-d2171e22] .row .name {
