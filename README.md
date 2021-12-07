@@ -1,7 +1,7 @@
 # directory-snapshot-explorer
 There are two parts of the software:
 
-- The scanner. It creates a JSON snapshots with meta information _(`name`, `type`, `size`, `mtime`, `crtime`, `hardlink`/`symlink` info)_ of your local files. (See: [how to use](#how-to-use) ↓)
+- The scanner. It creates a JSON snapshots with meta information _(`name`, `type`, `size`, `mtime`, `crtime`, `hardlink`/`symlink` info)_ of your local files. (See: [how to use ↓](#how-to-use)))
 - [The explorer](https://alttiri.github.io/directory-snapshot-explorer/) for these JSON snapshots. 
 
 You can create a snapshot of your external hard drive's content and use the explorer for the created scnapshot to check the content of the hard drive when it's detached.
