@@ -46,6 +46,25 @@ Search by file type, for example: `/type:folder/query`
 To list all items of opened folder use [`//`](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=//) search.
 
 ---
+
+### URL Search
+
+You can search by pasting URL in the search fiels, if the URL's pathname ends with an information included in file names you will find it, for example:
+
+Search `https://i.imgur.com/x09ICAM.jpeg` will list:
+- [imgur] 2015.09.18—x09ICAM—3456.jpg
+
+Search `https://pbs.twimg.com/media/FFyAEbTUYAEUm9p?format=jpg&name=4096x4096` will list:
+- [twitter] SpaceX—2021.12.04—1467202583840243712—FFyAEbTUYAEUm9p.jpg
+
+Search `https://twitter.com/SpaceX/status/1463536409667530755` will list:
+- [twitter] SpaceX—2021.11.24—1463536409667530755—FE-GSYWUcAgc9BN.jpg
+- [twitter] SpaceX—2021.11.24—1463536409667530755—FE-GWCKVgAorchy.jpg
+- [twitter] SpaceX—2021.11.24—1463536409667530755—FE-GXQYUYAcfvUl.jpg
+
+_BTW, look at [this thing](https://github.com/AlttiRi/twitter-click-and-save)._
+
+---
 # How to use
 
 In short.
