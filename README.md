@@ -10,7 +10,7 @@ There are two parts of the software:
 
 ---
 
-Just look at the examples:
+Just look at the examples (click on the links to open the site with the demo scans):
 
 **[Win 10 scan (as Admin)](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz)** | 
 [Win 10 scan](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows.json.gz)
@@ -28,7 +28,7 @@ Just look at the examples:
 
 ---
 
-Search is case sensitive.
+Search is case sensitive currenty. Some examples:
 
 [.exe](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=.exe)
 
