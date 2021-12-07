@@ -21,11 +21,11 @@ import Switch from "./Switch.vue";
 import Debug from "./Debug.vue";
 import Guide from "./Guide.vue";
 import {computed, onMounted} from "vue";
-import {setScan} from "../core/folders.js";
+import {meta, setScan} from "../core/folders.js";
 import {search} from "../core/search.js";
-import {entries} from "../core/entries.js";
 
-const showGuide = computed(() => !entries.value.length);
+
+const showGuide = computed(() => !meta.value); // some kind of hack, but okay
 
 
 // Already opened directory, no need to open with input
