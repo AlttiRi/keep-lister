@@ -47,7 +47,7 @@ Search by file type, for example: `/type:folder/query`
 
 ### List everything
 
-To list all items of opened folder use [`//`](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=//) search.
+To list recursively all items of an opened folder use [`//`](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=//) search.
 
 ---
 
