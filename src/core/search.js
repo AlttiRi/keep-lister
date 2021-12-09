@@ -140,10 +140,10 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
         }
         const {
             name: resName,
-            ext: resExt, // todo: it can be not the file extension, but a part of a nickname (inst, for example)
+            ext: resExt, // [note] it can be not the file extension, but a part of a nickname (inst url, for example)
         } = resourceFullName.match(/(?<name>.+)(\.(?<ext>.+))$/)?.groups || {name: resourceFullName};
 
-        const searchText = resName;
+        const searchText = resName + (pathnameEndsWithSlash ? `.${resExt}` : "");
         const result = await justSearch(searchText);
         Object.defineProperty(result, "customSearchText", {
             value: searchText
