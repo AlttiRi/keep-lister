@@ -140,7 +140,7 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
         }
         const {
             name: resName,
-            ext: resExt,
+            ext: resExt, // todo it can ne not the extension by part of a nickname
         } = resourceFullName.match(/(?<name>.+)(\.(?<ext>.+))$/)?.groups || {name: resourceFullName};
 
         const searchText = resName;
