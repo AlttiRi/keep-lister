@@ -132,18 +132,24 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
 
     if (["https://", "http://"].some(prefix => search.startsWith(prefix))) {
         const url = new URL(search);
-        const pathnameEndsWithSlash = url.pathname.length > 1 && url.pathname.endsWith("/");
-        const pathname = pathnameEndsWithSlash ? url.pathname.slice(0, -1) : url.pathname;
-        const resourceFullName = pathname.match(/[^\/]+$/)?.[0];
-        if (!resourceFullName) {
-            return [];
-        }
-        const {
-            name: resName,
-            ext: resExt, // [note] it can be not the file extension, but a part of a nickname (inst url, for example)
-        } = resourceFullName.match(/(?<name>.+)(\.(?<ext>.+))$/)?.groups || {name: resourceFullName};
 
-        const searchText = resName + ((pathnameEndsWithSlash && resExt) ? `.${resExt}` : "");
+        let searchText;
+        if (url.hostname === "www.youtube.com" && url.pathname === "/watch") {
+            searchText = url.searchParams.get("v");
+        } else {
+            const pathnameEndsWithSlash = url.pathname.length > 1 && url.pathname.endsWith("/");
+            const pathname = pathnameEndsWithSlash ? url.pathname.slice(0, -1) : url.pathname;
+            const resourceFullName = pathname.match(/[^\/]+$/)?.[0];
+            if (!resourceFullName) {
+                return [];
+            }
+            const {
+                name: resName,
+                ext: resExt, // [note] it can be not the file extension, but a part of a nickname (inst url, for example)
+            } = resourceFullName.match(/(?<name>.+)(\.(?<ext>.+))$/)?.groups || {name: resourceFullName};
+            searchText = resName + ((pathnameEndsWithSlash && resExt) ? `.${resExt}` : "");
+        }
+
         const result = await justSearch(searchText);
         Object.defineProperty(result, "customSearchText", {
             value: searchText
