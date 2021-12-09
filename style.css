@@ -270,28 +270,28 @@ input[data-v-23a29b76] {
 }
 /* Search.vue */
 /** reset */
-input[data-v-618aa3a3] {
+input[data-v-7cf12500] {
   padding: 0 0;
 }
-button[data-v-618aa3a3] {
+button[data-v-7cf12500] {
   padding: 0 0;
 }
-.fuck-off-lighthouse[data-v-618aa3a3] {
+.fuck-off-lighthouse[data-v-7cf12500] {
   position: absolute;
   top: -1000px;
   left: -1000px;
 }
-.search-wrapper[data-v-618aa3a3] {
+.search-wrapper[data-v-7cf12500] {
   display: contents;
 }
-.search[data-v-618aa3a3] {
+.search[data-v-7cf12500] {
   display: flex;
   height: 100%;
 }
-.search label[data-v-618aa3a3] {
+.search label[data-v-7cf12500] {
   display: contents;
 }
-.search input[data-v-618aa3a3] {
+.search input[data-v-7cf12500] {
   height: 100%;
   flex-grow: 2;
   border: none;
@@ -299,11 +299,11 @@ button[data-v-618aa3a3] {
   border-bottom: transparent solid 1px;
   box-sizing: border-box;
 }
-.search input[data-v-618aa3a3]:focus, .search input[data-v-618aa3a3]:hover {
+.search input[data-v-7cf12500]:focus, .search input[data-v-7cf12500]:hover {
   outline: none;
   border-bottom: var(--blue-1) solid 1px;
 }
-.search button[data-v-618aa3a3] {
+.search button[data-v-7cf12500] {
   height: 100%;
   padding: 0 6px;
   outline-width: 1px;
@@ -314,11 +314,11 @@ button[data-v-618aa3a3] {
   box-sizing: border-box;
   background-color: var(--gray-1);
 }
-.search button[data-v-618aa3a3]:hover {
+.search button[data-v-7cf12500]:hover {
   border-bottom: var(--blue-1) solid 1px;
   background: var(--blue-2);
 }
-.search button[data-v-618aa3a3]:active {
+.search button[data-v-7cf12500]:active {
   background: var(--blue-3);
 }
 /* Status.vue */
