@@ -47,7 +47,7 @@ Search by file type, for example: `/type:folder/query`
 
 ### List everything
 
-To list all items of opened folder use [`//`](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=//) search.
+To list recursively all items of an opened folder use [`//`](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=//) search.
 
 ---
 
@@ -76,7 +76,7 @@ Search `https://gfycat.com/incompletealarmedicelandichorse` will **not** list:
 
 _Currently._ TODO: implement the case insensitive search.
 
-_BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#readme). It will CamelSace `incompletealarmedicelandichorse` to `IncompleteAlarmedIcelandichorse`. And you find it by the search._
+_BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#readme). It will CamelCase `incompletealarmedicelandichorse` to `IncompleteAlarmedIcelandichorse`. And you find it by the search._
 
 ---
 
