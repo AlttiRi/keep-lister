@@ -140,7 +140,7 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
         }
         const {
             name: resName,
-            ext: resExt, // todo it can ne not the extension by part of a nickname
+            ext: resExt, // todo: it can be not the file extension, but a part of a nickname (inst, for example)
         } = resourceFullName.match(/(?<name>.+)(\.(?<ext>.+))$/)?.groups || {name: resourceFullName};
 
         const searchText = resName;
