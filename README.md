@@ -68,6 +68,9 @@ Search `https://twitter.com/SpaceX/status/1463536409667530755` will list:
 
 _BTW, look at [this thing](https://github.com/AlttiRi/twitter-click-and-save)._
 
+Search `https://www.instagram.com/p/CWqleONFgK4/` will list:
+- [inst] spacex—2021.11.24—CWqleONFgK4—260727536_471249894638202_6939249621560480797_n.jpg
+- [inst] spacex—2021.11.24—CWqleONFgK4—259683601_272614248155822_44594239323667647_n.jpg
 
 Search `https://gfycat.com/incompletealarmedicelandichorse` will **not** list:
 
