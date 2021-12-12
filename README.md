@@ -246,7 +246,15 @@ new Set(
 ).size
 ```
 
+## Static site
 
+[This site](https://alttiri.github.io/directory-snapshot-explorer/) is static, it has no backend to handle JSON snapshots, it handles them locally on your machine after your browser have downloaded the site's files (HTML, JS, CSS) hosted by GitHub Pages.
+
+So, you do not send your personal data (JSON snapshots) anywhere. Also the site has no analytics, it contains only code is necessary for the work.
+
+But it's just a text. If you don't trust it (it's OK) to be sure that your data in safety (without verifying of the source code, or inspecting the site with DevTools) you can just open the site in an incognito window, disable the Internet access, work with the site, then close the incognito window and only after that enable the Internet access.
+
+_(Note: `pako_inflate` library is lazy loaded, so you can open one of the demo snapshots first to load it, or just unpack your JSON snapshot from `.gz` archive — in this case `pako_inflate` is no needed.)_
 
 
 ## Similar software
