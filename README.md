@@ -72,6 +72,11 @@ Search `https://www.instagram.com/p/CWqleONFgK4/` will list:
 - [inst] spacex—2021.11.24—CWqleONFgK4—260727536_471249894638202_6939249621560480797_n.jpg
 - [inst] spacex—2021.11.24—CWqleONFgK4—259683601_272614248155822_44594239323667647_n.jpg
 
+Search `https://www.youtube.com/watch?v=_qwLHlVjRyw` will list:
+- [yt] SpaceX—2020.12.23—_qwLHlVjRyw—Starship _ SN8 _ High-Altitude Flight Recap.description
+- [yt] SpaceX—2020.12.23—_qwLHlVjRyw—Starship _ SN8 _ High-Altitude Flight Recap.webm
+- [yt] SpaceX—2020.12.23—_qwLHlVjRyw—Starship _ SN8 _ High-Altitude Flight Recap.webp
+
 Search `https://gfycat.com/incompletealarmedicelandichorse` will **not** list:
 
 - [gfycat] blaze0044—2021.03.27—IncompleteAlarmedIcelandichorse—Space X rocket breakup.mp4
