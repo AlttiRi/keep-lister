@@ -24,6 +24,9 @@
 <script setup>
 import {orderBy, toggleOrder, orders} from "../core/entries.js";
 
+// todo optimise reversing.
+// todo cancel sorting (for large arrays) on new click while sorting
+
 function onN() {
   if (orderBy.value === "name") {
     toggleOrder();
