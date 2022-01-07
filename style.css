@@ -327,15 +327,16 @@ button[data-v-7cf12500] {
 }
 
 /* Switch.vue */
-.switch[data-v-148ea483] {
+.switch[data-v-23a567b0] {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-button.active[data-v-148ea483] {
+button.active[data-v-23a567b0] {
   font-weight: bold;
 }
-button[data-v-148ea483] {
+button[data-v-23a567b0] {
+  width: 22px;
   margin: 1px 3px;
   padding: 2px 6px;
   outline-width: 1px;
@@ -344,11 +345,11 @@ button[data-v-148ea483] {
   box-sizing: border-box;
   background-color: var(--gray-1);
 }
-button[data-v-148ea483]:hover {
+button[data-v-23a567b0]:hover {
   border-bottom: var(--blue-1) solid 1px;
   background: var(--blue-2);
 }
-button[data-v-148ea483]:active {
+button[data-v-23a567b0]:active {
   background: var(--blue-3);
 }
 /* Tabs.vue */
