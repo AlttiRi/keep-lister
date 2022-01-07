@@ -58,6 +58,7 @@ button.active {
 }
 
 button {
+  width: 22px;
   margin: 1px 3px;
   padding: 2px 6px;
   outline-width: 1px;
