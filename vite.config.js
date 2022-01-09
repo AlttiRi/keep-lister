@@ -32,7 +32,7 @@ export default defineConfig({
           ["../", "source-maps:///"],
         ]),
         cssBundlePlugin({
-          overwriteBundle: "style.css",
+          bundleToOverwrite: "style.css",
           importFromModule: true
         }),
       ],
@@ -83,16 +83,16 @@ function sourceMapsPathChangerPlugin(pathsMapping = []) {
  *
  * NOTES FOR VITE.JS:
  * - `removeCode` works only if it is used as Vite plugin;
- * - `overwriteBundle` works only if it is used as Rollup plugin (and `removeCode` is not used, of course);
+ * - `bundleToOverwrite` works only if it is used as Rollup plugin (and `removeCode` is not used, of course);
  *
  * @param options
  * @param options.callback - function to handle the result CSS bundle. Use to write CSS to disk, ot just for debug.
- * @param options.overwriteBundle - the name of CSS bundle that Rollup.js (Vite.js) writes to disk,
+ * @param options.bundleToOverwrite - the name of CSS bundle that Rollup.js (Vite.js) writes to disk,
  * for example: "index.css" even if the real file name will be: "assets/index.e2206225.css".
  * @param options.importFromModule - set to `true` to get CSS from module that exports it, or `false` if it is a pure CSS code.
- * @param options.removeCode - remove code after `transform` hook. Use it if you do not use `overwriteBundle` option.
+ * @param options.removeCode - remove code after `transform` hook. Use it if you do not use `bundleToOverwrite` option.
  */
-function cssBundlePlugin({callback, overwriteBundle, importFromModule, removeCode} = {}) {
+function cssBundlePlugin({callback, bundleToOverwrite, importFromModule, removeCode} = {}) {
   const btoa = str => Buffer.from(str, "binary").toString("base64");
 //const atob = b64 => Buffer.from(b64, "base64").toString("binary");
 
@@ -148,12 +148,12 @@ function cssBundlePlugin({callback, overwriteBundle, importFromModule, removeCod
     },
     async generateBundle(opts, bundles, isWrite) {
       const bunchCss = await resultCssBundle();
-      if (isWrite && overwriteBundle) {
-        const bundle = Object.values(bundles).find(bundle => bundle.name === overwriteBundle);
+      if (isWrite && bundleToOverwrite) {
+        const bundle = bundles[bundleToOverwrite] /*|| Object.values(bundles).find(bundle => bundle.name === bundleToOverwrite)*/;
         if (bundle) {
           bundle.source = bunchCss;
         } else {
-          console.warn(`[cssBundlePlugin]: "${overwriteBundle}" bundle is not found. Available bundles:`, Object.values(bundles).map(bundle => bundle.name));
+          console.warn(`[cssBundlePlugin]: "${bundleToOverwrite}" bundle is not found. Available bundles:`, Object.keys(bundles));
         }
       }
       if (typeof callback === "function") {
