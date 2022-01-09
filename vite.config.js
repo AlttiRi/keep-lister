@@ -12,7 +12,7 @@ const demoFilepath = "./demo-scans/2021.09.18.json.gz";
 
 export default defineConfig({
   plugins: [
-    vue()
+    vue(),
   ],
   server: {
     open: `/?filepath=${demoFilepath}`
@@ -117,7 +117,7 @@ function cssBundlePlugin({callback, overwriteBundle, importFromModule, removeCod
           const base64Code = "data:text/javascript;base64," + btoa(trimmedCode);
           css = (await import(base64Code)).default;
         } catch (e) {
-          console.log("Failed to load CSS as a module. Returns as pure code. Use `importFromModule: false`");
+          console.warn("[cssBundlePlugin]: Failed to load CSS as a module. Returns as pure code. Use `importFromModule: false`");
           css = code;
         }
       } else {
@@ -152,6 +152,8 @@ function cssBundlePlugin({callback, overwriteBundle, importFromModule, removeCod
         const bundle = Object.values(bundles).find(bundle => bundle.name === overwriteBundle);
         if (bundle) {
           bundle.source = bunchCss;
+        } else {
+          console.warn(`[cssBundlePlugin]: "overwriteBundle" bundle is not found. Available bundles:`, Object.values(bundles).map(bundle => bundle.name));
         }
       }
       if (typeof callback === "function") {
