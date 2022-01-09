@@ -153,7 +153,7 @@ function cssBundlePlugin({callback, overwriteBundle, importFromModule, removeCod
         if (bundle) {
           bundle.source = bunchCss;
         } else {
-          console.warn(`[cssBundlePlugin]: "overwriteBundle" bundle is not found. Available bundles:`, Object.values(bundles).map(bundle => bundle.name));
+          console.warn(`[cssBundlePlugin]: "${overwriteBundle}" bundle is not found. Available bundles:`, Object.values(bundles).map(bundle => bundle.name));
         }
       }
       if (typeof callback === "function") {
