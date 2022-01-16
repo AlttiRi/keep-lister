@@ -7,6 +7,7 @@ import {
     ANSI_GREEN,
     ANSI_GREEN_BOLD,
     ANSI_RED_BOLD,
+    bytesToSizeWinLike,
     dateToDayDateString,
     exists,
     listFiles
@@ -43,6 +44,12 @@ const meta = new Meta(scanPath);
 const rootEntry = await handleListEntry({path: scanFolderAbsolutePath});
 const scanObject = new FlatScanObject(rootEntry, scanDirName);
 
+let handled = 0;
+let size = 0;
+let timerId = setInterval(() => {
+    process.stdout.write(`\rProcessed: ${handled} items, total size: ${bytesToSizeWinLike(size)} (${size})\r`);
+}, 1000);
+
 for await (const /** @type {ListEntry} */ listEntry of listFiles({
     filepath: scanFolderPath,
     recursively: true,
@@ -54,7 +61,12 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
     meta.increaseErrorCounter(scanEntry);
     meta.handleStats(scanEntry);
     scanObject.add(scanEntry);
+
+    handled++;
+    size += scanEntry.statsInfo?.stats.size || 0;
 }
+clearInterval(timerId);
+process.stdout.write(`\rProcessed: ${handled} items, total size: ${bytesToSizeWinLike(size)} (${size})\n`);
 
 meta.putErrorsMap(scanObject.errorsMap);
 meta.finalizeHardlinkInfo();
