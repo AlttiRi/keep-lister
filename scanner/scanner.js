@@ -47,7 +47,7 @@ const scanObject = new FlatScanObject(rootEntry, scanDirName);
 let handled = 0;
 let size = 0;
 let timerId = setInterval(() => {
-    process.stdout.write(`\rProcessed: ${handled} items, total size: ${bytesToSizeWinLike(size)} (${size})\r`);
+    process.stdout.write(`\rProcessed: ${ANSI_CYAN(handled)} items, total size: ${ANSI_CYAN(bytesToSizeWinLike(size))} (${ANSI_CYAN(size)})\r`);
 }, 1000);
 
 for await (const /** @type {ListEntry} */ listEntry of listFiles({
@@ -66,7 +66,7 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
     size += scanEntry.statsInfo?.stats.size || 0;
 }
 clearInterval(timerId);
-process.stdout.write(`\rProcessed: ${handled} items, total size: ${bytesToSizeWinLike(size)} (${size})\n`);
+process.stdout.write(`\rProcessed: ${ANSI_CYAN(handled)} items, total size: ${ANSI_CYAN(bytesToSizeWinLike(size))} (${ANSI_CYAN(size)})\n`);
 
 meta.putErrorsMap(scanObject.errorsMap);
 meta.finalizeHardlinkInfo();
