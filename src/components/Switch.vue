@@ -3,19 +3,19 @@
     <button
         class="order-by-name"
         title="Order by name"
-        @click="onN"
+        @click="onClick('name')"
         :class="{active: orderBy === 'name'}"
     >{{ orders.name  ? "N" : "n"}}</button>
     <button
         class="order-by-size"
         title="Order by size"
-        @click="onS"
+        @click="onClick('size')"
         :class="{active: orderBy === 'size'}"
     >{{ orders.size  ? "S" : "s"}}</button>
     <button
         class="order-by-date"
         title="Order by date"
-        @click="onD"
+        @click="onClick('mtime')"
         :class="{active: orderBy === 'mtime'}"
     >{{ orders.mtime ? "D" : "d"}}</button>
   </div>
@@ -27,24 +27,14 @@ import {orderBy, toggleOrder, orders} from "../core/entries.js";
 // todo optimise reversing.
 // todo cancel sorting (for large arrays) on new click while sorting
 
-function onN() {
-  if (orderBy.value === "name") {
+/** @param {"name"|"size"|"mtime"} value */
+function onClick(value) {
+  if (orderBy.value === value) {
     toggleOrder();
   }
-  orderBy.value = "name";
+  orderBy.value = value;
 }
-function onS() {
-  if (orderBy.value === "size") {
-    toggleOrder();
-  }
-  orderBy.value = "size";
-}
-function onD() {
-  if (orderBy.value === "mtime") {
-    toggleOrder();
-  }
-  orderBy.value = "mtime";
-}
+
 </script>
 
 <style lang="scss" scoped>
