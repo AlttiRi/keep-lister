@@ -111,7 +111,7 @@ In short.
 - Open a terminal (CMD.exe, for example) in a folder you want to scan, 
 - Run the scanner (JS file) with Node.js: type in a terminal _(for Windows with CMD)_:
 ```cmd
-node C:\%HOMEPATH%\Downloads\zz-dir-scanner.mjs
+node %USERPROFILE%\Downloads\zz-dir-scanner.mjs
 ```
 - Don't forget to type enter.
 
