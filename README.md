@@ -119,7 +119,7 @@ The result will be in your download folder.
 
 ---
 
-_Note: replace `C:\%HOMEPATH%\Downloads\zz-dir-scanner.mjs` with the path to the scanner file if you have moved it from the download folder to an other place._
+_Note: replace `%USERPROFILE%\Downloads\zz-dir-scanner.mjs` with the path to the scanner file if you have moved it from the download folder to an other place._
 
 ---
 
