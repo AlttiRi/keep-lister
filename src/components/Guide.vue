@@ -2,7 +2,7 @@
   <div class="guide">
     <div class="text-wrapper">
       <h2>No scan selected</h2>
-      <div>Use you own directory scan file (created with
+      <div>Use your own directory scan file (created with
         <a href="https://github.com/AlttiRi/directory-snapshot-explorer#how-to-use" target="_blank">the scanner</a>).
       </div>
       <div class="">Or use the demo scans to take a look at the program work:
