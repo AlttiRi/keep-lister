@@ -63,7 +63,7 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
     scanObject.add(scanEntry);
 
     handled++;
-    size += scanEntry.statsInfo?.stats.size || 0;
+    size += scanEntry.statsInfo?.stats?.size || 0;
 }
 clearInterval(timerId);
 process.stdout.write(`\rProcessed: ${ANSI_CYAN(handled)} items, total size: ${ANSI_CYAN(bytesToSizeWinLike(size))} (${ANSI_CYAN(size)})\n`);
@@ -163,8 +163,8 @@ function typeFromDirent(dirent) {
 
 /**
  * @typedef {ScanEntryBase} ScanEntry
- * @property {ScanStatsInfo} statsInfo
- * @property {ScanSymlinkInfo} linkInfo
+ * @property {ScanStatsInfo} [statsInfo]
+ * @property {ScanSymlinkInfo} [linkInfo]
  **/
 
 /** @param {ScanEntryBase} entry
