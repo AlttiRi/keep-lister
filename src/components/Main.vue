@@ -23,6 +23,10 @@ import Guide from "./Guide.vue";
 import {computed, onMounted} from "vue";
 import {meta, setScan} from "../core/folders.js";
 import {search} from "../core/search.js";
+import {bytesToSize, bytesToSizeWinLike} from "../util.js";
+
+globalThis.bytesToSize = bytesToSize;
+globalThis.bytesToSizeWinLike = bytesToSizeWinLike;
 
 
 // some kind of hack, but okay // don't show if a file selected, or remote scan is loading
