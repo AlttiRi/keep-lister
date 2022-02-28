@@ -168,6 +168,9 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
      * /size:120~20  - find from  80 to 140
      * /size:120-220 - find from 120 to 220
      * /size:220-120 - find from 120 to 220
+     * /size:^2      - size.toString() starts with "2"
+     * /size:%0      - size.toString() includes    "2"
+     * /size:$0      - size.toString() ends with   "0"
      * //todo
      * /size:120~    - find from 120 -5% to 120 +5%
      * /size:120~~   - find from 120-10% to 120+10%
@@ -176,6 +179,12 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
     if (search.startsWith("/size")) {
         const {
             /** @type {String|undefined} */
+            startsWith,
+            /** @type {String|undefined} */
+            endsWith,
+            /** @type {String|undefined} */
+            includes,
+            /** @type {String|undefined} */
             size,
             /** @type {String|undefined} */
             plus,
@@ -183,14 +192,29 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
             plusRange,
             /** @type {String|undefined} */
             range,
-        } = search.match(/\/size[:\/](?<size>\d+)(\+(?<plus>(\d+)|(-\d+))|~(?<plusRange>\d+)|-(?<range>\d+))?/)?.groups || {};
+        } = search.match(/\/size[:\/]((?<startsWith>\^)|(?<endsWith>\$)|(?<includes>%))?(?<size>\d+)(\+(?<plus>(\d+)|(-\d+))|~(?<plusRange>\d+)|-(?<range>\d+))?/)?.groups || {};
         if (size) {
-            console.log({size, plus, plusRange, range});
+            console.log({subString: {startsWith, endsWith, includes}, size, plus, plusRange, range});
 
             let text;
             let result;
             const _size = Number(size);
 
+            if (startsWith) {
+                result = await findAll(folder, entry => {
+                    return entry.size.toString().startsWith(size);
+                });
+            } else
+            if (endsWith) {
+                result = await findAll(folder, entry => {
+                    return entry.size.toString().endsWith(size);
+                });
+            } else
+            if (includes) {
+                result = await findAll(folder, entry => {
+                    return entry.size.toString().includes(size);
+                });
+            } else
             if (plus) {
                 const _plus = _size + Number(plus);
                 const {min, max} = _size < _plus ? {min: _size, max: _plus} : {min: _plus, max: _size};
