@@ -169,7 +169,7 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
      * /size:120-220 - find from 120 to 220
      * /size:220-120 - find from 120 to 220
      * /size:^2      - size.toString() starts with "2"
-     * /size:%0      - size.toString() includes    "2"
+     * /size:%2      - size.toString() includes    "2"
      * /size:$0      - size.toString() ends with   "0"
      * //todo
      * /size:120~    - find from 120 -5% to 120 +5%
