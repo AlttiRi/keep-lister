@@ -170,10 +170,23 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
      * /size:^2      - size.toString() starts with "2"
      * /size:%2      - size.toString() includes    "2"
      * /size:$0      - size.toString() ends with   "0"
-     * //todo
+     *
+     * ===== TODO =====
      * /size:120~    - find from 120 -5% to 120 +5%
      * /size:120~~   - find from 120-10% to 120+10%
      * /size:120~~~  - find from 120-15% to 120+15%
+     *
+     * /sizek:5      - find 5 KB ± 0.5 KB
+     * /sizem:5      - find 5 MB ± 0.5 MB
+     * /sizeg/5      - find 5 GB ± 0.5 GB
+     *
+     * /s/0          - find 0 byte size entries, just a short form
+     *
+     * /s/120 900    - find 120900 bytes size entries
+     * /s/120,900    - find 120900 bytes size entries
+     *
+     * /s/120.900    - find 120 bytes size entries
+     * /sk/120.900    - find 120.9 KB size entries
      */
     if (search.startsWith("/size")) {
         const {
