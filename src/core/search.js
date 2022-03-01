@@ -163,7 +163,6 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
      * /size:0       - find 0 byte size entries
      * /size/120     - the same, find 120 bytes size entries
      * /size:120+80  - find from 120 to 200
-     * /size:120+80  - find from 120 to 200
      * /size:120+-20 - find from 100 to 120
      * /size:120~20  - find from  80 to 140
      * /size:120-220 - find from 120 to 220
