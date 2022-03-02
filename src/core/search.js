@@ -170,6 +170,9 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
      * /size:^2      - size.toString() starts with "2"
      * /size:%2      - size.toString() includes    "2"
      * /size:$0      - size.toString() ends with   "0"
+     * /s/0          - find 0 byte size entries, just a short form
+     * /s/120 900    - find 120900 bytes size entries
+     * /s/120,900    - find 120900 bytes size entries
      *
      * ===== TODO =====
      * /size:120~    - find from 120 -5% to 120 +5%
@@ -180,16 +183,13 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
      * /sizem:5      - find 5 MB ± 0.5 MB
      * /sizeg/5      - find 5 GB ± 0.5 GB
      *
-     * /s/0          - find 0 byte size entries, just a short form
-     *
-     * /s/120 900    - find 120900 bytes size entries
-     * /s/120,900    - find 120900 bytes size entries
-     *
      * /s/120.900    - find 120 bytes size entries
-     * /sk/120.900    - find 120.9 KB size entries
+     * /sk/120.900   - find 120.9 KB size entries
      */
-    if (search.startsWith("/size")) {
+    if (search.match(/^\/s(ize)?(k|m|g|t)?[:\/]/)) {
         const {
+            /** @type {String|undefined} */
+            prefix,
             /** @type {String|undefined} */
             startsWith,
             /** @type {String|undefined} */
@@ -197,20 +197,21 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
             /** @type {String|undefined} */
             includes,
             /** @type {String|undefined} */
-            size,
+            sizeString,
             /** @type {String|undefined} */
             plus,
             /** @type {String|undefined} */
             plusRange,
             /** @type {String|undefined} */
             range,
-        } = search.match(/\/size[:\/]((?<startsWith>\^)|(?<endsWith>\$)|(?<includes>%))?(?<size>\d+)(\+(?<plus>(\d+)|(-\d+))|~(?<plusRange>\d+)|-(?<range>\d+))?/)?.groups || {};
-        if (size) {
-            console.log({subString: {startsWith, endsWith, includes}, size, plus, plusRange, range});
+        } = search.match(/\/s(ize)?(?<prefix>k|m|g|t)?[:\/]((?<startsWith>\^)|(?<endsWith>\$)|(?<includes>%))?(?<sizeString>\s*\d[\d\s\,]*)(\+(?<plus>(\d+)|(-\d+))|~(?<plusRange>\d+)|-(?<range>\d+))?/)?.groups || {};
+        if (sizeString) {
+            console.log({prefix, subString: {startsWith, endsWith, includes}, sizeString, plus, plusRange, range});
 
             let text;
             let result;
-            const _size = Number(size);
+            const _size = Number(sizeString.replaceAll(/[\s,]/g, ""));
+            const size = _size.toString();
 
             if (startsWith) {
                 result = await findAll(folder, entry => {
