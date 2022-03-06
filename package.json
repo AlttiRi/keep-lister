@@ -3,6 +3,7 @@
   "type": "module",
   "name": "directory-snapshot-explorer",
   "description": "Local files index viewer. File explorer for JSON snapshots with meta information of local files. Scanner for creating snapshots is included.",
+  "license": "GPL-3.0",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
