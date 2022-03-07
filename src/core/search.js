@@ -178,15 +178,21 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
      * /size:120~~   - find from 120-10% to 120+10%
      * /size:120~~~  - find from 120-15% to 120+15%
      *
-     * ===== TODO =====
-     * /sizek:5      - find 5 KB ± 0.5 KB
-     * /sizem:5      - find 5 MB ± 0.5 MB
-     * /sizeg/5      - find 5 GB ± 0.5 GB
+     * /sizek:5      - find 5 KB ± 0.01 %
+     * /sizem:5      - find 5 MB ± 0.01 %
+     * /sizeg/5      - find 5 GB ± 0.01 %
      *
-     * /size:5m      - find 5 MB ± 0.5 KB
+     * /size:5m      - find 5 MB ± 0.01 %
      *
      * /s/120.900    - find 120 bytes size entries
-     * /sk/120.900   - find 120.9 KB size entries
+     * /sk/120.900   - find 120.9 KB ± 0.01 % size entries
+     *
+     * ===== TODO =====
+     * Change "0.01 %" to 0.01 * prefix
+     *
+     * /sizek:5!     - find 5 KB to 5 KB + 0.01 %
+     * /sizek:5!!    - find 5.000 KB to 5.009 KB
+     * /s/5k!!       - find 5.000 KB to 5.009 KB
      */
     const r1 = `\\/s(ize)?(?<defaultPrefix>b|k|m|g|t)?[:\\/]`;
     if (search.match(new RegExp(r1))) {
@@ -203,8 +209,6 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
             /** @type {"b"|"k"|"m"|"g"|"t"|undefined} */
             defaultPrefix,
 
-            /** @type {String|undefined} */
-            extra1,
             /** @type {String|undefined} */
             caret,
             /** @type {String|undefined} */
@@ -245,11 +249,19 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
 
             let text;
             let result;
-            const sizeNum = Number(sizeString1.replaceAll(/[\s,]/g, ""));
+
+            let sizeNum = Number(sizeString1.replaceAll(/[\s,]/g, ""));
             const size = sizeNum.toString();
 
-            const size2Num = sizeString2 && Number(sizeString2.replaceAll(/[\s,]/g, ""));
+            let size2Num = sizeString2 && Number(sizeString2.replaceAll(/[\s,]/g, ""));
             const size2 = size2Num?.toString();
+
+
+            const dec1 = decimal1 ? Number("0." + decimal1) : 0;
+            const dec2 = decimal2 ? Number("0." + decimal2) : 0;
+            sizeNum  = multiplyByPrefix(sizeNum  + dec1, prefix1 || defaultPrefix);
+            size2Num = multiplyByPrefix(size2Num + dec2, prefix2 || defaultPrefix);
+
 
             /**
              * @param {Number} a
@@ -264,6 +276,14 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
                     return entry.size >= min && entry.size <= max;
                 });
             }
+            function multiplyByPrefix(value, prefix = "b") {
+                if (value === undefined) {
+                    return;
+                }
+                const prefixes = ["b", "k", "m", "g", "t"];
+                return Math.trunc(value * (1024 ** prefixes.indexOf(prefix)));
+            }
+
 
             if (caret) { // ^
                 text = `Size search starts with "${size}"`;
@@ -298,10 +318,17 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
                     await rangeSearch(sizeNum - diff, sizeNum + diff);
                 }
             } else {
-                text = `Size search ${bytesToSizeWinLike(sizeNum)}`;
-                result = await findAll(folder, entry => {
-                    return entry.size === sizeNum;
-                });
+                const prefix = prefix1 || defaultPrefix;
+                if (prefix && prefix !== "b") {
+                    const from = Math.trunc(sizeNum * 0.99);
+                    const to   = Math.trunc(sizeNum * 1.01);
+                    await rangeSearch(from, to);
+                } else {
+                    text = `Size search ${bytesToSizeWinLike(sizeNum)}`;
+                    result = await findAll(folder, entry => {
+                        return entry.size === sizeNum;
+                    });
+                }
             }
             console.log(...blue(text));
             Object.defineProperty(result, "customSearchText", {
