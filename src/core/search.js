@@ -251,6 +251,20 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
             const size2Num = sizeString2 && Number(sizeString2.replaceAll(/[\s,]/g, ""));
             const size2 = size2Num?.toString();
 
+            /**
+             * @param {Number} a
+             * @param {Number} b
+             * @return {Promise<void>}
+             */
+            async function rangeSearch(a, b) {
+                const {_min, max} = a < b ? {_min: a, max: b} : {_min: b, max: a};
+                const min = Math.max(0, _min);
+                text = `Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`;
+                result = await findAll(folder, entry => {
+                    return entry.size >= min && entry.size <= max;
+                });
+            }
+
             if (caret) { // ^
                 text = `Size search starts with "${size}"`;
                 result = await findAll(folder, entry => {
@@ -270,42 +284,18 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
                 });
             } else
             if (plus && size2) { // +
-                const _plus = sizeNum + size2Num;
-                const {_min, max} = sizeNum < _plus ? {_min: sizeNum, max: _plus} : {_min: _plus, max: sizeNum};
-                const min = Math.max(0, _min);
-                text = `Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`;
-                result = await findAll(folder, entry => {
-                    return entry.size >= min && entry.size <= max;
-                });
+                await rangeSearch(sizeNum, sizeNum + size2Num);
             } else
             if (minus && size2) { // -
-                const _range = size2Num;
-                const {_min, max} = sizeNum < _range ? {_min: sizeNum, max: _range} : {_min: _range, max: sizeNum};
-                const min = Math.max(0, _min);
-                text = `Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`;
-                result = await findAll(folder, entry => {
-                    return entry.size >= min && entry.size <= max;
-                });
+                await rangeSearch(sizeNum, size2Num);
             } else
             if (tildes) {  // ~ // ~~ // ~~~
                 if (size2) {
-                    const _min = sizeNum - size2Num;
-                    const min = Math.max(0, _min);
-                    const max = sizeNum + size2Num;
-                    text = `Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`;
-                    result = await findAll(folder, entry => {
-                        return entry.size >= min && entry.size <= max;
-                    });
+                    await rangeSearch(sizeNum - size2Num, sizeNum + size2Num);
                 } else {
                     const count = tildes.length;
                     const diff = Math.trunc(sizeNum * 5 * count / 100);
-                    const _min = sizeNum - diff;
-                    const min = Math.max(0, _min);
-                    const max = sizeNum + diff;
-                    text = `Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`;
-                    result = await findAll(folder, entry => {
-                        return entry.size >= min && entry.size <= max;
-                    });
+                    await rangeSearch(sizeNum - diff, sizeNum + diff);
                 }
             } else {
                 text = `Size search ${bytesToSizeWinLike(sizeNum)}`;
