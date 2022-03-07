@@ -10,11 +10,13 @@
 
 <script setup>
 import {setScan} from "../core/folders.js";
+import {clearSearch} from "../core/search.js";
 
 function onChange(event) {
   /** @type {File} */
   const file = event.target.files[0];
-  return setScan(file);
+  clearSearch();
+  void setScan(file);
 }
 </script>
 

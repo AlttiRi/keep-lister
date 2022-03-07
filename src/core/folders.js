@@ -45,8 +45,6 @@ export async function setScan(input) {
     }
     parsingStateNumber.value++;
     console.timeEnd("setScan");
-
-    clearSearch();
 }
 
 /** @type {import("vue").ComputedRef<string>} */
