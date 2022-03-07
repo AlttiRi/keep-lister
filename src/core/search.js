@@ -174,87 +174,143 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
      * /s/120 900    - find 120900 bytes size entries
      * /s/120,900    - find 120900 bytes size entries
      *
-     * ===== TODO =====
      * /size:120~    - find from 120 -5% to 120 +5%
      * /size:120~~   - find from 120-10% to 120+10%
      * /size:120~~~  - find from 120-15% to 120+15%
      *
+     * ===== TODO =====
      * /sizek:5      - find 5 KB ± 0.5 KB
      * /sizem:5      - find 5 MB ± 0.5 MB
      * /sizeg/5      - find 5 GB ± 0.5 GB
      *
+     * /size:5m      - find 5 MB ± 0.5 KB
+     *
      * /s/120.900    - find 120 bytes size entries
      * /sk/120.900   - find 120.9 KB size entries
      */
-    if (search.match(/^\/s(ize)?(k|m|g|t)?[:\/]/)) {
+    const r1 = `\\/s(ize)?(?<defaultPrefix>b|k|m|g|t)?[:\\/]`;
+    if (search.match(new RegExp(r1))) {
+        const r2   = `(?<extra1>(?<caret>\\^)|(?<dollar>\\$)|(?<percent>%))?`;
+        const r3   = `((?<sizeString1>\\s*\\d[\\d\\s\\,]*)((?<dotDecimal1>\\.(?<decimal1>\\d+)?))?(?<prefix1>b|k|m|g|t)?)`;
+
+        const r4_1 = `(?<extra2>(?<plus>\\+)|(?<minus>\\-)|(?<tildes>\\~+))`;
+        const r4_2 = `((?<sizeString2>\\s*-?\\s*\\d[\\d\\s\\,]*)((?<dotDecimal2>\\.(?<decimal2>\\d+)?))?(?<prefix2>b|k|m|g|t)?)?`;
+        const r4   = `(?<range>${r4_1}${r4_2})?`;
+
+        const regex = new RegExp(r1 + r2 + r3 + r4);
+
         const {
+            /** @type {"b"|"k"|"m"|"g"|"t"|undefined} */
+            defaultPrefix,
+
             /** @type {String|undefined} */
-            prefix,
+            extra1,
             /** @type {String|undefined} */
-            startsWith,
+            caret,
             /** @type {String|undefined} */
-            endsWith,
+            dollar,
             /** @type {String|undefined} */
-            includes,
+            percent,
+
             /** @type {String|undefined} */
-            sizeString,
+            sizeString1,
+            /** @type {String|undefined} */
+            decimal1,
+            /** @type {String|undefined} */
+            prefix1,
+
             /** @type {String|undefined} */
             plus,
             /** @type {String|undefined} */
-            plusRange,
+            minus,
             /** @type {String|undefined} */
-            range,
-        } = search.match(/\/s(ize)?(?<prefix>k|m|g|t)?[:\/]((?<startsWith>\^)|(?<endsWith>\$)|(?<includes>%))?(?<sizeString>\s*\d[\d\s\,]*)(\+(?<plus>(\d+)|(-\d+))|~(?<plusRange>\d+)|-(?<range>\d+))?/)?.groups || {};
-        if (sizeString) {
-            console.log({prefix, subString: {startsWith, endsWith, includes}, sizeString, plus, plusRange, range});
+            tildes,
+
+            /** @type {String|undefined} */
+            sizeString2,
+            /** @type {String|undefined} */
+            decimal2,
+            /** @type {String|undefined} */
+            prefix2,
+
+        } = search.match(regex)?.groups || {};
+
+        if (sizeString1) {
+            console.log({
+                defaultPrefix,
+                extra1: {caret, dollar, percent},
+                sizeString1, decimal1, prefix1,
+                extra2: {plus, minus, tildes, sizeString2, decimal2, prefix2},
+            });
 
             let text;
             let result;
-            const _size = Number(sizeString.replaceAll(/[\s,]/g, ""));
-            const size = _size.toString();
+            const sizeNum = Number(sizeString1.replaceAll(/[\s,]/g, ""));
+            const size = sizeNum.toString();
 
-            if (startsWith) {
+            const size2Num = sizeString2 && Number(sizeString2.replaceAll(/[\s,]/g, ""));
+            const size2 = size2Num?.toString();
+
+            if (caret) { // ^
+                text = `Size search starts with "${size}"`;
                 result = await findAll(folder, entry => {
                     return entry.size.toString().startsWith(size);
                 });
             } else
-            if (endsWith) {
+            if (dollar) { // $
+                text = `Size search ends with "${size}"`;
                 result = await findAll(folder, entry => {
                     return entry.size.toString().endsWith(size);
                 });
             } else
-            if (includes) {
+            if (percent) { // %
+                text = `Size search includes "${size}"`;
                 result = await findAll(folder, entry => {
                     return entry.size.toString().includes(size);
                 });
             } else
-            if (plus) {
-                const _plus = _size + Number(plus);
-                const {min, max} = _size < _plus ? {min: _size, max: _plus} : {min: _plus, max: _size};
+            if (plus && size2) { // +
+                const _plus = sizeNum + size2Num;
+                const {_min, max} = sizeNum < _plus ? {_min: sizeNum, max: _plus} : {_min: _plus, max: sizeNum};
+                const min = Math.max(0, _min);
                 text = `Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`;
                 result = await findAll(folder, entry => {
                     return entry.size >= min && entry.size <= max;
                 });
             } else
-            if (range) {
-                const _range = Number(range);
-                const {min, max} = _size < _range ? {min: _size, max: _range} : {min: _range, max: _size};
+            if (minus && size2) { // -
+                const _range = size2Num;
+                const {_min, max} = sizeNum < _range ? {_min: sizeNum, max: _range} : {_min: _range, max: sizeNum};
+                const min = Math.max(0, _min);
                 text = `Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`;
                 result = await findAll(folder, entry => {
                     return entry.size >= min && entry.size <= max;
                 });
             } else
-            if (plusRange) {
-                const min = _size - Number(plusRange);
-                const max = _size + Number(plusRange);
-                text = `Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`;
-                result = await findAll(folder, entry => {
-                    return entry.size >= min && entry.size <= max;
-                });
+            if (tildes) {  // ~ // ~~ // ~~~
+                if (size2) {
+                    const _min = sizeNum - size2Num;
+                    const min = Math.max(0, _min);
+                    const max = sizeNum + size2Num;
+                    text = `Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`;
+                    result = await findAll(folder, entry => {
+                        return entry.size >= min && entry.size <= max;
+                    });
+                } else {
+                    const count = tildes.length;
+                    const diff = Math.trunc(sizeNum * 5 * count / 100);
+                    const _min = sizeNum - diff;
+                    const min = Math.max(0, _min);
+                    const max = sizeNum + diff;
+                    text = `Size search from ${bytesToSizeWinLike(min)} to ${bytesToSizeWinLike(max)}`;
+                    result = await findAll(folder, entry => {
+                        return entry.size >= min && entry.size <= max;
+                    });
+                }
             } else {
-                text = `Size search ${bytesToSizeWinLike(_size)}`;
+                text = `Size search ${bytesToSizeWinLike(sizeNum)}`;
                 result = await findAll(folder, entry => {
-                    return entry.size === _size;
+                    return entry.size === sizeNum;
                 });
             }
             console.log(...blue(text));
