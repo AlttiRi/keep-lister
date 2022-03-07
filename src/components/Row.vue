@@ -101,7 +101,7 @@ function onMousedown(event) {
         entry.value,
         [...meta.value.path,...entry.value.path.map(e => e.name)].join(separator.value).replace("//", "/")
     );
-    
+
     if (openedFolder.value !== entry.value.parent) {
       openFolder(entry.value.parent);
     }
