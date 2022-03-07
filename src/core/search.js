@@ -178,21 +178,22 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
      * /size:120~~   - find from 120-10% to 120+10%
      * /size:120~~~  - find from 120-15% to 120+15%
      *
-     * /sizek:5      - find 5 KB ± 0.01 %
-     * /sizem:5      - find 5 MB ± 0.01 %
-     * /sizeg/5      - find 5 GB ± 0.01 %
+     * /sizek:5      - find 5 KB ± 0.1 KB
+     * /sizek:50     - find 50 KB  ± 1 KB
+     * /sizek:500    - find 500 KB ± 1 KB
+     * /sizem:5      - find 5 MB ± 0.1 MB
+     * /sizeg/50     - find 50 GB ± 1 GB
      *
-     * /size:5m      - find 5 MB ± 0.01 %
+     * /size:5m      - find 5 MB ± 0.1 MB
      *
-     * /s/120.900    - find 120 bytes size entries
-     * /sk/120.900   - find 120.9 KB ± 0.01 % size entries
+     * /s/12.9       - find 12 bytes size entries
+     * /sk/12.9      - find 12.9 KB ± 1 KB
      *
-     * ===== TODO =====
-     * Change "0.01 %" to 0.01 * prefix
-     *
-     * /sizek:5!     - find 5 KB to 5 KB + 0.01 %
-     * /sizek:5!!    - find 5.000 KB to 5.009 KB
-     * /s/5k!!       - find 5.000 KB to 5.009 KB
+     * /sizek:5!     - find 5 KB + (0 - 0.01) KB
+     * /sizek:5!!    - find 5 KB + (0 - 0.001) KB
+     * /s/5k!!       - find 5 KB + (0 - 0.001) KB
+     * /sizem:50!    - find 50 MB + (0 - 0.1) MB
+     * /sizem:50!!   - find 50 MB + (0 - 0.01) MB
      */
     const r1 = `\\/s(ize)?(?<defaultPrefix>b|k|m|g|t)?[:\\/]`;
     if (search.match(new RegExp(r1))) {
@@ -319,15 +320,22 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
                     const diff = Math.trunc(sizeNum * 5 * count / 100);
                     await rangeSearch(sizeNum - diff, sizeNum + diff);
                 }
-            } else {
+            } else { // Default
                 const prefix = prefix1 || defaultPrefix;
                 if (prefix && prefix !== "b") {
-                    let from = Math.trunc(sizeNum * 0.99);
-                    let to   = Math.trunc(sizeNum * 1.01);
+
+                    let orders = size.length;
+                    let diff = multiplyByPrefix(1, prefix);
+                    if (orders === 1) {
+                        diff = Math.trunc(diff / 10);
+                    }
+
+                    let from = sizeNum - diff;
+                    let to   = sizeNum + diff;
                     if (exclamations) {
                         from = sizeNum;
                         if (exclamations.length > 1) {
-                            to = Math.trunc(sizeNum * 1.001);
+                            to = sizeNum + Math.trunc(diff / 10);
                         }
                     }
                     await rangeSearch(from, to);
