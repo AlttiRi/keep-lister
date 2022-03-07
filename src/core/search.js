@@ -197,7 +197,7 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
     const r1 = `\\/s(ize)?(?<defaultPrefix>b|k|m|g|t)?[:\\/]`;
     if (search.match(new RegExp(r1))) {
         const r2   = `(?<extra1>(?<caret>\\^)|(?<dollar>\\$)|(?<percent>%))?`;
-        const r3   = `((?<sizeString1>\\s*\\d[\\d\\s\\,]*)((?<dotDecimal1>\\.(?<decimal1>\\d+)?))?(?<prefix1>b|k|m|g|t)?)`;
+        const r3   = `((?<sizeString1>\\s*\\d[\\d\\s\\,]*)((?<dotDecimal1>\\.(?<decimal1>\\d+)?))?(?<prefix1>b|k|m|g|t)?(?<exclamations>!+)?)`;
 
         const r4_1 = `(?<extra2>(?<plus>\\+)|(?<minus>\\-)|(?<tildes>\\~+))`;
         const r4_2 = `((?<sizeString2>\\s*-?\\s*\\d[\\d\\s\\,]*)((?<dotDecimal2>\\.(?<decimal2>\\d+)?))?(?<prefix2>b|k|m|g|t)?)?`;
@@ -222,6 +222,8 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
             decimal1,
             /** @type {String|undefined} */
             prefix1,
+            /** @type {String|undefined} */
+            exclamations,
 
             /** @type {String|undefined} */
             plus,
@@ -243,7 +245,7 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
             console.log({
                 defaultPrefix,
                 extra1: {caret, dollar, percent},
-                sizeString1, decimal1, prefix1,
+                sizeString1, decimal1, prefix1, exclamations,
                 extra2: {plus, minus, tildes, sizeString2, decimal2, prefix2},
             });
 
@@ -320,8 +322,14 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
             } else {
                 const prefix = prefix1 || defaultPrefix;
                 if (prefix && prefix !== "b") {
-                    const from = Math.trunc(sizeNum * 0.99);
-                    const to   = Math.trunc(sizeNum * 1.01);
+                    let from = Math.trunc(sizeNum * 0.99);
+                    let to   = Math.trunc(sizeNum * 1.01);
+                    if (exclamations) {
+                        from = sizeNum;
+                        if (exclamations.length > 1) {
+                            to = Math.trunc(sizeNum * 1.001);
+                        }
+                    }
                     await rangeSearch(from, to);
                 } else {
                     text = `Size search ${bytesToSizeWinLike(sizeNum)}`;
