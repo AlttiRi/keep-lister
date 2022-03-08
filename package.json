@@ -1,5 +1,5 @@
 {
-  "version": "0.2.1",
+  "version": "0.2.2",
   "type": "module",
   "name": "directory-snapshot-explorer",
   "description": "Local files index viewer. File explorer for JSON snapshots with meta information of local files. Scanner for creating snapshots is included.",
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "pako": "^2.0.4",
-    "vue": "^3.2.26"
+    "vue": "^3.2.31"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "~20.0.0",
