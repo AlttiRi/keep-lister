@@ -5,7 +5,7 @@ import {dateToDayDateString, sleep} from "../util.js";
 import {addMessage} from "./debug.js";
 import {parseScan} from "./scan-parser.js";
 import {limit} from "./entries.js";
-import {scanParsing} from "./scan-parser-state.js";
+import {scanParsing} from "./state.js";
 
 
 /** @type {import("vue").Ref<ScanMeta>} */

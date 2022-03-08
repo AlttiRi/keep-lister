@@ -4,7 +4,7 @@ import {openedFolder} from "./folders.js";
 import {comparator, limit, orderBy, reverseOrder} from "./entries.js";
 import * as debug from "./debug.js";
 import {entryTypes} from "./entry.js";
-import {scanParsing} from "./scan-parser-state.js";
+import {scanParsing, searchAwaiting, searching} from "./state.js";
 
 /** @type {import("vue").Ref<string>} */
 export const search = ref(""); // [v-model]
@@ -85,7 +85,10 @@ async function performSearch() {
     const folderRaw = isReactive(folder) ? toRaw(folder) : folder;
 
     const time1 = performance.now();
+    searching.value = true;
     const result = await searcher(folderRaw, request);
+    searching.value = false;
+    searchAwaiting.value = false;
     if (!result) {
         return;
     }
@@ -383,7 +386,8 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
                 });
             }
         }
-    } else if (search.includes(" ")) {
+    } else
+    if (search.includes(" ")) {
         const parts = search.split(" ").filter(o => o);
         if (parts.length > 1) {
             let result = await justSearch(parts.shift());
@@ -409,6 +413,8 @@ watch(search, async (newValue, oldValue) => {
         clearSearchResult();
         return;
     }
+    searchAwaiting.value = true;
+
     // In order to "no debounce by paste event"
     if (newValue.length - oldValue.length > 1) {
         await performSearch();

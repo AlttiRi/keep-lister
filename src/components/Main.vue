@@ -5,6 +5,9 @@
     <Search     style="grid-area: search;"/>
     <Tabs       style="grid-area: tabs;"/>
     <Guide      style="grid-area: content;" v-if="showGuide"/>
+    <InnerModal style="grid-area: content;" v-else-if="scanParsing && searchAwaiting">
+      [Search]: Scan parsing awaiting
+    </InnerModal>
     <Content    style="grid-area: content;" v-else/>
     <Status     style="grid-area: status;"/>
     <Debug      style="grid-area: debug;"/>
@@ -20,10 +23,12 @@ import Status from "./Status.vue";
 import Switch from "./Switch.vue";
 import Debug from "./Debug.vue";
 import Guide from "./Guide.vue";
+import InnerModal from "./InnerModal.vue";
 import {computed, onMounted} from "vue";
 import {meta, setScan} from "../core/folders.js";
 import {search} from "../core/search.js";
 import {bytesToSize, bytesToSizeWinLike} from "../util.js";
+import {scanParsing, searchAwaiting} from "../core/state.js";
 
 globalThis.bytesToSize = bytesToSize;
 globalThis.bytesToSizeWinLike = bytesToSizeWinLike;
