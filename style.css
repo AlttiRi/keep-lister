@@ -183,6 +183,12 @@ input[data-v-73649aa8] {
     opacity: 1;
 }
 }
+/* InnerModal.vue */
+.inner-modal[data-v-462d7e6d] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 /* IntersectionRow.vue */
 .intersection[data-v-5baedc86] {
   width: 100%;
@@ -191,7 +197,7 @@ input[data-v-73649aa8] {
 }
 
 /* Main.vue */
-.main[data-v-c54b287a] {
+.main[data-v-0440debe] {
   grid-template-areas: "switch address search " "tabs   content content" "status status  status " "debug  debug   debug  ";
   display: grid;
   grid-template-columns: 7em 2fr 1fr;
@@ -205,7 +211,7 @@ input[data-v-73649aa8] {
   border: 1px solid var(--gray-2);
   background-color: var(--gray-2);
 }
-.main *[data-v-c54b287a] {
+.main *[data-v-0440debe] {
   background-color: white;
 }
 /* Row.vue */
