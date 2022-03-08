@@ -1,10 +1,11 @@
-import {computed, markRaw, ref, unref, watch, } from "vue";
+import {computed, markRaw, ref, unref, watch} from "vue";
 import {clearSearch} from "./search.js";
 import {folderDummy} from "./entry.js";
 import {dateToDayDateString, sleep} from "../util.js";
 import {addMessage} from "./debug.js";
 import {parseScan} from "./scan-parser.js";
 import {limit} from "./entries.js";
+import {scanParsing} from "./scan-parser-state.js";
 
 
 /** @type {import("vue").Ref<ScanMeta>} */
@@ -20,6 +21,8 @@ export const parsingStateNumber = ref(0);
  * @return {Promise<void>}
  */
 export async function setScan(input) {
+    scanParsing.value = true;
+
     let metaInited = false;
     let rootInited = false;
 
@@ -45,6 +48,8 @@ export async function setScan(input) {
     }
     parsingStateNumber.value++;
     console.timeEnd("setScan");
+
+    scanParsing.value = false;
 }
 
 /** @type {import("vue").ComputedRef<string>} */

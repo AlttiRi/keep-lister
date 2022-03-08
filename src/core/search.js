@@ -1,9 +1,10 @@
-import {isReactive, ref, toRaw, watch} from "vue";
+import {isReactive, ref, toRaw, watch, watchEffect} from "vue";
 import {blue, bytesToSizeWinLike, debounce, sleep} from "../util.js";
 import {openedFolder} from "./folders.js";
-import {comparator, limit, orderBy,  reverseOrder} from "./entries.js";
+import {comparator, limit, orderBy, reverseOrder} from "./entries.js";
 import * as debug from "./debug.js";
 import {entryTypes} from "./entry.js";
+import {scanParsing} from "./scan-parser-state.js";
 
 /** @type {import("vue").Ref<string>} */
 export const search = ref(""); // [v-model]
@@ -57,9 +58,26 @@ function addSearchResultToGlobalThis(rawResult) {
     });
 }
 
+let resolve = () => {};
+let scanParsingCompleted = Promise.resolve(true);
+watchEffect(() => {
+    if (scanParsing.value) {
+        resolve(false);
+        scanParsingCompleted = new Promise(r => resolve = r);
+    } else {
+        resolve(true);
+    }
+});
+
 //todo check linked list perf for large search // do search after scan parsing ended
 const performSearchDebounced = debounce(performSearch, 300);
 async function performSearch() {
+
+    // Await while the scan parsing is completed, return `false` if there is a new `performSearch` call while parsing.
+    if (false === await scanParsingCompleted) {
+        return;
+    }
+
     const folder = openedFolder.value;
     const request = search.value;
 
