@@ -16,4 +16,11 @@ import Main from "./components/Main.vue";
   --gray-2: #d4d4d4;
   --red-1: rgba(234, 33, 74, 0.88);
 }
+
+:root {
+  --drop-hover: rgba(0,0,0,0.03);
+  --drop-active: rgba(0,0,0,0.06);
+  --drop-file-hover: rgba(0,0,0,0.06);
+  --file-input-border: rgba(0,0,0,0.6);
+}
 </style>

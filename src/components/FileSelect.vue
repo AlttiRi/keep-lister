@@ -1,33 +1,34 @@
 <template>
-  <div class="file-select">
-    <label>
-      Select file
-      <input type="file" accept="application/json,application/gzip" @change="onChange">
-    </label>
-    <hr>
+  <div class="file-input-wrapper">
+    <FileInput/>
   </div>
 </template>
 
 <script setup>
+//todo: accept="application/json,application/gzip"
+
 import {setScan} from "../core/folders.js";
 import {clearSearch} from "../core/search.js";
 
-function onChange(event) {
-  /** @type {File} */
-  const file = event.target.files[0];
-  clearSearch();
-  void setScan(file);
-}
+import {watchEffect} from "vue";
+import FileInput from "./file-input/FileInput.vue";
+import {file} from "./file-input/file-input-state.js";
+
+watchEffect(() => {
+  if (file.value) {
+    clearSearch();
+    void setScan(file.value.file);
+  }
+});
 </script>
 
 <style lang="scss" scoped>
-.file-select label {
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-  }
-}
-input {
-  display: none;
+.file-input-wrapper {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 100%;
+  grid-template-rows: 100%;
+  width: 100%;
+  min-height: 35px;
 }
 </style>
