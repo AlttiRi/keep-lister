@@ -22,7 +22,7 @@ export const parsingStateNumber = ref(0);
  */
 export async function setScan(input) {
     if (scanParsing.value) {
-        console.log("[setScan][warning]: Multiple call"); // todo break `parseScan`
+        console.warn("[setScan][warning]: Multiple call"); // todo break `parseScan`
     }
     scanParsing.value = true;
 
