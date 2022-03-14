@@ -16,22 +16,50 @@ const root = ref(null);
 // A hack to run recomputing of a computed property
 export const parsingStateNumber = ref(0);
 
+class ExecutionState {
+    constructor() {
+        this.abortRequested = false;
+        this._promise = Promise.resolve();
+        this._resolve = () => {};
+    }
+    abort() {
+        this.abortRequested = true;
+        return this._promise;
+    }
+    start() {
+        this._promise = new Promise(r => this._resolve = r);
+    }
+    abortIfRequested() {
+        if (!execution.abortRequested) {
+            return false;
+        }
+        this.abortRequested = false;
+        this._resolve();
+        return true;
+    }
+}
+const execution = new ExecutionState();
 /**
  * @param {Blob|Response} input
- * @return {Promise<void>}
+ * @return {Promise<Boolean>}
  */
 export async function setScan(input) {
     if (scanParsing.value) {
-        console.warn("[setScan][warning]: Multiple call"); // todo break `parseScan`
+        await execution.abort();
     }
     scanParsing.value = true;
+    execution.start();
 
     let metaInited = false;
     let rootInited = false;
 
-    console.time("setScan");
+    const startTime = Date.now();
     let time = Date.now();
     for await (const {meta: scanMeta, root: rootEntry, rootUpdated: rootContentUpdated} of parseScan(input)) {
+        if (execution.abortIfRequested()) {
+            console.log(`[setScan][time][aborted]`, Date.now() - startTime, "ms");
+            return false;
+        }
         if (!metaInited && scanMeta) {
             meta.value = markRaw(scanMeta);
             metaInited = true;
@@ -50,9 +78,10 @@ export async function setScan(input) {
         }
     }
     parsingStateNumber.value++;
-    console.timeEnd("setScan");
+    console.log(`[setScan][time]:`, Date.now() - startTime, "ms");
 
     scanParsing.value = false;
+    return true;
 }
 
 /** @type {import("vue").ComputedRef<string>} */
