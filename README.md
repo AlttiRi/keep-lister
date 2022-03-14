@@ -102,6 +102,8 @@ _BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#rea
 - `/size:120-220` — find from 120 to 220
 - `/size:220-120` — find from 120 to 220
 
+- [More examples...](https://github.com/AlttiRi/directory-snapshot-explorer/blob/1ecec3403db98c9683adbbae48955a4ccbed5366/src/core/search.js#L183-L217)
+
 ---
 # How to use
 
