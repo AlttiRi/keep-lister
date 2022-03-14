@@ -17,10 +17,15 @@ import Main from "./components/Main.vue";
   --red-1: rgba(234, 33, 74, 0.88);
 }
 
+/* Default component colors. Do not change. */
 :root {
   --drop-hover: rgba(0,0,0,0.03);
   --drop-active: rgba(0,0,0,0.06);
   --drop-file-hover: rgba(0,0,0,0.06);
   --file-input-border: rgba(0,0,0,0.6);
+}
+
+:root {
+  --file-input-border: var(--gray-2);
 }
 </style>

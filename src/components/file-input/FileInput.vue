@@ -6,8 +6,8 @@
 >
   <label>
     <input type="file"
-           accept="*/*"
-           multiple
+           :accept="accept"
+           :multiple="multiple"
            @change="onFileInputChange"
            style="display: none"
     >
@@ -33,7 +33,7 @@
 import FileInputDefaultHoverText from "./FileInputDefaultHoverText.vue";
 import FileInputDefaultText from "./FileInputDefaultText.vue";
 
-import {ref, toRefs, defineProps, onMounted, computed} from "vue";
+import {ref, toRefs, onMounted, computed} from "vue";
 import {
   parsing,
   file,
@@ -46,6 +46,14 @@ import {
 
 const props = defineProps({
   globalDropZone: {
+    type: Boolean,
+    default: true
+  },
+  accept: {
+    type: String,
+    default: "*/*"
+  },
+  multiple: {
     type: Boolean,
     default: true
   },
