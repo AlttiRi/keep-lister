@@ -21,6 +21,9 @@ export const parsingStateNumber = ref(0);
  * @return {Promise<void>}
  */
 export async function setScan(input) {
+    if (scanParsing.value) {
+        console.warn("[setScan][warning]: Multiple call"); // todo break `parseScan`
+    }
     scanParsing.value = true;
 
     let metaInited = false;
