@@ -16,10 +16,6 @@ const root = ref(null);
 // A hack to run recomputing of a computed property
 export const parsingStateNumber = ref(0);
 
-watch(scanParsingProgress, () => {
-    console.log("[setScan][progress]:", scanParsingProgress.value, "%");
-});
-
 class ExecutionState {
     constructor() {
         this.abortRequested = false;
@@ -51,6 +47,7 @@ export async function setScan(input) {
     if (scanParsing.value) {
         await execution.abort();
     }
+    scanParsingProgress.value = 0;
     scanParsing.value = true;
     execution.start();
 

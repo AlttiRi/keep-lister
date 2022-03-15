@@ -1,6 +1,7 @@
 <template>
   <div class="main">
     <MemoryConsuming/>
+    <ScanProgressBar/>
     <Switch     style="grid-area: switch;"/>
     <AddressBar style="grid-area: address;"/>
     <Search     style="grid-area: search;"/>
@@ -26,6 +27,7 @@ import Debug from "./Debug.vue";
 import Guide from "./Guide.vue";
 import InnerModal from "./InnerModal.vue";
 import MemoryConsuming from "./MemoryConsuming.vue";
+import ScanProgressBar from "./ScanProgressBar.vue";
 import {computed, onMounted} from "vue";
 import {meta, setScan} from "../core/folders.js";
 import {search} from "../core/search.js";
