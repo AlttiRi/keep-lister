@@ -17,16 +17,16 @@ import {bytesToSizeWinLike} from "../util.js";
 import {computed, ref, onMounted, onBeforeUnmount} from "vue";
 
 
-const intervalId = ref(null);
-const over100 = ref(false);
-const showHint = ref(false);
-const hint = "Use middle mouse button click to clear the console.";
-
 /** @type {import("vue").Ref<{jsHeapSizeLimit: number, totalJSHeapSize: number, usedJSHeapSize: number}>} */
 const memory = ref(performance.memory);
 const jsHeapSizeLimit = computed(() => memory.value.jsHeapSizeLimit);
 const totalJSHeapSize = computed(() => memory.value.totalJSHeapSize);
 const usedJSHeapSize  = computed(() => memory.value.usedJSHeapSize);
+
+const intervalId = ref(null);
+const over100 = ref(false);
+const showHint = ref(false);
+const hint = "Use middle mouse button click to clear the console.";
 
 const percent = computed(() => {
   const percent = totalJSHeapSize.value / (jsHeapSizeLimit.value / 100);
