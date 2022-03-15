@@ -285,22 +285,22 @@
   background-color: white;
 }
 /* MemoryConsuming.vue */
-.memory-consuming-component[data-v-9e3967ce] {
+.memory-consuming-component[data-v-0d98667c] {
   position: absolute;
   left: 0;
   top: 0;
 }
-.memory-consuming-component > div[data-v-9e3967ce] {
+.memory-consuming-component > div[data-v-0d98667c] {
   width: 100%;
 }
-.memory-consuming-component .visible[data-v-9e3967ce] {
+.memory-consuming-component .visible[data-v-0d98667c] {
   background-color: #415aff;
   height: 2px;
 }
-.memory-consuming-component .visible.over100[data-v-9e3967ce] {
+.memory-consuming-component .visible.over100[data-v-0d98667c] {
   background-color: #e30000;
 }
-.memory-consuming-component .invisible[data-v-9e3967ce] {
+.memory-consuming-component .invisible[data-v-0d98667c] {
   height: 3px;
 }
 /* Row.vue */
