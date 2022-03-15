@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <MemoryConsuming/>
     <Switch     style="grid-area: switch;"/>
     <AddressBar style="grid-area: address;"/>
     <Search     style="grid-area: search;"/>
@@ -24,6 +25,7 @@ import Switch from "./Switch.vue";
 import Debug from "./Debug.vue";
 import Guide from "./Guide.vue";
 import InnerModal from "./InnerModal.vue";
+import MemoryConsuming from "./MemoryConsuming.vue";
 import {computed, onMounted} from "vue";
 import {meta, setScan} from "../core/folders.js";
 import {search} from "../core/search.js";
