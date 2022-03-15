@@ -267,7 +267,7 @@
 }
 
 /* Main.vue */
-.main[data-v-3d5db9bc] {
+.main[data-v-4cc79b4d] {
   grid-template-areas: "switch address search " "tabs   content content" "status status  status " "debug  debug   debug  ";
   display: grid;
   grid-template-columns: 7em 2fr 1fr;
@@ -281,26 +281,29 @@
   border: 1px solid var(--gray-2);
   background-color: var(--gray-2);
 }
-.main *[data-v-3d5db9bc] {
+.main *[data-v-4cc79b4d] {
   background-color: white;
 }
 /* MemoryConsuming.vue */
-.memory-consuming-component[data-v-0d98667c] {
+.memory-consuming-component[data-v-0a81b821] {
   position: absolute;
   left: 0;
   top: 0;
 }
-.memory-consuming-component > div[data-v-0d98667c] {
+.memory-consuming-component > div[data-v-0a81b821] {
   width: 100%;
 }
-.memory-consuming-component .visible[data-v-0d98667c] {
+.memory-consuming-component .visible[data-v-0a81b821] {
   background-color: #415aff;
   height: 2px;
 }
-.memory-consuming-component .visible.over100[data-v-0d98667c] {
+.memory-consuming-component .visible[data-v-0a81b821]:active {
+  background-color: #415aff80;
+}
+.memory-consuming-component .visible.over100[data-v-0a81b821] {
   background-color: #e30000;
 }
-.memory-consuming-component .invisible[data-v-0d98667c] {
+.memory-consuming-component .invisible[data-v-0a81b821] {
   height: 3px;
 }
 /* Row.vue */
@@ -362,6 +365,19 @@
 }
 .row.error .icon[data-v-f71509d6] {
   border-left: 2px solid red;
+}
+/* ScanProgressBar.vue */
+.scan-parsing-progress-component[data-v-d62a4318] {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.scan-parsing-progress-component > div[data-v-d62a4318] {
+  width: 100%;
+}
+.scan-parsing-progress-component .visible[data-v-d62a4318] {
+  background-color: var(--blue-1);
+  height: 4px;
 }
 /* Search.vue */
 /** reset */
