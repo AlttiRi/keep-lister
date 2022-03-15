@@ -142,6 +142,30 @@ export class SimpleEntry {
         }
         return [...this.parent.path, this];
     }
+    get contentTypeStats() {
+        return this.getContentTypeStats();
+    }
+    _getContentTypeStats(deep = true, result = {}, target = this) {
+        if (target.type === "folder" && target.children) {
+            for (const child of target.children) {
+                if (!result[child.type]) {
+                    result[child.type] = 1;
+                } else {
+                    result[child.type]++;
+                }
+                if (child.type === "folder" && deep) {
+                    this._getContentTypeStats(deep, result, child);
+                }
+            }
+            return result;
+        }
+    }
+    getContentTypeStats(deep = true) {
+        console.time("getContentTypeStats");
+        const result = this._getContentTypeStats(deep);
+        console.timeEnd("getContentTypeStats");
+        return result;
+    }
 }
 
 /**
