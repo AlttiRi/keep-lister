@@ -179,7 +179,7 @@ export class EntryStreamParser {
     }
 
     /** @param {SerializableScanEntry[]} sEntriesPart
-     * @return {{root: SimpleEntry, rootUpdated: boolean}}
+     * @return {{root: SimpleEntry, rootUpdated: boolean, processed: number}}
      */
     parse(sEntriesPart) {
         let rootUpdated = false;
@@ -201,7 +201,8 @@ export class EntryStreamParser {
         }
         return {
             root: this.map.get(this.rootId),
-            rootUpdated
+            rootUpdated,
+            processed: sEntriesPart.length,
         }
     }
 

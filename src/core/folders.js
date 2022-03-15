@@ -5,7 +5,7 @@ import {dateToDayDateString, sleep} from "../util.js";
 import {addMessage} from "./debug.js";
 import {parseScan} from "./scan-parser.js";
 import {limit} from "./entries.js";
-import {scanParsing} from "./state.js";
+import {scanParsing, scanParsingProgress} from "./state.js";
 
 
 /** @type {import("vue").Ref<ScanMeta>} */
@@ -15,6 +15,10 @@ const root = ref(null);
 
 // A hack to run recomputing of a computed property
 export const parsingStateNumber = ref(0);
+
+watch(scanParsingProgress, () => {
+    console.log("[setScan][progress]:", scanParsingProgress.value, "%");
+});
 
 class ExecutionState {
     constructor() {
@@ -55,7 +59,15 @@ export async function setScan(input) {
 
     const startTime = Date.now();
     let time = Date.now();
-    for await (const {meta: scanMeta, root: rootEntry, rootUpdated: rootContentUpdated} of parseScan(input)) {
+    let processedTotal = 0;
+    let total;
+    for await (const {meta: scanMeta, root: rootEntry, rootUpdated: rootContentUpdated, processed} of parseScan(input)) {
+        processedTotal += processed;
+        if (total) {
+            const percentStr = (processedTotal / total * 100).toPrecision(3);
+            scanParsingProgress.value = Number(percentStr);
+        }
+
         if (execution.abortIfRequested()) {
             console.log(`[setScan][time][aborted]`, Date.now() - startTime, "ms");
             return false;
@@ -63,6 +75,8 @@ export async function setScan(input) {
         if (!metaInited && scanMeta) {
             meta.value = markRaw(scanMeta);
             metaInited = true;
+            total = scanMeta.total;
+            processedTotal -= 1;
         }
         if (!rootInited && rootEntry) {
             root.value = markRaw(rootEntry);

@@ -4,7 +4,7 @@ import {appendScript, iterateAsyncDataSource, sleep} from "../util.js";
 
 /**
  * @param {Blob|Response} input
- * @return {AsyncGenerator<{meta:ScanMeta, root: SimpleEntry, rootUpdated: boolean}>}
+ * @return {AsyncGenerator<{meta:ScanMeta, root: SimpleEntry, rootUpdated: boolean, processed: number}>}
  */
 export async function *parseScan(input) {
     const parser = new EntryStreamParser();
