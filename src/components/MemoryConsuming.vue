@@ -11,47 +11,42 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import {bytesToSizeWinLike} from "../util.js";
-export default {
-  name: "MemoryConsuming",
-  data() {
-    return {
-      memory: performance.memory,
-      intervalId: null,
-      over100: false
-    }
-  },
-  computed: {
-    jsHeapSizeLimit() {return this.memory.jsHeapSizeLimit},
-    totalJSHeapSize() {return this.memory.totalJSHeapSize},
-    usedJSHeapSize()  {return this.memory.usedJSHeapSize},
-    percent() {
-      const percent = this.totalJSHeapSize / (this.jsHeapSizeLimit / 100);
-      this.over100 = percent > 100;
-      return this.over100 ? 100 : percent;
-    },
-    formattedSize() {
-      return bytesToSizeWinLike(this.totalJSHeapSize);
-    },
-    isSupported() {
-      return this.memory;
-    }
-  },
-  mounted() {
-    if (!this.isSupported) {
-      return;
-    }
-    this.intervalId = setInterval(() => {
-      this.memory = performance.memory;
-    }, 1000);
-  },
-  beforeDestroy() {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
+import {computed, ref, onMounted, onBeforeUnmount} from "vue";
+
+
+const intervalId = ref(null);
+const over100 = ref(false);
+
+/** @type {import("vue").Ref<{jsHeapSizeLimit: number, totalJSHeapSize: number, usedJSHeapSize: number}>} */
+const memory = ref(performance.memory);
+const jsHeapSizeLimit = computed(() => memory.value.jsHeapSizeLimit);
+const totalJSHeapSize = computed(() => memory.value.totalJSHeapSize);
+const usedJSHeapSize  = computed(() => memory.value.usedJSHeapSize);
+
+const percent = computed(() => {
+  const percent = totalJSHeapSize.value / (jsHeapSizeLimit.value / 100);
+  over100.value = percent > 100;
+  return over100.value ? 100 : percent;
+});
+
+const formattedSize = computed(() => bytesToSizeWinLike(totalJSHeapSize.value));
+const isSupported = computed(() => memory.value);
+
+onMounted(() => {
+  if (!isSupported.value) {
+    return;
   }
-}
+  intervalId.value = setInterval(() => {
+    memory.value = performance.memory;
+  }, 1000);
+});
+onBeforeUnmount(() => {
+  if (intervalId.value) {
+    clearInterval(intervalId.value);
+  }
+});
 </script>
 
 <style lang="scss" scoped>
