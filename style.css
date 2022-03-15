@@ -267,7 +267,7 @@
 }
 
 /* Main.vue */
-.main[data-v-0440debe] {
+.main[data-v-3d5db9bc] {
   grid-template-areas: "switch address search " "tabs   content content" "status status  status " "debug  debug   debug  ";
   display: grid;
   grid-template-columns: 7em 2fr 1fr;
@@ -281,8 +281,27 @@
   border: 1px solid var(--gray-2);
   background-color: var(--gray-2);
 }
-.main *[data-v-0440debe] {
+.main *[data-v-3d5db9bc] {
   background-color: white;
+}
+/* MemoryConsuming.vue */
+.memory-consuming-component[data-v-9e3967ce] {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.memory-consuming-component > div[data-v-9e3967ce] {
+  width: 100%;
+}
+.memory-consuming-component .visible[data-v-9e3967ce] {
+  background-color: #415aff;
+  height: 2px;
+}
+.memory-consuming-component .visible.over100[data-v-9e3967ce] {
+  background-color: #e30000;
+}
+.memory-consuming-component .invisible[data-v-9e3967ce] {
+  height: 3px;
 }
 /* Row.vue */
 .row[data-v-f71509d6] {
