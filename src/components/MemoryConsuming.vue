@@ -78,12 +78,12 @@ function onMousedown(event) {
   .visible {
     background-color: #415aff;
     height: 2px;
-    &:active {
-      background-color: #415aff80;
-    }
     &.over100 {
       background-color: #e30000;
     }
+  }
+  &:active .visible {
+    background-color: #415aff80;
   }
   .invisible {
     height: 3px;
