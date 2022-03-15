@@ -1,8 +1,9 @@
 <template>
   <div class="memory-consuming-component"
-      v-if="isSupported"
-      :style="{width: percent + '%'}"
-      :title="'Heap size: ' + formattedSize"
+       v-if="isSupported"
+       :style="{width: percent + '%'}"
+       :title="'Heap size: ' + formattedSize + (showHint ? '\n' + hint : '')"
+       @mousedown="onMousedown"
   >
     <div class="visible"
         :class="{over100}"
@@ -18,6 +19,8 @@ import {computed, ref, onMounted, onBeforeUnmount} from "vue";
 
 const intervalId = ref(null);
 const over100 = ref(false);
+const showHint = ref(false);
+const hint = "Use middle mouse button click to clear the console.";
 
 /** @type {import("vue").Ref<{jsHeapSizeLimit: number, totalJSHeapSize: number, usedJSHeapSize: number}>} */
 const memory = ref(performance.memory);
@@ -47,6 +50,21 @@ onBeforeUnmount(() => {
     clearInterval(intervalId.value);
   }
 });
+
+/** @param {MouseEvent} event */
+function onMousedown(event) {
+  const LEFT_BUTTON = 0;
+  const MIDDLE_BUTTON = 1;
+  const RIGHT_BUTTON = 2;
+  if (event.button === LEFT_BUTTON) {
+    showHint.value = true;
+  }
+  if (event.button === MIDDLE_BUTTON) {
+    event.preventDefault();
+    showHint.value = false;
+    console.clear();
+  }
+}
 </script>
 
 <style lang="scss" scoped>
