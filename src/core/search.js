@@ -107,7 +107,7 @@ async function performSearch() {
     const allSize = result.reduce((acc, val) => computeEntrySize(val, resultSet) + acc, 0);
     const filesSize = result.filter(entry => entry.type !== "folder").reduce((acc, val) => val.size + acc, 0);
     console.timeEnd("search result size computing");
-    console.log(allSize, filesSize);
+    console.log({allSize, filesSize});
 
     setSearchResult(sortedResult);
     const searchText = result.customSearchText || request;
