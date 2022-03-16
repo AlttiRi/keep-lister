@@ -238,7 +238,8 @@ First list all files of certain author, for example, with `[twitter] SpaceX` sea
 ```js
 // Parse the post ID from the filenames, then count the number of unique IDs.
 new Set(
-    search
+    folder
+        .flat()
         .filter(entry => entry.type === "file")
         .map(entry => entry.name)
         .map(name => {
