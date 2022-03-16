@@ -115,18 +115,20 @@ export const openedFolders = computed(() => {
 /** @param {SimpleEntry} entry */
 export function openFolder(entry) {
     clearSearch();
-    openedFolder.value = markRaw(unref(entry));
+    entry = unref(entry);
+    openedFolder.value = markRaw(entry);
     limit.value = 50;
 
     /** @type {SimpleEntry} */
     globalThis.folder = entry;
     console.log("globalThis.folder:", entry);
-    Object.defineProperty(globalThis, "flat", {
-        get() {
-            return entry.flat();
-        }
-    });
 }
+Object.defineProperty(globalThis, "flat", {
+    get() {
+        return globalThis.folder?.flat();
+    }
+});
+
 export function goBack() {
     if (openedFolder.value.parent) {
         openFolder(openedFolder.value.parent);
