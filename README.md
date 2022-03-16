@@ -217,19 +217,21 @@ folder.files.map(e => e.name).join("\n")
 ```
 ```js
 // Find the most long filenames
-// (Use "//" (two slashed) in search input to list all files of the scan)
-search.reduce((acc, entry) => {
-    const name = entry.name;
-    const length = acc[0].length;
-    if (name.length > length) {
-        return [name];
-    }
-    if (name.length === length) {
-        acc.push(name);
+// (`.flat()` recursively lists all files of the selected directory in an array)
+folder
+    .flat()
+    .reduce((acc, entry) => {
+        const name = entry.name;
+        const length = acc[0].length;
+        if (name.length > length) {
+            return [name];
+        }
+        if (name.length === length) {
+            acc.push(name);
+            return acc;
+        }
         return acc;
-    }
-    return acc;
-}, [""])
+    }, [""])
 ```
 
 If you have files with the special filenames (see [@AlttiRi/twitter-click-and-save#filename-format](https://github.com/AlttiRi/twitter-click-and-save#filename-format)) which include some additional information about the file it's not a problem, for example, to count downloaded posts (one post can have multiple files):
@@ -238,7 +240,8 @@ First list all files of certain author, for example, with `[twitter] SpaceX` sea
 ```js
 // Parse the post ID from the filenames, then count the number of unique IDs.
 new Set(
-    search
+    folder
+        .flat()
         .filter(entry => entry.type === "file")
         .map(entry => entry.name)
         .map(name => {
