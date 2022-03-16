@@ -1,4 +1,4 @@
-import {computed, markRaw, ref, toRaw, unref, watch, shallowRef} from "vue";
+import {computed, markRaw, ref, watch, shallowRef} from "vue";
 import {clearSearch} from "./search.js";
 import {folderDummy} from "./entry.js";
 import {dateToDayDateString, sleep} from "../util.js";
@@ -8,10 +8,10 @@ import {limit} from "./entries.js";
 import {scanParsing, scanParsingProgress} from "./state.js";
 
 
-/** @type {import("vue").Ref<ScanMeta>} */
-export const meta = ref(null);
-/** @type {import("vue").Ref<SimpleEntry>} */
-const root = ref(null);
+/** @type {import("vue").ShallowRef<ScanMeta>} */
+export const meta = shallowRef(null);
+/** @type {import("vue").ShallowRef<SimpleEntry>} */
+const root = shallowRef(null);
 
 // A hack to run recomputing of a computed property
 export const parsingStateNumber = ref(0);
