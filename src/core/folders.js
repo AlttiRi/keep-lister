@@ -77,7 +77,7 @@ export async function setScan(input) {
         }
         if (!rootInited && rootEntry) {
             root.value = markRaw(rootEntry);
-            globalThis.json = rootEntry;
+            globalThis.root = rootEntry;
             openFolder(rootEntry);
             rootInited = true;
         }
@@ -121,6 +121,11 @@ export function openFolder(entry) {
     /** @type {SimpleEntry} */
     globalThis.folder = entry;
     console.log("globalThis.folder:", entry);
+    Object.defineProperty(globalThis, "flat", {
+        get() {
+            return entry.flat();
+        }
+    });
 }
 export function goBack() {
     if (openedFolder.value.parent) {
