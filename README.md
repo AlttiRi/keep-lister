@@ -217,19 +217,21 @@ folder.files.map(e => e.name).join("\n")
 ```
 ```js
 // Find the most long filenames
-// (Use "//" (two slashed) in search input to list all files of the scan)
-search.reduce((acc, entry) => {
-    const name = entry.name;
-    const length = acc[0].length;
-    if (name.length > length) {
-        return [name];
-    }
-    if (name.length === length) {
-        acc.push(name);
+// (`.flat()` recursively lists all files of the selected directory in an array)
+folder
+    .flat()
+    .reduce((acc, entry) => {
+        const name = entry.name;
+        const length = acc[0].length;
+        if (name.length > length) {
+            return [name];
+        }
+        if (name.length === length) {
+            acc.push(name);
+            return acc;
+        }
         return acc;
-    }
-    return acc;
-}, [""])
+    }, [""])
 ```
 
 If you have files with the special filenames (see [@AlttiRi/twitter-click-and-save#filename-format](https://github.com/AlttiRi/twitter-click-and-save#filename-format)) which include some additional information about the file it's not a problem, for example, to count downloaded posts (one post can have multiple files):
