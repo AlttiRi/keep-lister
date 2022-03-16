@@ -109,9 +109,9 @@ _BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#rea
 
 In short.
 - [Installed Node.js](https://nodejs.org/en/download/current/) is required,
-- Download the scanner file — [zz-dir-scanner.mjs](https://github.com/AlttiRi/directory-snapshot-explorer/releases/download/0.2.0/zz-dir-scanner.mjs),
+- Download the scanner file — [zz-dir-scanner.mjs](https://github.com/AlttiRi/directory-snapshot-explorer/releases/download/0.2.1/zz-dir-scanner.mjs),
 - Open a terminal (CMD.exe, for example) in a folder you want to scan, 
-- Run the scanner (JS file) with Node.js: type in a terminal _(for Windows with CMD)_:
+- Run the scanner (JS file) with Node.js — type in a terminal _(for Windows with CMD)_:
 ```cmd
 node %USERPROFILE%\Downloads\zz-dir-scanner.mjs
 ```
