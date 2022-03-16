@@ -1,4 +1,4 @@
-import {isReactive, ref, toRaw, watch, watchEffect} from "vue";
+import {isReactive, ref, shallowRef, toRaw, watch, watchEffect} from "vue";
 import {blue, bytesToSizeWinLike, debounce, sleep} from "../util.js";
 import {openedFolder} from "./folders.js";
 import {comparator, limit, orderBy, reverseOrder} from "./entries.js";
@@ -12,8 +12,8 @@ export function clearSearch() {
     search.value = "";
 }
 
-/** @type {import("vue").Ref<SimpleEntry[]>} */
-export const searchResult = ref([]);
+/** @type {import("vue").ShallowRef<SimpleEntry[]>} */
+export const searchResult = shallowRef([]);
 function clearSearchResult() {
     setSearchResult([]);
 }

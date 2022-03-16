@@ -1,4 +1,4 @@
-import {computed, markRaw, ref, unref, watch} from "vue";
+import {computed, markRaw, ref, toRaw, unref, watch, shallowRef} from "vue";
 import {clearSearch} from "./search.js";
 import {folderDummy} from "./entry.js";
 import {dateToDayDateString, sleep} from "../util.js";
@@ -105,8 +105,8 @@ export const scanRootPath = computed(() => {
 });
 
 
-/** @type {import("vue").Ref<SimpleEntry>} */
-export const openedFolder = ref(folderDummy);
+/** @type {import("vue").ShallowRef<SimpleEntry>} */
+export const openedFolder = shallowRef(folderDummy);
 /** @type {import("vue").ComputedRef<SimpleEntry[]>} */
 export const openedFolders = computed(() => {
     return openedFolder.value.path;
@@ -115,8 +115,7 @@ export const openedFolders = computed(() => {
 /** @param {SimpleEntry} entry */
 export function openFolder(entry) {
     clearSearch();
-    entry = unref(entry);
-    openedFolder.value = markRaw(entry);
+    openedFolder.value = entry;
     limit.value = 50;
 
     /** @type {SimpleEntry} */
