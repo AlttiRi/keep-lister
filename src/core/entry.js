@@ -166,6 +166,29 @@ export class SimpleEntry {
         console.timeEnd("getContentTypeStats");
         return result;
     }
+
+    /** @return {Generator<SimpleEntry>} */
+    *[Symbol.iterator]() {
+        yield this;
+        if (this.children) {
+            for (const child of this.children) {
+                yield * child;
+            }
+        }
+    }
+
+    /** @return {SimpleEntry[]} */
+    flat() {
+        return [...this];
+    }
+
+    /**
+     * @param {SimpleEntry[]} entries
+     * @return {SimpleEntry[]}
+     */
+    static flat(entries) {
+        return entries.map(e => [...e]).flat();
+    }
 }
 
 /**
