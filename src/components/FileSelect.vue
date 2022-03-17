@@ -25,6 +25,8 @@ watch(file, () => {
 ::v-deep(.file-input) {
   border-right: 0;
   border-left:  0;
+  outline-width: 1px;
+  outline-color: var(--blue-1);
 }
 .file-input-wrapper {
   display: grid;

@@ -3,6 +3,8 @@
     class="file-input"
     ref="fileInputElem"
     :class="{'drop-hover': dropHover}"
+    tabindex="0"
+    @keydown="onKeyDown"
 >
   <label>
     <input type="file"
@@ -136,6 +138,11 @@ function disableDragOverNotDropZone() {
   document.body.addEventListener("dragover", dragOverCallback);
 }
 
+function onKeyDown(event) {
+  if (event.key === "Enter") {
+    fileInputElem.value.querySelector("label").click();
+  }
+}
 
 </script>
 
