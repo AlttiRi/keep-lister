@@ -19,7 +19,11 @@ function updateParsingState() {
     parsingStateNumber.value++;
     triggerRef(openedFolder);
 }
-export function watchParsingState() { // a workaround to recompute reactive values
+// A workaround to recompute reactive values.
+//   The other way is to use `:key="entry.name + entry.size"`.
+//   However, not sure that it will always work correctly with some searches:
+//      (listing of duplicates: with the same name and size)
+export function watchParsingState() {
     parsingStateNumber.value;
 }
 
