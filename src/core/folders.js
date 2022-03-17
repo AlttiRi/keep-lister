@@ -1,4 +1,4 @@
-import {computed, markRaw, ref, watch, shallowRef} from "vue";
+import {computed, ref, watch, shallowRef, triggerRef} from "vue";
 import {clearSearch} from "./search.js";
 import {folderDummy} from "./entry.js";
 import {dateToDayDateString, sleep} from "../util.js";
@@ -13,8 +13,15 @@ export const meta = shallowRef(null);
 /** @type {import("vue").ShallowRef<SimpleEntry>} */
 const root = shallowRef(null);
 
-// A hack to run recomputing of a computed property
-export const parsingStateNumber = ref(0);
+
+const parsingStateNumber = ref(0);
+function updateParsingState() {
+    parsingStateNumber.value++;
+    triggerRef(openedFolder);
+}
+export function watchParsingState() { // a workaround to recompute reactive values
+    parsingStateNumber.value;
+}
 
 class ExecutionState {
     constructor() {
@@ -70,13 +77,13 @@ export async function setScan(input) {
             return false;
         }
         if (!metaInited && scanMeta) {
-            meta.value = markRaw(scanMeta);
+            meta.value = scanMeta;
             metaInited = true;
             total = scanMeta.total;
             processedTotal -= 1;
         }
         if (!rootInited && rootEntry) {
-            root.value = markRaw(rootEntry);
+            root.value = rootEntry;
             globalThis.root = rootEntry;
             openFolder(rootEntry);
             rootInited = true;
@@ -84,11 +91,11 @@ export async function setScan(input) {
         const now = Date.now();
         if (rootContentUpdated || now - time > 50) {
             time = now;
-            parsingStateNumber.value++;
+            updateParsingState();
             await sleep();
         }
     }
-    parsingStateNumber.value++;
+    updateParsingState();
     console.log(`[setScan][time]:`, Date.now() - startTime, "ms");
 
     scanParsing.value = false;

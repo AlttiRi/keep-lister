@@ -1,6 +1,6 @@
 import {computed, ref} from "vue";
 import {search, searchResult} from "./search.js";
-import {openedFolder, parsingStateNumber} from "./folders.js";
+import {openedFolder} from "./folders.js";
 
 
 export const sort = ref(true);
@@ -53,9 +53,6 @@ export function comparator(pre, cur) {
 
 // grouped by type
 export const entries = computed(() => {
-    if (parsingStateNumber.value) {
-        // force recomputing on change
-    }
     return [
         ...openedFolder.value.folders.sort(comparator),
         ...openedFolder.value.files.sort(comparator),
