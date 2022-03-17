@@ -307,63 +307,63 @@
   height: 3px;
 }
 /* Row.vue */
-.row[data-v-f71509d6] {
+.row[data-v-111fda8e] {
   width: 100%;
   min-height: 28px;
   display: flex;
   align-items: center;
 }
-.row[data-v-f71509d6]:hover {
+.row[data-v-111fda8e]:hover {
   background-color: var(--blue-2);
 }
-.row *[data-v-f71509d6] {
+.row *[data-v-111fda8e] {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
-.row td.icon[data-v-f71509d6] {
+.row td.icon[data-v-111fda8e] {
   border-left: 2px solid transparent;
   width: 24px;
   text-align: center;
   user-select: none;
 }
-.row td.name[data-v-f71509d6] {
+.row td.name[data-v-111fda8e] {
   display: block;
   white-space: pre;
 }
-.row td.size[data-v-f71509d6] {
+.row td.size[data-v-111fda8e] {
   text-align: end;
   min-width: 80px;
 }
-.row td.size.Z[data-v-f71509d6] {
+.row td.size.Z[data-v-111fda8e] {
   color: #888;
 }
-.row td.size.B[data-v-f71509d6] {
+.row td.size.B[data-v-111fda8e] {
   color: #666;
 }
-.row td.size.KB[data-v-f71509d6] {
+.row td.size.KB[data-v-111fda8e] {
   color: #0b0;
 }
-.row td.size.MB[data-v-f71509d6] {
+.row td.size.MB[data-v-111fda8e] {
   color: #0070dd;
 }
-.row td.size.GB[data-v-f71509d6] {
+.row td.size.GB[data-v-111fda8e] {
   color: #a335ee;
 }
-.row td.size.TB[data-v-f71509d6] {
+.row td.size.TB[data-v-111fda8e] {
   color: #ff8000;
 }
-.row td.mtime[data-v-f71509d6] {
+.row td.mtime[data-v-111fda8e] {
   text-align: end;
   width: 145px;
   color: #777;
 }
-.row td.type[data-v-f71509d6] {
+.row td.type[data-v-111fda8e] {
   text-align: end;
   width: 58px;
   user-select: none;
 }
-.row.error .icon[data-v-f71509d6] {
+.row.error .icon[data-v-111fda8e] {
   border-left: 2px solid red;
 }
 /* ScanProgressBar.vue */
