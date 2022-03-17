@@ -1,12 +1,12 @@
 <template>
   <div class="tabs">
-    <FileSelect class="tab"/>
+    <FileInputWrapper class="tab"/>
     <div class="tab"></div>
   </div>
 </template>
 
 <script setup>
-import FileSelect from "./FileSelect.vue";
+import FileInputWrapper from "./FileInputWrapper.vue";
 </script>
 
 <style scoped>
