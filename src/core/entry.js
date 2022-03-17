@@ -189,6 +189,10 @@ export class SimpleEntry {
     static flat(entries) {
         return entries.map(e => [...e]).flat();
     }
+
+    get pathString() {
+        return this.path.map(e => e.name).join("/");
+    }
 }
 
 /**

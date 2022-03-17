@@ -18,7 +18,7 @@
 
 <script setup>
 import {toRefs, computed} from "vue";
-import {meta, openedFolder, openFolder, separator, watchParsingState} from "../core/folders.js";
+import {meta, openedFolder, openFolder, separator} from "../core/folders.js";
 import {bytesToSizeWinLike, dateToDayDateTimeString, isImage, isVideo} from "../util.js";
 import {hoveredEntry} from "../core/entries.js";
 import {debugMessageFromEntry} from "../core/debug.js";
@@ -26,11 +26,7 @@ import {debugMessageFromEntry} from "../core/debug.js";
 const props = defineProps(["entry"]);
 
 /** @type {import("vue").Ref<SimpleEntry>} */
-const _entry = toRefs(props).entry;
-const entry = computed(() => {
-  watchParsingState();
-  return _entry.value;
-});
+const entry = toRefs(props).entry;
 
 const size = computed(() => {
   return entry.value.hasErrors ? "" : bytesToSizeWinLike(entry.value.size);

@@ -4,7 +4,7 @@
   >
     <table class="rows" v-if="listLimited.length">
       <tbody>
-        <Row v-for="entry of listLimited" :entry="entry"/>
+        <Row v-for="entry of listLimited" :entry="entry" :key="`${entry.pathString}//${entry.size}`"/>
         <IntersectionRow/>
       </tbody>
     </table>
