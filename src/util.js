@@ -32,6 +32,11 @@ export function isImage(filename) {
     const {ext} = filename.match(/(?<ext>[^.]+)$/).groups;
     return imageExtensions.includes(ext.toLowerCase());
 }
+const audioExtensions = ["mp3", "flac", "wav", "wma", "aac"];
+export function isAudio(filename) {
+    const {ext} = filename.match(/(?<ext>[^.]+)$/).groups;
+    return audioExtensions.includes(ext.toLowerCase());
+}
 
 export function debounce(runnable, ms = 50) {
     let timerId;

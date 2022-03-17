@@ -19,7 +19,7 @@
 <script setup>
 import {toRefs, computed} from "vue";
 import {meta, openedFolder, openFolder, separator} from "../core/folders.js";
-import {bytesToSizeWinLike, dateToDayDateTimeString, isImage, isVideo} from "../util.js";
+import {bytesToSizeWinLike, dateToDayDateTimeString, isImage, isVideo, isAudio} from "../util.js";
 import {hoveredEntry} from "../core/entries.js";
 import {debugMessageFromEntry} from "../core/debug.js";
 
@@ -66,16 +66,20 @@ const title = computed(() => {
 
 /** @type {import("vue").Ref<String>} */
 const icon = computed(() => {
-  if (entry.value.type === "folder") {
+  const type = entry.value.type;
+  if (type === "folder") {
     return "📁";
-  } else if (entry.value.type === "file") {
-    if (isVideo(entry.value.name)) {
+  } else if (type === "file") {
+    const name = entry.value.name;
+    if (isVideo(name)) {
       return "🎦";
-    } else if (isImage(entry.value.name)) {
+    } else if (isImage(name)) {
       return "🖼";
+    } else if (isAudio(name)) {
+      return "🎵";
     }
     return "📄";
-  } else if (entry.value.type === "symlink") {
+  } else if (type === "symlink") {
     return "🔗";
   }
   return "👾";
