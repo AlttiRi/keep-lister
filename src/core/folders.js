@@ -14,24 +14,8 @@ export const meta = shallowRef(null);
 const root = shallowRef(null);
 
 
-const parsingStateNumber = ref(0);
 function updateParsingState() {
-    parsingStateNumber.value++;
     triggerRef(openedFolder);
-}
-
-/**
- * A workaround to recompute reactive values.
- * The other way is to use :key="`${entry.pathString}//${entry.size}`"
- * @example
- * const _entry = toRefs(props).entry;
- * const entry = computed(() => {
- *   watchParsingState();
- *   return _entry.value;
- * });
- */
-export function watchParsingState() {
-    parsingStateNumber.value;
 }
 
 class ExecutionState {
