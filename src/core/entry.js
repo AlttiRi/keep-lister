@@ -195,7 +195,7 @@ export class SimpleEntry {
     }
 
     /**
-     * @param {Meta} [meta]
+     * @param {ScanMeta} [meta]
      * @return {string}
      */
     getPathString(meta) {
