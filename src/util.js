@@ -22,7 +22,7 @@ export function sleep(ms) {
 
 export const shuffle = () => Math.random() >= 0.5 ? -1 : 1;
 
-const videoExtensions = ["mp4", "webm", "mkv", "avi"];
+const videoExtensions = ["mp4", "webm", "mkv", "avi", "mov", "m4v", "m4v", "mpg", "mpeg", "wmv", "flv"];
 export function isVideo(filename) {
     const {ext} = filename.match(/(?<ext>[^.]+)$/).groups;
     return videoExtensions.includes(ext);
