@@ -213,14 +213,14 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-/* FileSelect.vue */
-[data-v-1fddd377] .file-input {
+/* FileInputWrapper.vue */
+[data-v-25938aaa] .file-input {
   border-right: 0;
   border-left: 0;
   outline-width: 1px;
   outline-color: var(--blue-1);
 }
-.file-input-wrapper[data-v-1fddd377] {
+.file-input-wrapper[data-v-25938aaa] {
   display: grid;
   justify-content: center;
   grid-template-columns: 100%;
@@ -309,63 +309,63 @@
   height: 3px;
 }
 /* Row.vue */
-.row[data-v-20388c75] {
+.row[data-v-71b46689] {
   width: 100%;
   min-height: 28px;
   display: flex;
   align-items: center;
 }
-.row[data-v-20388c75]:hover {
+.row[data-v-71b46689]:hover {
   background-color: var(--blue-2);
 }
-.row *[data-v-20388c75] {
+.row *[data-v-71b46689] {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
-.row td.icon[data-v-20388c75] {
+.row td.icon[data-v-71b46689] {
   border-left: 2px solid transparent;
   width: 24px;
   text-align: center;
   user-select: none;
 }
-.row td.name[data-v-20388c75] {
+.row td.name[data-v-71b46689] {
   display: block;
   white-space: pre;
 }
-.row td.size[data-v-20388c75] {
+.row td.size[data-v-71b46689] {
   text-align: end;
   min-width: 80px;
 }
-.row td.size.Z[data-v-20388c75] {
+.row td.size.Z[data-v-71b46689] {
   color: #888;
 }
-.row td.size.B[data-v-20388c75] {
+.row td.size.B[data-v-71b46689] {
   color: #666;
 }
-.row td.size.KB[data-v-20388c75] {
+.row td.size.KB[data-v-71b46689] {
   color: #0b0;
 }
-.row td.size.MB[data-v-20388c75] {
+.row td.size.MB[data-v-71b46689] {
   color: #0070dd;
 }
-.row td.size.GB[data-v-20388c75] {
+.row td.size.GB[data-v-71b46689] {
   color: #a335ee;
 }
-.row td.size.TB[data-v-20388c75] {
+.row td.size.TB[data-v-71b46689] {
   color: #ff8000;
 }
-.row td.mtime[data-v-20388c75] {
+.row td.mtime[data-v-71b46689] {
   text-align: end;
   width: 145px;
   color: #777;
 }
-.row td.type[data-v-20388c75] {
+.row td.type[data-v-71b46689] {
   text-align: end;
   width: 58px;
   user-select: none;
 }
-.row.error .icon[data-v-20388c75] {
+.row.error .icon[data-v-71b46689] {
   border-left: 2px solid red;
 }
 /* ScanProgressBar.vue */
@@ -466,11 +466,11 @@ button[data-v-68f2d0ba]:active {
   background: var(--blue-3);
 }
 /* Tabs.vue */
-.tabs[data-v-4cf83322] {
+.tabs[data-v-0e71da96] {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.tab[data-v-4cf83322] {
+.tab[data-v-0e71da96] {
   padding: 6px;
 }
