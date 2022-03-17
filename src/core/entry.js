@@ -191,7 +191,25 @@ export class SimpleEntry {
     }
 
     get pathString() {
-        return this.path.map(e => e.name).join("/");
+        return this.getPathString();
+    }
+
+    /**
+     * @param {Meta} [meta]
+     * @return {string}
+     */
+    getPathString(meta) {
+        const names = this.path.map(e => e.name);
+        let pathStr;
+        if (meta) {
+            pathStr = [...meta.path, ...names].join(meta.separator || "/");
+        } else {
+            pathStr = names.join("/");
+        }
+        if (pathStr.startsWith("//")) {
+            return pathStr.slice(1);
+        }
+        return pathStr;
     }
 }
 
