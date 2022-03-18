@@ -1,4 +1,4 @@
-import {isReactive, ref, shallowRef, toRaw, watch, watchEffect} from "vue";
+import {isReactive, ref, shallowRef, toRaw, watch, watchEffect, triggerRef} from "vue";
 import {blue, bytesToSizeWinLike, debounce, sleep} from "../util.js";
 import {openedFolder} from "./folders.js";
 import {comparator, limit, orderBy, reverseOrder} from "./entries.js";
@@ -28,13 +28,18 @@ function setSearchResult(result) {
 }
 
 watch([orderBy, reverseOrder], () => {
-    if (searchResult.value.length) {
-        console.time("sort searchResult");
-        searchResult.value = searchResult.value.sort(comparator);
-        console.timeEnd("sort searchResult");
-        //todo sort by parts
-    }
+    sortSearch();
 });
+
+export function sortSearch() {
+    //todo sort by parts
+    const time = Date.now();
+    searchResult.value.sort(comparator);
+    const timeTotal = Date.now() - time;
+    console.log("[search][sort][time]", timeTotal, "ms");
+    triggerRef(searchResult);
+    return timeTotal;
+}
 
 /** @param {SimpleEntry[]} rawResult */
 function addSearchResultToGlobalThis(rawResult) {
@@ -96,9 +101,8 @@ async function performSearch() {
     debug.addMessage(`Search time: ${searchTime.toFixed(2)} ms; `);
     await sleep();
 
-    const time2 = performance.now();
-    const sortedResult = result.sort(comparator);
-    const sortTime = performance.now() - time2;
+    setSearchResult(result);
+    const sortTime = sortSearch();
     debug.appendMessage(`Sort time: ${sortTime.toFixed(2)} ms; `);
     await sleep();
 
@@ -109,7 +113,6 @@ async function performSearch() {
     console.timeEnd("search result size computing");
     console.log({allSize, filesSize});
 
-    setSearchResult(sortedResult);
     const searchText = result.customSearchText || request;
     debug.appendMessage(`${result.length} items; size: ${bytesToSizeWinLike(filesSize)} (${bytesToSizeWinLike(allSize)});  search: ${searchText}`);
 }
