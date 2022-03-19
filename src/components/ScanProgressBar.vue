@@ -13,6 +13,7 @@ import {scanParsing, scanParsingProgress} from "../core/state.js";
 
 <style lang="scss" scoped>
 .scan-parsing-progress-component {
+  pointer-events: none;
   position: absolute;
   left: 0;
   top: 0;
