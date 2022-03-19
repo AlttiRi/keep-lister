@@ -1,6 +1,6 @@
 import {isReactive, ref, shallowRef, toRaw, watch, watchEffect, triggerRef} from "vue";
 import {blue, bytesToSizeWinLike, debounce, sleep} from "../util.js";
-import {openedFolder} from "./folders.js";
+import {openedFolder, root} from "./folders.js";
 import {comparator, limit, orderBy, reverseOrder} from "./entries.js";
 import * as debug from "./debug.js";
 import {entryTypes} from "./entry.js";
@@ -74,7 +74,43 @@ watchEffect(() => {
     }
 });
 
-//todo check linked list perf for large search // do search after scan parsing ended
+const searchIndex = {
+    id: null,
+    map: null,
+};
+function normalize(input) {
+    // "đ Crème Bruląśćńżółźćęéйeё".normalize("NFD").replace(/\p{Diacritic}/gu, "")
+    return input
+        //.normalize("NFD").replace(/\p{Diacritic}/gu, "") // temp disabled
+        .toLowerCase();
+}
+
+export async function initIndex() {
+    return; // temp disabled
+    // todo await parseScan completed
+    // todo init once if called while executing
+    const rootId = root.value?.pathString; // todo normal entry id
+    if (rootId && searchIndex.id !== rootId) {
+        console.time("initIndex");
+        console.log("Indexing...");
+        const map = new Map();
+        let i = 0;
+        for (const entry of root.value) {
+            const name = entry.name;
+            if (i++ % 10000 === 0) {
+                await sleep();
+            }
+            if (!map.has(name)) {
+                map.set(name, normalize(name));
+            }
+        }
+        searchIndex.id = rootId;
+        searchIndex.map = map;
+        console.timeEnd("initIndex");
+    }
+}
+
+//todo check linked list perf for large search
 const performSearchDebounced = debounce(performSearch, 300);
 async function performSearch() {
 
@@ -91,7 +127,7 @@ async function performSearch() {
 
     const time1 = performance.now();
     searching.value = true;
-    const result = await searcher(folderRaw, request);
+    const {result, search: searchText} = await searcher(folderRaw, request);
     searching.value = false;
     searchAwaiting.value = false;
     if (!result) {
@@ -113,7 +149,6 @@ async function performSearch() {
     console.timeEnd("search result size computing");
     console.log({allSize, filesSize});
 
-    const searchText = result.customSearchText || request;
     debug.appendMessage(`${result.length} items; size: ${bytesToSizeWinLike(filesSize)} (${bytesToSizeWinLike(allSize)});  search: ${searchText}`);
 }
 
@@ -146,39 +181,52 @@ function computeEntrySize(entry, excludeSet) {
 /**
  * @param {SimpleEntry} folder
  * @param {string} search
- * @return {Promise<SimpleEntry[]|false>}
+ * @return {Promise<{result: SimpleEntry[], search: string}>}
  */
-async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćęéйeё".normalize("NFD").replace(/\p{Diacritic}/gu, "")
+async function searcher(folder, search) {
+    console.log("[search]      ", search);
+    /** @type {function(String, String): Boolean} */
+    let stringMatcher;
     if (search.startsWith("//")) {
-        return justSearch(search.slice(2));
+        search = search.slice(2);
+        stringMatcher = (string, substring) => string.includes(substring);
+    } else {
+        const normalized = normalize(search);
+        if (normalized !== search) {
+            console.log("[search][norm]", normalized);
+            search = normalized;
+        }
+        // const map = searchIndex.map;
+        stringMatcher = (string, substring) => /*map.get(string)*/ normalize(string).includes(substring);
     }
 
+    function justSearch(substring) {
+        return findAll(folder, (entry) => {
+            return stringMatcher(entry.name, substring);
+        });
+    }
 
     if (["https://", "http://"].some(prefix => search.startsWith(prefix))) {
         const url = new URL(search);
 
-        let searchText;
         if (url.hostname === "www.youtube.com" && url.pathname === "/watch") {
-            searchText = url.searchParams.get("v");
+            search = url.searchParams.get("v");
         } else {
             const pathnameEndsWithSlash = url.pathname.length > 1 && url.pathname.endsWith("/");
             const pathname = pathnameEndsWithSlash ? url.pathname.slice(0, -1) : url.pathname;
             const resourceFullName = pathname.match(/[^\/]+$/)?.[0];
             if (!resourceFullName) {
-                return [];
+                return {result: [], search};
             }
             const {
                 name: resName,
                 ext: resExt, // [note] it can be not the file extension, but a part of a nickname (inst url, for example)
             } = resourceFullName.match(/(?<name>.+)(\.(?<ext>.+))$/)?.groups || {name: resourceFullName};
-            searchText = resName + ((pathnameEndsWithSlash && resExt) ? `.${resExt}` : "");
+            search = resName + ((pathnameEndsWithSlash && resExt) ? `.${resExt}` : "");
         }
 
-        const result = await justSearch(searchText);
-        Object.defineProperty(result, "customSearchText", {
-            value: searchText
-        });
-        return result;
+        const result = await justSearch(search);
+        return {result, search};
     }
 
 
@@ -371,12 +419,11 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
                 }
             }
             console.log(...blue(text));
-            Object.defineProperty(result, "customSearchText", {
-                value: text
-            });
-            return result;
+            return {result, search: text};
         } else {
-            console.log("no size to search");
+            const text = "No size to search";
+            console.log(...blue(text));
+            return {result: [], search: text};
         }
     }
     if (search.startsWith("/")) {
@@ -384,9 +431,10 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
         if (type) {
             console.log({type, word});
             if (entryTypes.includes(type)) {
-                return findAll(folder, entry => {
-                    return entry.type === type && entry.name.includes(word);
+                const result = await findAll(folder, entry => {
+                    return entry.type === type && stringMatcher(entry.name, word);
                 });
+                return {result, search};
             }
         }
     } else
@@ -398,16 +446,10 @@ async function searcher(folder, search) { // "đ Crème Bruląśćńżółźćę
             while (curWord = parts.shift()) {
                 result = result.filter(entry => entry.name.includes(curWord));
             }
-            return result;
+            return {result, search};
         }
     }
-    return justSearch(search);
-
-    function justSearch(search) {
-        return findAll(folder, (entry) => {
-            return entry.name.includes(search);
-        });
-    }
+    return {result: await justSearch(search), search};
 }
 
 watch(search, async (newValue, oldValue) => {

@@ -1,7 +1,7 @@
 <template>
   <div class="search-wrapper">
     <div class="search">
-      <input id="json-scan-search-input" type="text" v-model="search" ref="inputRef">
+      <input id="json-scan-search-input" type="text" v-model="search" ref="inputRef" @focus="onFocus">
       <button @click="onClearClick">Clear</button>
     </div>
     <label for="json-scan-search-input" class="fuck-off-lighthouse">.</label>
@@ -9,13 +9,17 @@
 </template>
 
 <script setup>
-import {search, clearSearch} from "../core/search.js";
+import {search, clearSearch, initIndex} from "../core/search.js";
 import {ref} from "vue";
 
 const inputRef = ref();
 function onClearClick() {
   clearSearch();
   inputRef.value.focus();
+}
+
+function onFocus() {
+  void initIndex();
 }
 
 //todo focus on double shift

@@ -11,7 +11,7 @@ import {scanParsing, scanParsingProgress} from "./state.js";
 /** @type {import("vue").ShallowRef<ScanMeta>} */
 export const meta = shallowRef(null);
 /** @type {import("vue").ShallowRef<SimpleEntry>} */
-const root = shallowRef(null);
+export const root = shallowRef(null);
 
 
 function updateParsingState() {
