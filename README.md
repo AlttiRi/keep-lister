@@ -268,6 +268,7 @@ _(Note: `pako_inflate` library is lazy loaded, so you can open one of the demo s
 ## Similar software
 - [Snap2HTML](https://github.com/rlv-dan/Snap2HTML)*
 - FilelistCreator
+- [Directory Snapshot](https://github.com/Anmol-Singh-Jaggi/Directory-Snapshot)
  
 \*Technically I also can generate a standalone HTML file as output, but do you need it?
 
