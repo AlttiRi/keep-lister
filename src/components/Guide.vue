@@ -12,7 +12,7 @@
           <li><a href="./?filepath=https://alttiri.github.io/json-flat-scans/linux-master.json.gz">Linux Source Code scan</a></li>
         </ul>
       </div>
-      <div>For more info see the <a href="https://github.com/AlttiRi/directory-snapshot-explorer#directory-snapshot-explorer" target="_blank">Readme</a>.</div>
+      <div>For more info see the <a href="https://github.com/AlttiRi/directory-snapshot-explorer#file-manager-snapshot-explorer" target="_blank">Readme</a>.</div>
     </div>
   </div>
 </template>

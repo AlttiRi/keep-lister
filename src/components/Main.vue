@@ -13,6 +13,11 @@
     <Content    style="grid-area: content;" v-else/>
     <Status     style="grid-area: status;"/>
     <Debug      style="grid-area: debug;"/>
+    <div class="readme">
+      <i>
+        <a href="https://github.com/AlttiRi/directory-snapshot-explorer#file-manager-snapshot-explorer" target="_blank">i</a>
+      </i>
+    </div>
   </div>
 </template>
 
@@ -81,6 +86,16 @@ onMounted(async () => {
   background-color: var(--gray-2);
   * {
     background-color: white;
+  }
+}
+.readme {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 4px 8px;
+  color: lightgray;
+  a {
+    text-decoration: none;
   }
 }
 </style>
