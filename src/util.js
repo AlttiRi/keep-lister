@@ -56,10 +56,13 @@ export function isString(input) {
     return typeof input === "string" || input instanceof String;
 }
 
+export function firefoxDateFix(dateValue) {
+    return isString(dateValue) ? dateValue.replace(/(?<y>\d{4})\.(?<m>\d{2})\.(?<d>\d{2})/, "$<y>-$<m>-$<d>") : dateValue;
+}
+
 // "Sun, 10 Jan 2021 22:22:22 GMT" -> "2021.01.10"
 export function dateToDayDateString(dateValue, utc = true) {
-    // Firefox fix
-    dateValue = isString(dateValue) ? dateValue.replace(/(?<y>\d{4})\.(?<m>\d{2})\.(?<d>\d{2})/, "$<y>-$<m>-$<d>") : dateValue;
+    dateValue = firefoxDateFix(dateValue);
     const _date = new Date(dateValue);
     if (_date.toString() === "Invalid Date") {
         console.warn("Invalid Date value: ", dateValue);
@@ -77,8 +80,7 @@ export function dateToDayDateString(dateValue, utc = true) {
 
 // "Sun, 10 Jan 2021 22:22:22 GMT" -> "2021.01.10 22:22:22Z"
 export function dateToDayDateTimeString(dateValue, utc = true) {
-    // Firefox fix
-    dateValue = isString(dateValue) ? dateValue.replace(/(?<y>\d{4})\.(?<m>\d{2})\.(?<d>\d{2})/, "$<y>-$<m>-$<d>") : dateValue;
+    dateValue = firefoxDateFix(dateValue);
     const _date = new Date(dateValue);
     function pad2(str) {
         return str.toString().padStart(2, "0");
