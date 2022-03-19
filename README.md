@@ -28,11 +28,13 @@ Just look at the examples (click on the links to open the site with the demo sca
 
 ---
 
-Search is case sensitive currenty. Some examples:
+Some search examples:
 
 [.exe](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=.exe)
 
 ![Screenshot Search](https://user-images.githubusercontent.com/16310547/133657172-685801b2-5895-4876-8730-b11b8553f168.png)
+
+For case sensitive search use `//`, for example: [//.EXE](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=//.EXE)
 
 ### Search by type
 
@@ -77,12 +79,11 @@ Search `https://www.youtube.com/watch?v=_qwLHlVjRyw` will list:
 - [yt] SpaceX—2020.12.23—_qwLHlVjRyw—Starship _ SN8 _ High-Altitude Flight Recap.webm
 - [yt] SpaceX—2020.12.23—_qwLHlVjRyw—Starship _ SN8 _ High-Altitude Flight Recap.webp
 
-Search `https://gfycat.com/incompletealarmedicelandichorse` will **not** list:
+Search `https://gfycat.com/incompletealarmedicelandichorse` will list:
 
 - [gfycat] blaze0044—2021.03.27—IncompleteAlarmedIcelandichorse—Space X rocket breakup.mp4
 - [gfycat] blaze0044—2021.03.27—IncompleteAlarmedIcelandichorse—Space X rocket breakup.webm
 
-_Currently._ TODO: implement the case insensitive search.
 
 _BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#readme). It will CamelCase `incompletealarmedicelandichorse` to `IncompleteAlarmedIcelandichorse`. And you find it by the search._
 
