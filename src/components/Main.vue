@@ -92,7 +92,8 @@ onMounted(async () => {
   position: absolute;
   bottom: 0;
   right: 0;
-  padding: 4px 8px;
+  padding: 2px 8px;
+  margin: 1px;
   color: lightgray;
   a {
     text-decoration: none;
