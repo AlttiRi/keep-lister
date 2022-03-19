@@ -1,7 +1,6 @@
 <template>
   <div class="debug">
-    <span v-if="debugMessage">{{debugMessage}}</span>
-    <span v-else>_</span>
+    <span>{{debugMessage}}</span>
   </div>
 </template>
 
@@ -12,5 +11,6 @@ import {debugMessage} from "../core/debug.js";
 <style scoped>
 .debug {
   padding: 2px 2px 2px 6px;
+  min-height: 18px;
 }
 </style>
