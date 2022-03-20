@@ -13,7 +13,7 @@
     <Content    style="grid-area: content;" v-else/>
     <Status     style="grid-area: status;"/>
     <Debug      style="grid-area: debug;"/>
-    <a class="readme" href="https://github.com/AlttiRi/directory-snapshot-explorer#file-manager-snapshot-explorer" target="_blank"><i>i</i></a>
+    <a class="readme" title="Open Readme" href="https://github.com/AlttiRi/directory-snapshot-explorer#file-manager-snapshot-explorer" target="_blank"><i>i</i></a>
   </div>
 </template>
 
