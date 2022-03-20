@@ -13,11 +13,7 @@
     <Content    style="grid-area: content;" v-else/>
     <Status     style="grid-area: status;"/>
     <Debug      style="grid-area: debug;"/>
-    <div class="readme">
-      <i>
-        <a href="https://github.com/AlttiRi/directory-snapshot-explorer#file-manager-snapshot-explorer" target="_blank">i</a>
-      </i>
-    </div>
+    <a class="readme" href="https://github.com/AlttiRi/directory-snapshot-explorer#file-manager-snapshot-explorer" target="_blank"><i>i</i></a>
   </div>
 </template>
 
@@ -94,9 +90,7 @@ onMounted(async () => {
   right: 0;
   padding: 2px 8px;
   margin: 1px;
-  color: lightgray;
-  a {
-    text-decoration: none;
-  }
+  color: darkgray;
+  text-decoration: none;
 }
 </style>
