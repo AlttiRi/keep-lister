@@ -270,7 +270,7 @@
 }
 
 /* Main.vue */
-.main[data-v-62800b56] {
+.main[data-v-50635e5c] {
   grid-template-areas: "switch address search " "tabs   content content" "status status  status " "debug  debug   debug  ";
   display: grid;
   grid-template-columns: 7em 2fr 1fr;
@@ -284,18 +284,16 @@
   border: 1px solid var(--gray-2);
   background-color: var(--gray-2);
 }
-.main *[data-v-62800b56] {
+.main *[data-v-50635e5c] {
   background-color: white;
 }
-.readme[data-v-62800b56] {
+.readme[data-v-50635e5c] {
   position: absolute;
   bottom: 0;
   right: 0;
   padding: 2px 8px;
   margin: 1px;
-  color: lightgray;
-}
-.readme a[data-v-62800b56] {
+  color: darkgray;
   text-decoration: none;
 }
 /* MemoryConsuming.vue */
