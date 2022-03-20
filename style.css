@@ -270,7 +270,7 @@
 }
 
 /* Main.vue */
-.main[data-v-50635e5c] {
+.main[data-v-b361ffc8] {
   grid-template-areas: "switch address search " "tabs   content content" "status status  status " "debug  debug   debug  ";
   display: grid;
   grid-template-columns: 7em 2fr 1fr;
@@ -284,10 +284,10 @@
   border: 1px solid var(--gray-2);
   background-color: var(--gray-2);
 }
-.main *[data-v-50635e5c] {
+.main *[data-v-b361ffc8] {
   background-color: white;
 }
-.readme[data-v-50635e5c] {
+.readme[data-v-b361ffc8] {
   position: absolute;
   bottom: 0;
   right: 0;
