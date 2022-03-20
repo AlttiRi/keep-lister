@@ -85,7 +85,7 @@ Search `https://gfycat.com/incompletealarmedicelandichorse` will list:
 - [gfycat] blaze0044—2021.03.27—IncompleteAlarmedIcelandichorse—Space X rocket breakup.webm
 
 
-_BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#readme). It will CamelCase `incompletealarmedicelandichorse` to `IncompleteAlarmedIcelandichorse`. And you find it by the search._
+_BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#readme). It will CamelCase `incompletealarmedicelandichorse` to `IncompleteAlarmedIcelandichorse`._
 
 ---
 
