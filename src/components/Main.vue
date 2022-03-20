@@ -34,6 +34,7 @@ import {meta, setScan} from "../core/folders.js";
 import {search} from "../core/search.js";
 import {bytesToSize, bytesToSizeWinLike} from "../util.js";
 import {scanParsing, searchAwaiting} from "../core/state.js";
+import {orderBy, toggleOrder} from "../core/entries.js";
 
 globalThis.bytesToSize = bytesToSize;
 globalThis.bytesToSizeWinLike = bytesToSizeWinLike;
@@ -47,6 +48,13 @@ const showGuide = computed(() => !meta.value && !new URL(location.href).searchPa
 onMounted(async () => {
   const url = new URL(location.href);
   const filepath = url.searchParams.get("filepath");
+  const sort = url.searchParams.get("sort") || url.searchParams.get("order");
+  if (["name", "size", "mtime"].includes(sort)) {
+    orderBy.value = sort;
+    if (["true", "1"].includes(url.searchParams.get("desc"))) {
+      toggleOrder();
+    }
+  }
   if (filepath) {
     /** @type {Response} */
     const response = await fetch(filepath);

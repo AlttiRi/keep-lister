@@ -8,14 +8,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-const demoFilepath = "./demo-scans/2021.09.18.json.gz";
+const demoScanFilepath = "./demo-scans/2021.09.18.json.gz";
+const demoPath = `/?filepath=${demoScanFilepath}&sort=size&desc=true`;
 
 export default defineConfig({
   plugins: [
     vue(),
   ],
   server: {
-    open: `/?filepath=${demoFilepath}`
+    open: demoPath
   },
   base: "./",
   build: {
