@@ -91,17 +91,11 @@ _BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#rea
 
 ### Size search
 
-
-
-
-- `/size:0`       — find 0 byte size entries
-- `/size/120`     — the same, find 120 bytes size entries
+- `/size:0`       — find 0 byte size entries; aka `/size/0` aka `/s:0` aka `/s/0`
 - `/size:120+80`  — find from 120 to 200
-- `/size:120+80`  — find from 120 to 200
-- `/size:120+-20` — find from 100 to 120
-- `/size:120~20`   — find from  80 to 140
-- `/size:120-220` — find from 120 to 220
-- `/size:220-120` — find from 120 to 220
+- `/size:150+-50` — find from 100 to 150
+- `/size:80-110`  — find from 80 to 110; aka `/size:110-80`
+- `/size:200~50`  — find from 150 to 250
 
 - [More examples...](https://github.com/AlttiRi/directory-snapshot-explorer/blob/1ecec3403db98c9683adbbae48955a4ccbed5366/src/core/search.js#L183-L217)
 
