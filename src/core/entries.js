@@ -61,7 +61,7 @@ export const entries = computed(() => {
         ...openedFolder.value.charDevs.sort(comparator),
         ...openedFolder.value.blockDevs.sort(comparator),
         ...openedFolder.value.sockets.sort(comparator),
-    ]
+    ];
 });
 
 
