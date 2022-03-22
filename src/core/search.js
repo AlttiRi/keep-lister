@@ -1,6 +1,6 @@
 import {isReactive, ref, shallowRef, toRaw, watch, watchEffect, triggerRef} from "vue";
 import {blue, bytesToSizeWinLike, debounce, sleep} from "../util.js";
-import {openedFolder, root} from "./folders.js";
+import {openedFolder} from "./folders.js";
 import {comparator, limit, orderBy, reverseOrder} from "./entries.js";
 import * as debug from "./debug.js";
 import {entryTypes} from "./entry.js";
@@ -74,40 +74,13 @@ watchEffect(() => {
     }
 });
 
-const searchIndex = {
-    id: null,
-    map: null,
-};
-function normalize(input) {
+function simplify(input) {
+    // todo .normalize("NFD").replace(/\p{Diacritic}/gu, "")
+    //  (It required to use a cache since it's a slow operation, and
+    //   only for the normalized values (not just lower cased) in order to save the memory consuming.)
     // "đ Crème Bruląśćńżółźćęéйeё".normalize("NFD").replace(/\p{Diacritic}/gu, "")
     return input
-        //.normalize("NFD").replace(/\p{Diacritic}/gu, "") // temp disabled
         .toLowerCase();
-}
-
-export async function initIndex() {
-    return; // temp disabled
-    // todo await parseScan completed
-    // todo init once if called while executing
-    const rootId = root.value?.pathString; // todo normal entry id
-    if (rootId && searchIndex.id !== rootId) {
-        console.time("initIndex");
-        console.log("Indexing...");
-        const map = new Map();
-        let i = 0;
-        for (const entry of root.value) {
-            const name = entry.name;
-            if (i++ % 10000 === 0) {
-                await sleep();
-            }
-            if (!map.has(name)) {
-                map.set(name, normalize(name));
-            }
-        }
-        searchIndex.id = rootId;
-        searchIndex.map = map;
-        console.timeEnd("initIndex");
-    }
 }
 
 //todo check linked list perf for large search
@@ -191,13 +164,12 @@ async function searcher(folder, search) {
         search = search.slice(2);
         stringMatcher = (string, substring) => string.includes(substring);
     } else {
-        const normalized = normalize(search);
+        const normalized = simplify(search);
         if (normalized !== search) {
             console.log("[search][norm]", normalized);
             search = normalized;
         }
-        // const map = searchIndex.map;
-        stringMatcher = (string, substring) => /*map.get(string)*/ normalize(string).includes(substring);
+        stringMatcher = (string, substring) => simplify(string).includes(substring);
     }
 
     function justSearch(substring) {

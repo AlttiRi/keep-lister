@@ -9,17 +9,13 @@
 </template>
 
 <script setup>
-import {search, clearSearch, initIndex} from "../core/search.js";
+import {search, clearSearch} from "../core/search.js";
 import {ref} from "vue";
 
 const inputRef = ref();
 function onClearClick() {
   clearSearch();
   inputRef.value.focus();
-}
-
-function onFocus() {
-  void initIndex();
 }
 
 //todo focus on double shift
