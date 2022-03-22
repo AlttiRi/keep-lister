@@ -91,19 +91,43 @@ _BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#rea
 
 ### Size search
 
-
-
-
-- `/size:0`       — find 0 byte size entries
-- `/size/120`     — the same, find 120 bytes size entries
+#### Base
+- `/size:0`       — find 0 byte size entries; aka `/size/0` aka `/s:0` aka `/s/0`
+- `/s/120,900`    — find 120900 bytes size entries; aka `/s/120 900`
 - `/size:120+80`  — find from 120 to 200
-- `/size:120+80`  — find from 120 to 200
-- `/size:120+-20` — find from 100 to 120
-- `/size:120~20`   — find from  80 to 140
-- `/size:120-220` — find from 120 to 220
-- `/size:220-120` — find from 120 to 220
+- `/size:150+-50` — find from 100 to 150
+- `/size:80-110`  — find from 80 to 110; aka `/size:110-80`
+- `/size:200~50`  — find from 150 to 250
 
-- [More examples...](https://github.com/AlttiRi/directory-snapshot-explorer/blob/1ecec3403db98c9683adbbae48955a4ccbed5366/src/core/search.js#L183-L217)
+#### Byte substring
+- `/size:^2`      — find byte size starts with "2"
+- `/size:%2`      — find byte size includes    "2"
+- `/size:$0`      — find byte size ends with   "0"
+
+#### Range widening
+- `/size:120~`    — find from 120 -5% to 120 +5%
+- `/size:120~~`   — find from 120-10% to 120+10%
+- `/size:120~~~`  — find from 120-15% to 120+15%
+
+#### Prefixes (`k`, `m`, `g`, `t`)
+- `/sizek:5`      — find 5 KB ± 0.1 KB
+- `/sizek:50`     — find 50 KB  ± 1 KB
+- `/sizek:500`    — find 500 KB ± 1 KB
+- `/sizem:5`      — find 5 MB ± 0.1 MB
+- `/sizeg/50`     — find 50 GB ± 1 GB
+
+- `/size:5m`      — find 5 MB ± 0.1 MB
+
+#### Decimal
+- `/s/12.9`       — find 12 bytes size entries
+- `/sk/12.9`      — find 12.9 KB ± 1 KB
+
+#### Range narrowing
+- `/sizek:5!`     — find 5 KB + (0 - 0.01) KB
+- `/sizek:5!!`    — find 5 KB + (0 - 0.001) KB
+- `/s/5k!!`       — find 5 KB + (0 - 0.001) KB
+- `/sizem:50!`    — find 50 MB + (0 - 0.1) MB
+- `/sizem:50!!`   — find 50 MB + (0 - 0.01) MB
 
 ---
 # How to use
