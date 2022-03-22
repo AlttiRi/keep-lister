@@ -379,16 +379,16 @@
   border-left: 2px solid red;
 }
 /* ScanProgressBar.vue */
-.scan-parsing-progress-component[data-v-1eec05ac] {
+.scan-parsing-progress-component[data-v-1e232aa4] {
   pointer-events: none;
   position: absolute;
   left: 0;
   top: 0;
 }
-.scan-parsing-progress-component > div[data-v-1eec05ac] {
+.scan-parsing-progress-component > div[data-v-1e232aa4] {
   width: 100%;
 }
-.scan-parsing-progress-component .visible[data-v-1eec05ac] {
+.scan-parsing-progress-component .visible[data-v-1e232aa4] {
   background-color: var(--blue-1);
   height: 4px;
 }
