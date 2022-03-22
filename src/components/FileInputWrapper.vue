@@ -6,7 +6,6 @@
 
 <script setup>
 import {setScan} from "../core/folders.js";
-import {clearSearch} from "../core/search.js";
 
 import {watch} from "vue";
 import FileInput from "./file-input/FileInput.vue";
@@ -14,7 +13,6 @@ import {file} from "./file-input/file-input-state.js";
 
 watch(file, () => {
   if (file.value) {
-    clearSearch();
     void setScan(file.value.file);
   }
 });
