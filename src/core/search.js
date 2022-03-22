@@ -83,9 +83,22 @@ function simplify(input) {
         .toLowerCase();
 }
 
+window.addEventListener("storage", event => {
+    if (event.key !== "search-sync") {
+        return;
+    }
+    document.querySelector("input").value = event.newValue;
+    document.querySelector("input").dispatchEvent(new Event("input"));
+});
+
 //todo check linked list perf for large search
 const performSearchDebounced = debounce(performSearch, 300);
 async function performSearch() {
+    const searchSync = new URL(location.href).searchParams.get("searchSync");
+    if (searchSync) {
+        localStorage.setItem("search-sync", search.value);
+        document.title = `Search...`;
+    }
 
     // Await while the scan parsing is completed, return `false` if there is a new `performSearch` call while parsing.
     if (false === await scanParsingCompleted) {
@@ -123,6 +136,10 @@ async function performSearch() {
     console.log({allSize, filesSize});
 
     debug.appendMessage(`${result.length} items; size: ${bytesToSizeWinLike(filesSize)} (${bytesToSizeWinLike(allSize)});  search: ${searchText}`);
+
+    if (searchSync) {
+        document.title = `[${result.length}] found`;
+    }
 }
 
 
