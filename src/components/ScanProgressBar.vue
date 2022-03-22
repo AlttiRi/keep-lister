@@ -1,6 +1,6 @@
 <template>
   <div class="scan-parsing-progress-component"
-       v-if="scanParsing"
+       v-if="scanParsing || show100"
        :style="{width: scanParsingProgress + '%'}"
   >
     <div class="visible"></div>
@@ -9,6 +9,17 @@
 
 <script setup>
 import {scanParsing, scanParsingProgress} from "../core/state.js";
+import {ref, watchEffect} from "vue";
+import {sleep} from "../util.js";
+
+const show100 = ref(false);
+watchEffect(async () => {
+  if (scanParsingProgress.value === 100) {
+    show100.value = true;
+    await sleep(16);
+    show100.value = false;
+  }
+});
 </script>
 
 <style lang="scss" scoped>
