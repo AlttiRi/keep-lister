@@ -130,6 +130,21 @@ _BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#rea
 - `/sizem:50!!`   — find 50 MB + (0 - 0.01) MB
 
 ---
+
+# Search in multiple scans
+
+While it currently does not support multiple scans selection you can open multiple tabs and add `searchSync=true` URLSearchParam, for example:
+- [...?filepath=.../windows-scan.json.gz&searchSync=true](https://alttiri.github.io/directory-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&searchSync=true)
+- [...?searchSync=true&filepath=.../ubuntu-scan.json.gz](https://alttiri.github.io/directory-snapshot-explorer/?searchSync=true&filepath=/json-flat-scans/ubuntu-admin.json.gz)
+
+The search in one tab will trigger the search in other tabs with `searchSync=true` URLSearchParam. 
+Also each tab will display the search result count.
+
+Just use this link for your scans:
+- https://alttiri.github.io/directory-snapshot-explorer/?searchSync=true
+
+
+---
 # How to use
 
 In short.
