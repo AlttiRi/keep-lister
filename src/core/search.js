@@ -175,18 +175,73 @@ function computeEntrySize(entry, excludeSet) {
  */
 async function searcher(folder, search) {
     console.log("[search]      ", search);
-    /** @type {function(String, String): Boolean} */
-    let stringMatcher;
+
+    let strict;
     if (search.startsWith("//")) {
+        strict = true;
         search = search.slice(2);
-        stringMatcher = (string, substring) => string.includes(substring);
     } else {
+        strict = false;
         const normalized = simplify(search);
         if (normalized !== search) {
             console.log("[search][norm]", normalized);
             search = normalized;
         }
-        stringMatcher = (string, substring) => simplify(string).includes(substring);
+    }
+
+    let searchHelp = null;
+
+    /** @type {"includes"|"startsWith"|"endsWith"|"==="} */
+    let subStringMatcher = "includes";
+
+    // Simplified glob search.
+    // For "startsWith", "endsWith" and "full match" search.
+    // /*/*.html     - ends with ".html"
+    // ///*/*.html   - ends with ".html" case sensitive
+    // /*/.*         - starts with "."
+    // /8/.*         - starts with "." (the same, just to no need to use Shift key)
+    // /*/index.html - matches "index.html"
+    const isSimpleGlobSearch = search.startsWith("/*/") || search.startsWith("/8/");
+    if (isSimpleGlobSearch) {
+        const subSearch = search.slice("/*/".length);
+        const starts = subSearch.startsWith("*");
+        const ends = subSearch.endsWith("*");
+
+        if (starts && ends) {
+            subStringMatcher = "includes";
+            search = subSearch.slice(1, -1);
+            searchHelp = `includes "${search}"`;
+        } else
+        if (starts) {
+            subStringMatcher = "endsWith";
+            search = subSearch.slice(1);
+            searchHelp = `ends with "${search}"`;
+        } else
+        if (ends) {
+            subStringMatcher = "startsWith";
+            search = subSearch.slice(0, -1);
+            searchHelp = `starts with "${search}"`;
+        } else {
+            subStringMatcher = "===";
+            search = subSearch;
+            searchHelp = `matches "${search}"`;
+        }
+    }
+
+    /** @type {function(String, String): Boolean} */
+    let stringMatcher;
+    if (strict) {
+        if (subStringMatcher === "===") {
+            stringMatcher = (string, substring) => string === substring;
+        } else {
+            stringMatcher = (string, substring) => string[subStringMatcher](substring);
+        }
+    } else {
+        if (subStringMatcher === "===") {
+            stringMatcher = (string, substring) => simplify(string) === substring;
+        } else {
+            stringMatcher = (string, substring) => simplify(string)[subStringMatcher](substring);
+        }
     }
 
     function justSearch(substring) {
@@ -438,7 +493,7 @@ async function searcher(folder, search) {
             return {result, search};
         }
     }
-    return {result: await justSearch(search), search};
+    return {result: await justSearch(search), search: (searchHelp || search)};
 }
 
 watch(search, async (newValue, oldValue) => {
