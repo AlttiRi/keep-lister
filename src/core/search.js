@@ -488,7 +488,7 @@ async function searcher(folder, search) {
             let result = await justSearch(parts.shift());
             let curWord;
             while (curWord = parts.shift()) {
-                result = result.filter(entry => entry.name.includes(curWord));
+                result = result.filter(entry => stringMatcher(entry.name, curWord));
             }
             return {result, search};
         }
