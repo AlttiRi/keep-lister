@@ -157,7 +157,13 @@ node %USERPROFILE%\Downloads\zz-dir-scanner.mjs
 ```
 - Don't forget to type enter.
 
+In progress:
+
+![Screenshot](https://user-images.githubusercontent.com/16310547/161448861-520b65d2-e2e6-4af3-88cb-01ded97fcc45.png)
+
 The result will be in your download folder.
+
+
 
 ---
 
