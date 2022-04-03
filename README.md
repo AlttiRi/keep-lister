@@ -159,6 +159,11 @@ node %USERPROFILE%\Downloads\zz-dir-scanner.mjs
 
 The result will be in your download folder.
 
+In progress:
+
+![Screenshot](https://user-images.githubusercontent.com/16310547/161448861-520b65d2-e2e6-4af3-88cb-01ded97fcc45.png)
+
+
 ---
 
 _Note: replace `%USERPROFILE%\Downloads\zz-dir-scanner.mjs` with the path to the scanner file if you have moved it from the download folder to an other place._
