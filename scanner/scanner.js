@@ -10,7 +10,7 @@ import {
     bytesToSizeWinLike,
     dateToDayDateString,
     exists,
-    listFiles
+    listFiles, restoreCursorPosition, saveCursorPosition,
 } from "./util-node.js";
 import {fileURLToPath} from "url";
 import {Meta} from "./meta.js";
@@ -46,8 +46,10 @@ const scanObject = new FlatScanObject(rootEntry, scanDirName);
 
 let handled = 0;
 let size = 0;
+saveCursorPosition();
 let timerId = setInterval(() => {
-    process.stdout.write(`\rProcessed: ${ANSI_CYAN(handled)} items, total size: ${ANSI_CYAN(bytesToSizeWinLike(size))} (${ANSI_CYAN(size)})\r`);
+    restoreCursorPosition();
+    process.stdout.write(`Processed: ${ANSI_CYAN(handled)} items, total size: ${ANSI_CYAN(bytesToSizeWinLike(size))} (${ANSI_CYAN(size)})`);
 }, 1000);
 
 for await (const /** @type {ListEntry} */ listEntry of listFiles({
@@ -66,7 +68,9 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
     size += scanEntry.statsInfo?.stats?.size || 0;
 }
 clearInterval(timerId);
-process.stdout.write(`\rProcessed: ${ANSI_CYAN(handled)} items, total size: ${ANSI_CYAN(bytesToSizeWinLike(size))} (${ANSI_CYAN(size)})\n`);
+restoreCursorPosition();
+process.stdout.write(`Processed: ${ANSI_CYAN(handled)} items, total size: ${ANSI_CYAN(bytesToSizeWinLike(size))} (${ANSI_CYAN(size)})`);
+console.log();
 
 meta.putErrorsMap(scanObject.errorsMap);
 meta.finalizeHardlinkInfo();

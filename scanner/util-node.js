@@ -241,3 +241,7 @@ export const ANSI_CYAN = text => "\u001B[36m" + text + _ANSI_RESET;
 export const ANSI_GREEN = text => "\u001B[32m" + text + _ANSI_RESET;
 export const ANSI_GREEN_BOLD = text => "\u001B[1;32m" + text + _ANSI_RESET;
 export const ANSI_RED_BOLD = text => "\u001B[1;31m" + text + _ANSI_RESET;
+
+export const saveCursorPosition    = () => process.stdout.write("\u001B[s");
+export const restoreCursorPosition = () => process.stdout.write("\u001B[u");
+export const moveCursorToTop = (num = 1) => process.stdout.write(`\u001B[${num}A`);
