@@ -2,6 +2,7 @@ import path from "path";
 import fs from "fs/promises";
 
 export * from "../src/util.js";
+export * from "./util-node-console.js";
 
 
 export function exists(path, followSymbol = true) {
@@ -233,16 +234,3 @@ async function *breadthFirstList(settings, listEntries) {
         return nextLevelQueue;
     }
 }
-
-
-const _ANSI_RESET = "\u001B[0m";
-export const ANSI_BLUE = text => "\u001B[34m" + text + _ANSI_RESET;
-export const ANSI_CYAN = text => "\u001B[36m" + text + _ANSI_RESET;
-export const ANSI_GREEN = text => "\u001B[32m" + text + _ANSI_RESET;
-export const ANSI_GREEN_BOLD = text => "\u001B[1;32m" + text + _ANSI_RESET;
-export const ANSI_RED_BOLD = text => "\u001B[1;31m" + text + _ANSI_RESET;
-
-export const saveCursorPosition    = () => process.stdout.write("\u001B[s");
-export const restoreCursorPosition = () => process.stdout.write("\u001B[u");
-export const eraseCursorLine       = () => process.stdout.write("\u001B[K");
-export const moveCursorToTop = (num = 1) => process.stdout.write(`\u001B[${num}A`);
