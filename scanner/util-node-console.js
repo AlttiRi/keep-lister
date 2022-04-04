@@ -45,6 +45,7 @@ export function getAnsiColoring(color = "white", opts= {}) {
 export const ANSI_BLUE  = /*#__PURE__*/ getAnsiColoring("blue");
 export const ANSI_CYAN  = /*#__PURE__*/ getAnsiColoring("cyan");
 export const ANSI_GREEN = /*#__PURE__*/ getAnsiColoring("green");
+export const ANSI_GRAY  = /*#__PURE__*/ getAnsiColoring("black", {bright: true});
 export const ANSI_GREEN_BOLD = /*#__PURE__*/ getAnsiColoring("green", {bold: true});
 export const ANSI_RED_BOLD   = /*#__PURE__*/ getAnsiColoring("red",   {bold: true});
 
