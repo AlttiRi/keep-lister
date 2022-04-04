@@ -27,7 +27,7 @@ export function isVideo(filename) {
     const {ext} = filename.match(/(?<ext>[^.]+)$/).groups;
     return videoExtensions.includes(ext.toLowerCase());
 }
-const imageExtensions = ["png", "jpg", "jpeg", "gif", "tiff", "webp"];
+const imageExtensions = ["png", "jpg", "jpeg", "jfif", "gif", "tiff", "webp"];
 export function isImage(filename) {
     const {ext} = filename.match(/(?<ext>[^.]+)$/).groups;
     return imageExtensions.includes(ext.toLowerCase());
