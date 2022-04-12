@@ -44,6 +44,8 @@ export class SimpleEntry {
             /** @type {String|undefined} */
             this.content = entry.content;
         }
+
+        parent?.addChild(this);
     }
     /** @param {SimpleEntry} entry */
     addChild(entry) {
@@ -259,7 +261,6 @@ export class EntryStreamParser {
             if (entry.type === "folder") {
                 this.map.set(entry.id, simpleEntry);
             }
-            parent?.addChild(simpleEntry);
             if (entry.hid) {
                 const array = this.hidMap.get(entry.hid) || [];
                 this.hidMap.set(entry.hid, [...array, simpleEntry]);
