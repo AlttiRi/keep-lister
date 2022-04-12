@@ -19,11 +19,14 @@ export function debugMessageFromEntry(entry) {
     } else {
         const name = `"` + entry.name.slice(0, 20) + (entry.name.length < 20 ? "" : "...") + `"`;
 
-        let message = "";
-        message += "mtime " + `"${dateToDayDateTimeString(entry.mtime, false)}"`;
-        message += " —  btime " + `"${dateToDayDateTimeString(entry.btime ?? 0, false)}"`;
-
-        message += ` — ${name} — ${entry.size} (${bytesToSizeWinLike(entry.size)})`;
-        debugMessage.value = message;
+        let messages = [];
+        if (entry.mtime !== undefined) {
+            messages.push("mtime " + `"${dateToDayDateTimeString(entry.mtime, false)}"`);
+        }
+        if (entry.btime !== undefined) {
+            messages.push("btime " + `"${dateToDayDateTimeString(entry.btime, false)}"`);
+        }
+        messages = [...messages, name, `${entry.size} (${bytesToSizeWinLike(entry.size)})`];
+        debugMessage.value = messages.join(" — ");
     }
 }
