@@ -33,12 +33,13 @@ const title = computed(() => {
       return str + "\t".repeat(count);
     }
     return Object.entries(o)
+        .filter(([k, v]) => v !== undefined)
         .map(([k, v]) => pad(k) + ": " + v)
         .join("\n");
   }
   const commonFiles = doString({files, folders, symlinks});
   const unusualFiles = doString({charDevs, blockDevs, fifos, sockets});
-  const additional = doString({total, platform, scanDate: dateToDayDateString(scanDate)});
+  const additional = doString({total, platform, scanDate: (scanDate ? dateToDayDateString(scanDate) : undefined)});
 
   let result;
   if (platform !== "win32") {
