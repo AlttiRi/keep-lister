@@ -21,12 +21,12 @@
 }
 
 /* AddressBar_Base.vue */
-.scanPath[data-v-7487a6bd] {
+.scanPath[data-v-6abf52c1] {
   height: 100%;
   display: flex;
   align-items: center;
 }
-.scanPath .parts[data-v-7487a6bd] {
+.scanPath .parts[data-v-6abf52c1] {
   height: 100%;
   display: flex;
   align-items: center;
@@ -36,17 +36,17 @@
   box-sizing: border-box;
   border-bottom: transparent solid 1px;
 }
-.scanPath .parts[data-v-7487a6bd]:hover {
+.scanPath .parts[data-v-6abf52c1]:hover {
   background-color: var(--blue-2);
   border-bottom: 1px solid var(--blue-1);
 }
-.scanPath .parts[data-v-7487a6bd]:active {
+.scanPath .parts[data-v-6abf52c1]:active {
   background: var(--blue-3);
 }
-.scanPath .parts .part[data-v-7487a6bd] {
+.scanPath .parts .part[data-v-6abf52c1] {
   display: contents;
 }
-.scanPath .spaced[data-v-7487a6bd] {
+.scanPath .spaced[data-v-6abf52c1] {
   letter-spacing: 2px;
 }
 /* AddressBar_Folder.vue */
