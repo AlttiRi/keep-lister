@@ -35,6 +35,7 @@ import {search} from "../core/search.js";
 import {bytesToSize, bytesToSizeWinLike} from "../util.js";
 import {scanParsing, searchAwaiting} from "../core/state.js";
 import {orderBy, toggleOrder} from "../core/entries.js";
+import {handleMegaUrl} from "../core/mega-nz.js";
 
 globalThis.bytesToSize = bytesToSize;
 globalThis.bytesToSizeWinLike = bytesToSizeWinLike;
@@ -59,6 +60,10 @@ onMounted(async () => {
     /** @type {Response} */
     const response = await fetch(filepath);
     await setScan(response);
+  }
+  const hash = url.hash.slice(1);
+  if (hash.startsWith("https://mega.nz/")) {
+    await handleMegaUrl(hash);
   }
   const _search = url.searchParams.get("search");
   if (_search) {

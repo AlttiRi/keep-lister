@@ -5,6 +5,7 @@ import {comparator, limit, orderBy, reverseOrder, selectedTime} from "./entries.
 import * as debug from "./debug.js";
 import {entryTypes} from "./entry.js";
 import {scanParsing, searchAwaiting, searching} from "./state.js";
+import {handleMegaUrl} from "./mega-nz.js";
 
 /** @type {import("vue").Ref<string>} */
 export const search = ref(""); // [v-model]
@@ -506,6 +507,10 @@ watch(search, async (newValue, oldValue) => {
 
     // In order to "no debounce by paste event"
     if (newValue.length - oldValue.length > 1) {
+        if (newValue.startsWith("https://mega.nz/")) {
+            await handleMegaUrl(newValue);
+            return;
+        }
         await performSearch();
     } else {
         await performSearchDebounced();
