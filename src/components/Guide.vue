@@ -12,6 +12,8 @@
           <li><a href="./?filepath=https://alttiri.github.io/json-flat-scans/linux-master.json.gz">Linux Source Code scan</a></li>
         </ul>
       </div>
+      <div class="gray">Also it supports mega.nz folder links (https://mega.nz/folder/ABcDE123#XXX).<br>
+        Just paste them in the search field.</div>
       <div>For more info see the <a href="https://github.com/AlttiRi/directory-snapshot-explorer#file-manager-snapshot-explorer" target="_blank">Readme</a>.</div>
     </div>
   </div>
@@ -32,6 +34,9 @@
   }
   div {
     margin-top: 15px;
+  }
+  .gray {
+    color: #666666;
   }
 }
 
