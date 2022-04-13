@@ -86,7 +86,7 @@ export class SimpleEntry {
         if (this._mtime !== undefined) {
             return this._mtime;
         }
-        if (this.type === "folder") { // Note: it's recursive // todo: an optional deep limit
+        if (this.type === "folder" && this.children) { // Note: it's recursive // todo: an optional deep limit
             let time = Number.MIN_SAFE_INTEGER;
             for (const child of this.children) {
                 if (child.mtime > time) { // `child.mtime !== undefined` is not necessary
