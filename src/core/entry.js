@@ -24,7 +24,7 @@ export class SimpleEntry {
         }
         if (entry.mtime) {
             /** @type {Number|undefined} */
-            this.mtime = entry.mtime;
+            this._mtime = entry.mtime;
         }
         if (entry.btime) {
             /** @type {Number|undefined} */
@@ -79,6 +79,25 @@ export class SimpleEntry {
         if (this.parent && size) {
             this.parent.increaseContentSize(size);
         }
+    }
+
+    /** @return {Number|undefined} */
+    get mtime() {
+        if (this._mtime !== undefined) {
+            return this._mtime;
+        }
+        if (this.type === "folder") {
+            let time = Number.MIN_SAFE_INTEGER;
+            for (const child of this.children) {
+                if (child.mtime > time) { // `child.mtime !== undefined` is not necessary
+                    time = child.mtime;
+                }
+            }
+            if (time !== Number.MIN_SAFE_INTEGER) {
+                return time;
+            }
+        }
+        return undefined;
     }
 
     /**
@@ -144,6 +163,7 @@ export class SimpleEntry {
         }
         return [...this.parent.path, this];
     }
+
     get contentTypesStats() {
         return this.getContentTypesStats();
     }
