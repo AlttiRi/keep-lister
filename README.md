@@ -25,6 +25,16 @@ Just look at the examples (click on the links to open the site with the demo sca
 
 [Linux Source Code scan](https://alttiri.github.io/file-manager-snapshot-explorer/?filepath=/json-flat-scans/linux-master.json.gz)
 
+---
+
+**Mega.nz folders**
+
+Also it supports mega.nz folder links (like this: `https://mega.nz/folder/ABcDE123#XXX`).
+
+Just paste them in the search field.
+
+Only for a browsing, but even this is useful since you can use the advansed search of this explorer (for example, to find the recently added files, find a file by its size).
+
 
 ---
 
