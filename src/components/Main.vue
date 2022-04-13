@@ -49,7 +49,7 @@ onMounted(async () => {
   const url = new URL(location.href);
   const filepath = url.searchParams.get("filepath");
   const sort = url.searchParams.get("sort") || url.searchParams.get("order");
-  if (["name", "size", "mtime"].includes(sort)) {
+  if (["name", "size", "time"].includes(sort)) {
     orderBy.value = sort;
     if (["true", "1"].includes(url.searchParams.get("desc"))) {
       toggleOrder();

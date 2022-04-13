@@ -13,21 +13,26 @@
         :class="{active: orderBy === 'size'}"
     >{{ orders.size  ? "S" : "s"}}</button>
     <button
-        class="order-by-date"
-        title="Order by date"
-        @click="onClick('mtime')"
-        :class="{active: orderBy === 'mtime'}"
-    >{{ orders.mtime ? "D" : "d"}}</button>
+        class="order-by-time"
+        :title="'Order by ' + selectedTime"
+        @click="onClick('time')"
+        @contextmenu.prevent="toggleTimeType"
+        :class="{active: orderBy === 'time', [selectedTime]: true}"
+    >{{ orders.time ? "D" : "d"}}</button>
   </div>
 </template>
 
 <script setup>
-import {orderBy, toggleOrder, orders} from "../core/entries.js";
+import {orderBy, toggleOrder, orders, selectedTime} from "../core/entries.js";
 
 // todo optimise reversing.
 // todo cancel sorting (for large arrays) on new click while sorting
 
-/** @param {"name"|"size"|"mtime"} value */
+function toggleTimeType() {
+  selectedTime.value = selectedTime.value === "mtime" ? "btime" : "mtime";
+}
+
+/** @param {"name"|"size"|"time"} value */
 function onClick(value) {
   if (orderBy.value === value) {
     toggleOrder();
@@ -45,6 +50,9 @@ function onClick(value) {
 }
 button.active {
   font-weight: bold;
+}
+.btime {
+  font-style: italic;
 }
 
 button {

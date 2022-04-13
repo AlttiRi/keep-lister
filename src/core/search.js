@@ -1,7 +1,7 @@
 import {isReactive, ref, shallowRef, toRaw, watch, watchEffect, triggerRef} from "vue";
 import {blue, bytesToSizeWinLike, debounce, sleep} from "../util.js";
 import {openedFolder} from "./folders.js";
-import {comparator, limit, orderBy, reverseOrder} from "./entries.js";
+import {comparator, limit, orderBy, reverseOrder, selectedTime} from "./entries.js";
 import * as debug from "./debug.js";
 import {entryTypes} from "./entry.js";
 import {scanParsing, searchAwaiting, searching} from "./state.js";
@@ -27,7 +27,7 @@ function setSearchResult(result) {
     addSearchResultToGlobalThis(rawResult);
 }
 
-watch([orderBy, reverseOrder], () => {
+watch([orderBy, reverseOrder, selectedTime], () => {
     sortSearch();
 });
 

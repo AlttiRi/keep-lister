@@ -5,12 +5,14 @@ import {openedFolder} from "./folders.js";
 
 export const sort = ref(true);
 
-/** @type {import("vue").Ref<("name"|"size"|"mtime")>} */
+/** @type {import("vue").Ref<("mtime"|"btime")>} */
+export const selectedTime = ref("mtime");
+/** @type {import("vue").Ref<("name"|"size"|"time")>} */
 export const orderBy = ref("name");
 export const orders = ref({
     name: false,
     size: false,
-    mtime: false,
+    time: false,
 });
 export const reverseOrder = computed(() => orders.value[orderBy.value]);
 export function toggleOrder() {
@@ -44,8 +46,9 @@ export function comparator(pre, cur) {
             return compare(pre.name, cur.name) * k;
         } else if (orderBy.value === "size") {
             return (pre.size - cur.size) * k;
-        } else if (orderBy.value === "mtime") {
-            return (pre.mtime - cur.mtime) * k;
+        } else if (orderBy.value === "time") {
+            const timeName = selectedTime.value;
+            return (pre[timeName] - cur[timeName]) * k;
         }
     }
     return 0;

@@ -10,7 +10,7 @@
       <td class="icon">{{icon}}</td>
       <td class="name">{{entry.name}}</td>
       <td class="size" :class="sizeClass">{{size}}</td>
-      <td class="mtime">{{mtime}}</td>
+      <td class="time" :class="{[selectedTime]: true}">{{time}}</td>
 <!--      <td class="type">{{entry.type}}</td>-->
 <!--      <td class="filler"></td>-->
   </tr>
@@ -20,7 +20,7 @@
 import {toRefs, computed} from "vue";
 import {meta, openedFolder, openFolder} from "../core/folders.js";
 import {bytesToSizeWinLike, dateToDayDateTimeString, isImage, isVideo, isAudio} from "../util.js";
-import {hoveredEntry} from "../core/entries.js";
+import {hoveredEntry, selectedTime} from "../core/entries.js";
 import {debugMessageFromEntry} from "../core/debug.js";
 
 const props = defineProps(["entry"]);
@@ -46,11 +46,11 @@ const error = computed(() => {
 });
 
 /** @type {import("vue").ComputedRef<String>} */
-const mtime = computed(() => {
-  if (entry.value.mtime === undefined) {
+const time = computed(() => {
+  if (entry.value[selectedTime.value] === undefined) {
     return "";
   }
-  const time = dateToDayDateTimeString(entry.value.mtime, false);
+  const time = dateToDayDateTimeString(entry.value[selectedTime.value], false);
   return time.slice(0, -3); // trim seconds
 });
 
@@ -166,7 +166,7 @@ function onMouseleave(event) {
         color: #ff8000;
       }
     }
-    &.mtime {
+    &.time {
       text-align: end;
       width: 145px;
       color: #777;
