@@ -5,16 +5,16 @@
       <div>Use your own directory scan file (created with
         <a href="https://github.com/AlttiRi/directory-snapshot-explorer#how-to-use" target="_blank">the scanner</a>).
       </div>
-      <div class="">Or use the demo scans to take a look at the program work:
+      <div class="">Or use the demo scans to take a look at the program's work <span class="gray">(just click on the link)</span>:
         <ul>
           <li><a href="./?filepath=https://alttiri.github.io/json-flat-scans/windows-admin.json.gz">Win 10 scan (as Admin)</a></li>
           <li><a href="./?filepath=https://alttiri.github.io/json-flat-scans/ubuntu-admin.json.gz">Ubuntu scan (as Root)</a></li>
           <li><a href="./?filepath=https://alttiri.github.io/json-flat-scans/linux-master.json.gz">Linux Source Code scan</a></li>
         </ul>
       </div>
-      <div class="gray">Also it supports mega.nz folder links (https://mega.nz/folder/ABcDE123#XXX).<br>
+      <div class="gray">Also it supports mega.nz folder links (https://mega.nz/folder/ABcd12#XXX).<br>
         Just paste them in the search field.</div>
-      <div>For more info see the <a href="https://github.com/AlttiRi/directory-snapshot-explorer#file-manager-snapshot-explorer" target="_blank">Readme</a>.</div>
+      <div>For more info see the <a href="https://github.com/AlttiRi/file-manager-snapshot-explorer#file-manager-snapshot-explorer" target="_blank">Readme</a>.</div>
     </div>
   </div>
 </template>
