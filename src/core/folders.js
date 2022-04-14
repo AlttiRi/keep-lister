@@ -8,7 +8,17 @@ import {limit} from "./entries.js";
 import {scanParsing, scanParsingProgress} from "./state.js";
 
 
-/** @type {import("vue").ShallowRef<ScanMeta>} */
+/**
+ * @typedef {Object} SpecialMeta
+ * @property {Object} [special]
+ */
+/**
+ * @typedef {ScanMeta & SpecialMeta} FolderMeta
+ */
+// Well, IDEA does not support `{ScanMeta & SpecialMeta}` correctly
+// todo make a class for it
+
+/** @type {import("vue").ShallowRef<FolderMeta>} */
 export const meta = shallowRef(null);
 /** @type {import("vue").ShallowRef<SimpleEntry>} */
 export const root = shallowRef(null);

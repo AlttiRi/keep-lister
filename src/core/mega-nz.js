@@ -1,6 +1,7 @@
 import {SimpleEntry} from "./entry.js";
 import {meta, openFolder, root} from "./folders.js";
 import {addMessage} from "./debug.js";
+import {dateToDayDateTimeString} from "../util.js";
 
 // Some special
 export async function handleMegaUrl(url) {
@@ -15,7 +16,16 @@ export async function handleMegaUrl(url) {
     console.log(node);
 
     let result = parseMegaNode(node);
+    result._url = url;
     console.log(result);
+
+    const special = {
+        url,
+        id: result._id,
+        ownerId: result._ownerId,
+        btime: result.btime && dateToDayDateTimeString(result.btime),
+        mtime: result.mtime && dateToDayDateTimeString(result.mtime),
+    };
 
     if (result.type !== "folder") { // if it's a share of 1 file
         const emptyRootFolder = new SimpleEntry({
@@ -27,10 +37,8 @@ export async function handleMegaUrl(url) {
         result = emptyRootFolder;
     }
 
-    result._url = url;
-
     root.value = result;
-    meta.value = {};
+    meta.value = {special};
     openFolder(root.value);
 }
 

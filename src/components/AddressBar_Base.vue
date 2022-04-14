@@ -40,12 +40,13 @@ const title = computed(() => {
   const commonFiles = doString({files, folders, symlinks});
   const unusualFiles = doString({charDevs, blockDevs, fifos, sockets});
   const additional = doString({total, platform, scanDate: (scanDate ? dateToDayDateString(scanDate) : undefined)});
+  const special = doString(meta.value.special || {});
 
   let result;
   if (platform !== "win32") {
-    result = [commonFiles, unusualFiles, additional].join("\n");
+    result = [commonFiles, unusualFiles, additional, special].filter(v => v).join("\n");
   } else {
-    result = [commonFiles, additional].join("\n");
+    result = [commonFiles, additional, special].filter(v => v).join("\n");
   }
   console.log(result);
   return result;
