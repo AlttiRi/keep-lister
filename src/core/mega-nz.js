@@ -1,10 +1,17 @@
 import {SimpleEntry} from "./entry.js";
 import {meta, openFolder, root} from "./folders.js";
+import {addMessage} from "./debug.js";
 
 // Some special
 export async function handleMegaUrl(url) {
     globalThis.Mega = await import("https://alttiri.github.io/meganz-api/meganz-api.standalone.es.js");
-    const node = await globalThis.Mega.node(url);
+    let node;
+    try {
+        node = await globalThis.Mega.node(url);
+    } catch (e) {
+        addMessage(e);
+        return;
+    }
     console.log(node);
 
     root.value = parseMegaNode(node);
