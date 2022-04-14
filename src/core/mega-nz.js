@@ -6,6 +6,8 @@ import {dateToDayDateTimeString} from "../util.js";
 // Some special
 export async function handleMegaUrl(url) {
     globalThis.Mega = await import("https://alttiri.github.io/meganz-api/meganz-api.standalone.es.js");
+    // globalThis.Mega.MegaApi.encryptedName = true;
+
     let node;
     try {
         node = await globalThis.Mega.node(url);
