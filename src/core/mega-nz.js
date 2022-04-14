@@ -23,7 +23,7 @@ export async function handleMegaUrl(url) {
 /** @return {SerializableScanEntry} */
 function nodeToSEntry(node) {
     return {
-        name: node.name,
+        name: node.name === null ? "[encrypted]" : node.name,
         size: node.size,
         btime: node.creationDate * 1000,
         mtime: node.modificationDate * 1000,
