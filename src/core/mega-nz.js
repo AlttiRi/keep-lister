@@ -14,9 +14,21 @@ export async function handleMegaUrl(url) {
     }
     console.log(node);
 
-    root.value = parseMegaNode(node);
+    let result = parseMegaNode(node);
+    console.log(result);
+
+    if (result.type !== "folder") { // if it's a share of 1 file
+        const emptyRootFolder = new SimpleEntry({
+            type: "folder",
+            name: "",
+            pid: null
+        }, null);
+        emptyRootFolder.addChild(result);
+        result = emptyRootFolder;
+    }
+
+    root.value = result;
     meta.value = {};
-    console.log(root.value);
     openFolder(root.value);
 }
 
