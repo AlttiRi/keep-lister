@@ -33,10 +33,12 @@ Also it supports mega.nz folder links (like this: `https://mega.nz/folder/ABcDE1
 
 Just paste them in the search field.
 
-Only for a browsing, but even this is useful since you can use the advansed search of this explorer (for example, to find the recently added files, find a file by its size).
+Only for a browsing, but even this is useful since you can use the advanced search of this explorer (for example, to find the recently added files, find a file by its size).
 
 
 ---
+
+## Search
 
 Some search examples:
 
