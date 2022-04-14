@@ -230,25 +230,25 @@
   min-height: 35px;
 }
 /* Guide.vue */
-.guide[data-v-6e6653fa] {
+.guide[data-v-14d9156d] {
   animation: appear 2s;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.guide .text-wrapper[data-v-6e6653fa] {
+.guide .text-wrapper[data-v-14d9156d] {
   min-width: 50%;
 }
-.guide div[data-v-6e6653fa] {
+.guide div[data-v-14d9156d] {
   margin-top: 15px;
 }
-.guide .gray[data-v-6e6653fa] {
+.guide .gray[data-v-14d9156d] {
   color: #666666;
 }
-.text-wrapper[data-v-6e6653fa] {
-  animation: fadein-6e6653fa 1.5s linear 1 forwards;
+.text-wrapper[data-v-14d9156d] {
+  animation: fadein-14d9156d 1.5s linear 1 forwards;
 }
-@keyframes fadein-6e6653fa {
+@keyframes fadein-14d9156d {
 0% {
     opacity: 0;
 }
