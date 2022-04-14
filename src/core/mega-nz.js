@@ -27,6 +27,8 @@ export async function handleMegaUrl(url) {
         result = emptyRootFolder;
     }
 
+    result._url = url;
+
     root.value = result;
     meta.value = {};
     openFolder(root.value);
