@@ -5,6 +5,8 @@ import {dateToDayDateTimeString} from "../util.js";
 
 // Some special
 export async function handleMegaUrl(url) {
+    addMessage(url);
+
     globalThis.Mega = await import("https://alttiri.github.io/meganz-api/meganz-api.standalone.es.js");
     // globalThis.Mega.MegaApi.encryptedName = true;
 
@@ -15,6 +17,7 @@ export async function handleMegaUrl(url) {
         addMessage(e);
         return;
     }
+    node = node.root;
     console.log(node);
 
     let result = parseMegaNode(node);
@@ -40,7 +43,10 @@ export async function handleMegaUrl(url) {
     }
 
     root.value = result;
-    meta.value = {special};
+    meta.value = {
+        special,
+        path: [],
+    };
     openFolder(root.value);
 }
 
