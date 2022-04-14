@@ -33,10 +33,12 @@ Also it supports mega.nz folder links (like this: `https://mega.nz/folder/ABcDE1
 
 Just paste them in the search field.
 
-Only for a browsing, but even this is useful since you can use the advansed search of this explorer (for example, to find the recently added files, find a file by its size).
+Only for a browsing, but even this is useful since you can use the advanced search of this explorer (for example, to find the recently added files, find a file by its size).
 
 
 ---
+
+## Search
 
 Some search examples:
 
@@ -60,42 +62,6 @@ Search by file type, for example: `/type:folder/query`
 ### List everything
 
 To list recursively all items of an opened folder use [`//`](https://alttiri.github.io/file-manager-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=//) search.
-
----
-
-### URL Search
-
-You can search by pasting URL in the search fiels, if the URL's pathname ends with an information included in file names you will find it, for example:
-
-Search `https://i.imgur.com/x09ICAM.jpeg` will list:
-- [imgur] 2015.09.18—x09ICAM—3456.jpg
-
-Search `https://pbs.twimg.com/media/FFyAEbTUYAEUm9p?format=jpg&name=4096x4096` will list:
-- [twitter] SpaceX—2021.12.04—1467202583840243712—FFyAEbTUYAEUm9p.jpg
-
-Search `https://twitter.com/SpaceX/status/1463536409667530755` will list:
-- [twitter] SpaceX—2021.11.24—1463536409667530755—FE-GSYWUcAgc9BN.jpg
-- [twitter] SpaceX—2021.11.24—1463536409667530755—FE-GWCKVgAorchy.jpg
-- [twitter] SpaceX—2021.11.24—1463536409667530755—FE-GXQYUYAcfvUl.jpg
-
-_BTW, look at [this thing](https://github.com/AlttiRi/twitter-click-and-save)._
-
-Search `https://www.instagram.com/p/CWqleONFgK4/` will list:
-- [inst] spacex—2021.11.24—CWqleONFgK4—260727536_471249894638202_6939249621560480797_n.jpg
-- [inst] spacex—2021.11.24—CWqleONFgK4—259683601_272614248155822_44594239323667647_n.jpg
-
-Search `https://www.youtube.com/watch?v=_qwLHlVjRyw` will list:
-- [yt] SpaceX—2020.12.23—_qwLHlVjRyw—Starship _ SN8 _ High-Altitude Flight Recap.description
-- [yt] SpaceX—2020.12.23—_qwLHlVjRyw—Starship _ SN8 _ High-Altitude Flight Recap.webm
-- [yt] SpaceX—2020.12.23—_qwLHlVjRyw—Starship _ SN8 _ High-Altitude Flight Recap.webp
-
-Search `https://gfycat.com/incompletealarmedicelandichorse` will list:
-
-- [gfycat] blaze0044—2021.03.27—IncompleteAlarmedIcelandichorse—Space X rocket breakup.mp4
-- [gfycat] blaze0044—2021.03.27—IncompleteAlarmedIcelandichorse—Space X rocket breakup.webm
-
-
-_BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#readme). It will CamelCase `incompletealarmedicelandichorse` to `IncompleteAlarmedIcelandichorse`._
 
 ---
 
@@ -138,6 +104,42 @@ _BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#rea
 - `/s/5k!!`       — find 5 KB + (0 - 0.001) KB
 - `/sizem:50!`    — find 50 MB + (0 - 0.1) MB
 - `/sizem:50!!`   — find 50 MB + (0 - 0.01) MB
+
+---
+
+### URL Search
+
+You can search by pasting URL in the search fiels, if the URL's pathname ends with an information included in file names you will find it, for example:
+
+Search `https://i.imgur.com/x09ICAM.jpeg` will list:
+- [imgur] 2015.09.18—x09ICAM—3456.jpg
+
+Search `https://pbs.twimg.com/media/FFyAEbTUYAEUm9p?format=jpg&name=4096x4096` will list:
+- [twitter] SpaceX—2021.12.04—1467202583840243712—FFyAEbTUYAEUm9p.jpg
+
+Search `https://twitter.com/SpaceX/status/1463536409667530755` will list:
+- [twitter] SpaceX—2021.11.24—1463536409667530755—FE-GSYWUcAgc9BN.jpg
+- [twitter] SpaceX—2021.11.24—1463536409667530755—FE-GWCKVgAorchy.jpg
+- [twitter] SpaceX—2021.11.24—1463536409667530755—FE-GXQYUYAcfvUl.jpg
+
+_BTW, look at [this thing](https://github.com/AlttiRi/twitter-click-and-save)._
+
+Search `https://www.instagram.com/p/CWqleONFgK4/` will list:
+- [inst] spacex—2021.11.24—CWqleONFgK4—260727536_471249894638202_6939249621560480797_n.jpg
+- [inst] spacex—2021.11.24—CWqleONFgK4—259683601_272614248155822_44594239323667647_n.jpg
+
+Search `https://www.youtube.com/watch?v=_qwLHlVjRyw` will list:
+- [yt] SpaceX—2020.12.23—_qwLHlVjRyw—Starship _ SN8 _ High-Altitude Flight Recap.description
+- [yt] SpaceX—2020.12.23—_qwLHlVjRyw—Starship _ SN8 _ High-Altitude Flight Recap.webm
+- [yt] SpaceX—2020.12.23—_qwLHlVjRyw—Starship _ SN8 _ High-Altitude Flight Recap.webp
+
+Search `https://gfycat.com/incompletealarmedicelandichorse` will list:
+
+- [gfycat] blaze0044—2021.03.27—IncompleteAlarmedIcelandichorse—Space X rocket breakup.mp4
+- [gfycat] blaze0044—2021.03.27—IncompleteAlarmedIcelandichorse—Space X rocket breakup.webm
+
+
+_BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#readme). It will CamelCase `incompletealarmedicelandichorse` to `IncompleteAlarmedIcelandichorse`._
 
 ---
 
