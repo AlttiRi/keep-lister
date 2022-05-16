@@ -2,7 +2,6 @@ import path from "path";
 import fs from "fs/promises";
 
 export * from "../src/util.js";
-export * from "./util-node-console.js";
 
 
 export function exists(path, followSymbol = true) {
