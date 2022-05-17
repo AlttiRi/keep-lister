@@ -1,6 +1,6 @@
-import {computed, watch, shallowRef, triggerRef, shallowReadonly} from "vue";
+import {computed, watch, shallowRef, triggerRef, shallowReadonly, ref, readonly} from "vue";
 import {clearSearch} from "./search.js";
-import {folderDummy} from "./entry.js";
+import {folderDummy, SimpleEntry} from "./entry.js";
 import {dateToDayDateString, sleep} from "../util.js";
 import {addMessage} from "./debug.js";
 import {parseScan} from "./scan-parser.js";
@@ -19,14 +19,28 @@ import {scanParsing, scanParsingProgress} from "./state.js";
 // todo make a class for it
 
 /** @type {import("vue").ShallowRef<FolderMeta>} */
-const rootMeta = shallowRef(null);
+const rootMeta  = shallowRef(null);
 /** @type {import("vue").ShallowRef<SimpleEntry>} */
-const root = shallowRef(null);
+const root      = shallowRef(null);
 
 const _rootMeta = shallowReadonly(rootMeta);
 const _root     = shallowReadonly(root);
 export {_rootMeta as rootMeta, _root as root};
 
+const home = shallowRef(new SimpleEntry({
+    name: "",
+    type: "folder",
+    pid: null
+}, null));
+globalThis.home = home.value;
+home.value.addMeta({
+    // path: [""]
+})
+const isHomeOpened = ref(false);
+
+const _home = shallowReadonly(home);
+const _isHomeOpened = readonly(isHomeOpened);
+export {_home as home, _isHomeOpened as isHomeOpened};
 
 function updateParsingState() {
     triggerRef(openedFolder);
@@ -135,7 +149,14 @@ export function openFolder(entry) {
     const root = entry.root;
     globalThis.root  = root;
     root.value = root;
-    rootMeta.value = root.meta;
+    rootMeta.value = root.meta || {};
+
+    if (root !== home.value) {
+        if (!home.value.children?.includes(root)) {
+            home.value.addChild(root);
+        }
+    }
+    isHomeOpened.value = entry === home.value;
 
     /** @type {SimpleEntry} */
     globalThis.folder = entry;

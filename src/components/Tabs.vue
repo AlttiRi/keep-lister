@@ -1,12 +1,13 @@
 <template>
   <div class="tabs">
     <FileInputWrapper class="tab"/>
-    <div class="tab"></div>
+    <Home class="tab"/>
   </div>
 </template>
 
 <script setup>
 import FileInputWrapper from "./FileInputWrapper.vue";
+import Home from "./Home.vue";
 </script>
 
 <style scoped>
