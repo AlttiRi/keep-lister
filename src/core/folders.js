@@ -18,7 +18,7 @@ import {scanParsing, scanParsingProgress} from "./state.js";
 // Well, IDEA does not support `{ScanMeta & SpecialMeta}` correctly
 // todo make a class for it
 
-/** @type {import("vue").ShallowRef<FolderMeta>} */
+/** @type {import("vue").ShallowRef<FolderMeta|null>} */
 const rootMeta  = shallowRef(null);
 /** @type {import("vue").ShallowRef<SimpleEntry>} */
 const root      = shallowRef(null);
@@ -35,6 +35,7 @@ export function clearHome() {
     console.log("clearHome");
     home.value.children = [];
     triggerRef(openedFolder);
+    reset();
 }
 
 const _home = shallowReadonly(home);
@@ -139,6 +140,16 @@ export const openedFolders = computed(() => {
     return openedFolder.value.path;
 });
 
+function reset() {
+    clearSearch();
+    openedFolder.value = folderDummy;
+    root.value = null;
+    rootMeta.value = null;
+    globalThis.root = null;
+    globalThis.folder = null;
+    isHomeOpened.value = false;
+}
+
 /** @param {SimpleEntry} entry */
 export function openFolder(entry) {
     clearSearch();
@@ -150,7 +161,7 @@ export function openFolder(entry) {
     root.value = root;
     rootMeta.value = root.meta || {};
 
-    if (root !== home.value) {
+    if (entry !== home.value) {
         if (!home.value.children?.includes(root)) {
             home.value.addChild(root);
         }
@@ -178,6 +189,9 @@ export const empty = computed(() => root.value && openedFolder.value.isEmpty);
 
 watch(rootMeta, async (newValue, oldValue) => {
     console.log("[meta]:", rootMeta.value);
+    if (!rootMeta.value) {
+        return;
+    }
     const {files, folders, symlinks, errors, total, scanDate} = rootMeta.value;
     if (rootMeta.value.scanDate) {
         addMessage(
