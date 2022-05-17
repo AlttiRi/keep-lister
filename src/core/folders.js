@@ -1,4 +1,4 @@
-import {computed, ref, watch, shallowRef, triggerRef} from "vue";
+import {computed, watch, shallowRef, triggerRef, shallowReadonly} from "vue";
 import {clearSearch} from "./search.js";
 import {folderDummy} from "./entry.js";
 import {dateToDayDateString, sleep} from "../util.js";
@@ -19,9 +19,13 @@ import {scanParsing, scanParsingProgress} from "./state.js";
 // todo make a class for it
 
 /** @type {import("vue").ShallowRef<FolderMeta>} */
-export const meta = shallowRef(null);
+const rootMeta = shallowRef(null);
 /** @type {import("vue").ShallowRef<SimpleEntry>} */
-export const root = shallowRef(null);
+const root = shallowRef(null);
+
+const _rootMeta = shallowReadonly(rootMeta);
+const _root     = shallowReadonly(root);
+export {_rootMeta as rootMeta, _root as root};
 
 
 function updateParsingState() {
@@ -81,15 +85,13 @@ export async function setScan(input) {
             console.log(`[setScan][time][aborted]`, Date.now() - startTime, "ms");
             return false;
         }
-        if (!metaInited && scanMeta) {
-            meta.value = scanMeta;
-            metaInited = true;
-            total = scanMeta.total;
-            processedTotal -= 1;
-        }
         if (!rootInited && rootEntry) {
-            root.value = rootEntry;
-            globalThis.root = rootEntry;
+            if (!metaInited && scanMeta) {
+                rootEntry.meta = scanMeta;
+                metaInited = true;
+                total = scanMeta.total;
+                processedTotal -= 1;
+            }
             openFolder(rootEntry);
             rootInited = true;
         }
@@ -109,11 +111,11 @@ export async function setScan(input) {
 
 /** @type {import("vue").ComputedRef<string>} */
 export const separator = computed(() => {
-    return meta.value?.separator || "/";
+    return rootMeta.value?.separator || "/";
 });
 /** @type {import("vue").ComputedRef<string[]>} */
 export const scanRootPath = computed(() => {
-    return meta.value?.path || [];
+    return rootMeta.value?.path || [];
 });
 
 
@@ -129,6 +131,11 @@ export function openFolder(entry) {
     clearSearch();
     openedFolder.value = entry;
     limit.value = 50;
+
+    const root = entry.root;
+    globalThis.root  = root;
+    root.value = root;
+    rootMeta.value = root.meta;
 
     /** @type {SimpleEntry} */
     globalThis.folder = entry;
@@ -149,10 +156,10 @@ export function goBack() {
 export const empty = computed(() => root.value && openedFolder.value.isEmpty);
 
 
-watch(meta, async (newValue, oldValue) => {
-    console.log("[meta]:", meta.value);
-    const {files, folders, symlinks, errors, total, scanDate} = meta.value;
-    if (meta.value.scanDate) {
+watch(rootMeta, async (newValue, oldValue) => {
+    console.log("[meta]:", rootMeta.value);
+    const {files, folders, symlinks, errors, total, scanDate} = rootMeta.value;
+    if (rootMeta.value.scanDate) {
         addMessage(
             `files: "${files}" folders: "${folders}", symlinks: "${symlinks}", ` +
             `errors: "${errors}", total: "${total}", scanDate: "${dateToDayDateString(scanDate)}"`

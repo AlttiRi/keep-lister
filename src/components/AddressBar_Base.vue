@@ -11,12 +11,12 @@
 <script setup>
 //todo title
 import {computed} from "vue";
-import {scanRootPath, openedFolders, separator, openedFolder, openFolder, meta} from "../core/folders.js";
+import {scanRootPath, openedFolders, separator, openedFolder, openFolder, rootMeta} from "../core/folders.js";
 import {dateToDayDateString} from "../util.js";
 import {debugMessageFromEntry} from "../core/debug.js";
 
 const title = computed(() => {
-  if (!meta.value) {
+  if (!rootMeta.value) {
     return;
   }
 
@@ -25,7 +25,7 @@ const title = computed(() => {
       charDevs, blockDevs, fifos, sockets,
       total,
       platform, scanDate
-  } = meta.value;
+  } = rootMeta.value;
 
   function doString(o) {
     function pad(str) {
@@ -40,7 +40,7 @@ const title = computed(() => {
   const commonFiles = doString({files, folders, symlinks});
   const unusualFiles = doString({charDevs, blockDevs, fifos, sockets});
   const additional = doString({total, platform, scanDate: (scanDate ? dateToDayDateString(scanDate) : undefined)});
-  const special = doString(meta.value.special || {});
+  const special = doString(rootMeta.value.special || {});
 
   let result;
   if (platform !== "win32") {
@@ -58,7 +58,7 @@ const root = computed(() => {
   if (str.startsWith("//")) { // for unix
     return str.slice(1);
   }
-  if (meta.value?.platform === "win32") { // uppercase win drive letter // todo remove as unnecessary
+  if (rootMeta.value?.platform === "win32") { // uppercase win drive letter // todo remove as unnecessary
     return str[0].toUpperCase() + str.slice(1);
   }
   return str;

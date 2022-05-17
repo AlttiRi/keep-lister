@@ -30,7 +30,7 @@ import InnerModal from "./InnerModal.vue";
 import MemoryConsuming from "./MemoryConsuming.vue";
 import ScanProgressBar from "./ScanProgressBar.vue";
 import {computed, onMounted} from "vue";
-import {meta, setScan} from "../core/folders.js";
+import {rootMeta, setScan} from "../core/folders.js";
 import {search} from "../core/search.js";
 import {bytesToSize, bytesToSizeWinLike} from "../util.js";
 import {scanParsing, searchAwaiting} from "../core/state.js";
@@ -42,7 +42,7 @@ globalThis.bytesToSizeWinLike = bytesToSizeWinLike;
 
 
 // some kind of hack, but okay // don't show if a file selected, or remote scan is loading
-const showGuide = computed(() => !meta.value && !new URL(location.href).searchParams.get("filepath"));
+const showGuide = computed(() => !rootMeta.value && !new URL(location.href).searchParams.get("filepath"));
 
 
 // Already opened directory, no need to open with input

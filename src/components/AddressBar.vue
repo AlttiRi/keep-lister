@@ -19,12 +19,12 @@
 import AddressBar_Base from "./AddressBar_Base.vue";
 import AddressBar_Folder from "./AddressBar_Folder.vue";
 import AddressBar_Part from "./AddressBar_Part.vue";
-import {meta, openedFolder, openedFolders, separator} from "../core/folders.js";
+import {rootMeta, openedFolder, openedFolders, separator} from "../core/folders.js";
 
 /** @param {MouseEvent} event */
 async function onContextmenu(event) {
   event.preventDefault();
-  const folderPath = [...meta.value.path, ...openedFolder.value.path.map(entry => entry.name)].join(separator.value);
+  const folderPath = [...rootMeta.value.path, ...openedFolder.value.path.map(entry => entry.name)].join(separator.value);
   console.log("Copy to clipboard:", folderPath);
   await navigator.clipboard.writeText(folderPath);
 }

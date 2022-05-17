@@ -1,5 +1,5 @@
 import {SimpleEntry} from "./entry.js";
-import {meta, openFolder, root} from "./folders.js";
+import {openFolder} from "./folders.js";
 import {addMessage} from "./debug.js";
 import {dateToDayDateTimeString} from "../util.js";
 
@@ -20,6 +20,7 @@ export async function handleMegaUrl(url) {
     node = node.root;
     console.log(node);
 
+    /** @type {SimpleEntry} */
     let result = parseMegaNode(node);
     result._url = url;
     console.log(result);
@@ -42,23 +43,28 @@ export async function handleMegaUrl(url) {
         result = emptyRootFolder;
     }
 
-    root.value = result;
-    meta.value = {
-        special,
-        path: [],
-    };
-    openFolder(root.value);
+    result.root.addMeta({
+        special
+    });
+    openFolder(result);
 }
 
 /** @return {SerializableScanEntry} */
 function nodeToSEntry(node) {
     return {
+        /**@type {string} */
         name: node.name === null ? "[encrypted]" : node.name,
+        /**@type {number} */
         size: node.size,
+        /**@type {number} */
         btime: node.creationDate * 1000,
+        /**@type {number} */
         mtime: node.modificationDate * 1000,
+        /**@type {String} */
         id: node.id,
+        /**@type {ScanEntryType} */
         type: (node.type === "rootFolder" || node.type === "folder") ? "folder" : "file",
+        /**@type {String} */
         pid: node.parentId,
     };
 }

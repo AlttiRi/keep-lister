@@ -18,7 +18,7 @@
 
 <script setup>
 import {toRefs, computed} from "vue";
-import {meta, openedFolder, openFolder} from "../core/folders.js";
+import {rootMeta, openedFolder, openFolder} from "../core/folders.js";
 import {bytesToSizeWinLike, dateToDayDateTimeString, isImage, isVideo, isAudio} from "../util.js";
 import {hoveredEntry, selectedTime} from "../core/entries.js";
 import {debugMessageFromEntry} from "../core/debug.js";
@@ -101,7 +101,7 @@ function onMousedown(event) {
     event.preventDefault();
     console.log(
         entry.value,
-        entry.value.getPathString(meta.value)
+        entry.value.getPathString(rootMeta.value)
     );
 
     if (openedFolder.value !== entry.value.parent) {

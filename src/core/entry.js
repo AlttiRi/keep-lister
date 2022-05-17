@@ -68,6 +68,12 @@ export class SimpleEntry {
         this.hardlinksTotal = total;
     }
 
+    /** @param {ScanMeta|Object} meta */
+    addMeta(meta) {
+        /** @type {ScanMeta|Object|undefined} */
+        this.meta = meta;
+    }
+
     increaseContentSize(size) {
         if (!size) {
             return;
