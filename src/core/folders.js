@@ -1,6 +1,6 @@
 import {computed, watch, shallowRef, triggerRef, shallowReadonly, ref, readonly} from "vue";
 import {clearSearch} from "./search.js";
-import {folderDummy, SimpleEntry} from "./entry.js";
+import {folderDummy, SimpleBucketEntry, SimpleEntry} from "./entry.js";
 import {dateToDayDateString, sleep} from "../util.js";
 import {addMessage} from "./debug.js";
 import {parseScan} from "./scan-parser.js";
@@ -27,15 +27,9 @@ const _rootMeta = shallowReadonly(rootMeta);
 const _root     = shallowReadonly(root);
 export {_rootMeta as rootMeta, _root as root};
 
-const home = shallowRef(new SimpleEntry({
-    name: "",
-    type: "folder",
-    pid: null
-}, null));
+/** @type {import("vue").ShallowRef<SimpleBucketEntry>} */
+const home = shallowRef(new SimpleBucketEntry());
 globalThis.home = home.value;
-home.value.addMeta({
-    // path: [""]
-})
 const isHomeOpened = ref(false);
 
 const _home = shallowReadonly(home);

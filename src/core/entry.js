@@ -340,3 +340,17 @@ export const folderDummy = new SimpleEntry({
     name: "",
     pid: null,
 }, null);
+
+
+export class SimpleBucketEntry extends SimpleEntry{
+    constructor({name} = {name: ""}) {
+        super({
+            name,
+            type: "folder",
+            pid: null
+        }, null);
+        this.addMeta({
+            // path: [""]
+        })
+    }
+}
