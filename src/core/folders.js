@@ -142,12 +142,11 @@ export const openedFolders = computed(() => {
 
 function reset() {
     clearSearch();
-    openedFolder.value = folderDummy;
+    openFolder(folderDummy);
     root.value = null;
     rootMeta.value = null;
     globalThis.root = null;
     globalThis.folder = null;
-    isHomeOpened.value = false;
 }
 
 /** @param {SimpleEntry} entry */
