@@ -31,6 +31,11 @@ export {_rootMeta as rootMeta, _root as root};
 const home = shallowRef(new SimpleBucketEntry());
 globalThis.home = home.value;
 const isHomeOpened = ref(false);
+export function clearHome() {
+    console.log("clearHome");
+    home.value.children = [];
+    triggerRef(openedFolder);
+}
 
 const _home = shallowReadonly(home);
 const _isHomeOpened = readonly(isHomeOpened);
@@ -141,7 +146,7 @@ export function openFolder(entry) {
     limit.value = 50;
 
     const root = entry.root;
-    globalThis.root  = root;
+    globalThis.root = root;
     root.value = root;
     rootMeta.value = root.meta || {};
 

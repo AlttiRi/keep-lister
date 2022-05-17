@@ -1,14 +1,18 @@
 <template>
-  <div class="home" @click="onClick" :class="{active: isHomeOpened}">
+  <div class="home" @click="onClick" @contextmenu="onContextMenu" :class="{active: isHomeOpened}">
     Home
   </div>
 </template>
 
 <script setup>
-import {home, openFolder, isHomeOpened} from "../core/folders.js";
+import {home, openFolder, isHomeOpened, clearHome} from "../core/folders.js";
 
 function onClick() {
   openFolder(home.value);
+}
+function onContextMenu(event) {
+  event.preventDefault();
+  clearHome();
 }
 </script>
 
