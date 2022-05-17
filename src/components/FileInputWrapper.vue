@@ -1,19 +1,20 @@
 <template>
   <div class="file-input-wrapper">
-    <FileInput :accept="`application/json,application/gzip`" :multiple="false"/>
+    <FileInput :accept="`application/json,application/gzip`" :multiple="true"/>
   </div>
 </template>
 
 <script setup>
-import {setScan} from "../core/folders.js";
+import {clearHome, setScan} from "../core/folders.js";
 
 import {watch} from "vue";
 import FileInput from "./file-input/FileInput.vue";
-import {file} from "./file-input/file-input-state.js";
+import {fileEntries} from "./file-input/file-input-state.js";
 
-watch(file, () => {
-  if (file.value) {
-    void setScan(file.value.file);
+watch(fileEntries, async () => {
+  clearHome();
+  for (const {file} of fileEntries.value) {
+    await setScan(file);
   }
 });
 </script>

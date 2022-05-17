@@ -33,9 +33,9 @@ globalThis.home = home.value;
 const isHomeOpened = ref(false);
 export function clearHome() {
     console.log("clearHome");
+    resetFolderState();
     home.value.children = [];
     triggerRef(openedFolder);
-    reset();
 }
 
 const _home = shallowReadonly(home);
@@ -140,7 +140,7 @@ export const openedFolders = computed(() => {
     return openedFolder.value.path;
 });
 
-function reset() {
+export function resetFolderState() {
     clearSearch();
     openFolder(folderDummy);
     root.value = null;
@@ -163,6 +163,7 @@ export function openFolder(entry) {
     if (entry !== home.value) {
         if (!home.value.children?.includes(root)) {
             home.value.addChild(root);
+            triggerRef(home);
         }
     }
     isHomeOpened.value = entry === home.value;

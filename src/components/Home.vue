@@ -1,11 +1,19 @@
 <template>
-  <div class="home" @click="onClick" @contextmenu="onContextMenu" :class="{active: isHomeOpened}">
+  <div class="home" @click="onClick" @contextmenu="onContextMenu" :class="{active: isHomeOpened}" v-if="show">
     Home
   </div>
 </template>
 
 <script setup>
 import {home, openFolder, isHomeOpened, clearHome} from "../core/folders.js";
+import {computed} from "vue";
+
+const show = computed(() => {
+  console.log("show");
+  console.log(home.value);
+  console.log(home.value?.children?.length);
+  return home.value?.children?.length > 1;
+});
 
 function onClick() {
   openFolder(home.value);
