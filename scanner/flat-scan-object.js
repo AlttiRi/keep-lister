@@ -5,9 +5,9 @@ import path from "path";
  * @property {String} name
  * @property {ScanEntryType} type
  *
- * @property {Number} [id] - only for folders
+ * @property {Number|String} [id] - only for folders
  * @property {String} [hid] - "uniqueID:hardlinksCount" (some hardlinks can be out of the scan)
- * @property {Number|null} pid - parent's ID
+ * @property {Number|null|String} pid - parent's ID
  *
  * @property {Number[]} [errors] - error IDs
  *
