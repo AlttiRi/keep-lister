@@ -120,7 +120,7 @@ function onMouseleave(event) {
 /** @param {number} num */
 function tripleGroups(num) {
   const str = num.toString();
-  return str.toString().padStart(str.length + (3 - str.length % 3)).match(/(.{3})/g).join(" ").trimStart();
+  return str.padStart(str.length + (3 - str.length % 3)).match(/(.{3})/g).join(" ").trimStart();
 }
 </script>
 
