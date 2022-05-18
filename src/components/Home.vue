@@ -37,8 +37,11 @@ function onContextMenu(event) {
     background-color: var(--drop-hover);
     cursor: pointer;
   }
-  &.active {
+  &:active {
     background-color: var(--drop-active);
+  }
+  &.active {
+    border-width: 2px;
   }
 }
 </style>
