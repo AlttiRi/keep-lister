@@ -72,7 +72,7 @@ jobs:
           echo "-------------------";
           echo "--- Push commit ---";
           echo "-------------------";
-          git commit -m "$commit_message" && git push https://${{secrets.ACCESS_TOKEN}}@github.com/${{github.repository}}.git master:$branch_name;
+          git commit -m "$commit_message" && git push "https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git" master:$branch_name;
           echo "-------------------";
           echo "---   Pushed    ---";
           echo "-------------------";
