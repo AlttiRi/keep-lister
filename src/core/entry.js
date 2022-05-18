@@ -223,7 +223,7 @@ export class SimpleEntry {
     }
 
     /**
-     * @param {ScanMeta} [meta]
+     * @param {ScanMeta|null} [meta]
      * @return {string}
      */
     getPathString(meta) {

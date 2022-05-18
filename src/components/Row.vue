@@ -8,8 +8,8 @@
       :class="{error}"
   >
       <td class="icon">{{icon}}</td>
-      <td class="name">{{entry.name}}</td>
-      <td class="size" :class="sizeClass">{{size}}</td>
+      <td class="name" :title="entry.getPathString(entry.root.meta)">{{entry.name}}</td>
+      <td class="size" :class="sizeClass" :title="tripleGroups(entry.size)">{{size}}</td>
       <td class="time" :class="{[selectedTime]: true}">{{time}}</td>
 <!--      <td class="type">{{entry.type}}</td>-->
 <!--      <td class="filler"></td>-->
@@ -100,8 +100,8 @@ function onMousedown(event) {
   if (event.button === MIDDLE_BUTTON) {
     event.preventDefault();
     console.log(
+        entry.value.getPathString(entry.value.root.meta),
         entry.value,
-        entry.value.getPathString(rootMeta.value)
     );
 
     if (openedFolder.value !== entry.value.parent) {
@@ -115,6 +115,12 @@ function onMouseover(event) {
 }
 function onMouseleave(event) {
   hoveredEntry.value = null;
+}
+
+/** @param {number} num */
+function tripleGroups(num) {
+  const str = num.toString();
+  return str.toString().padStart(str.length + (3 - str.length % 3)).match(/(.{3})/g).join(" ").trimStart();
 }
 </script>
 
