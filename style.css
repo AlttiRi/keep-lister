@@ -260,7 +260,7 @@
 }
 }
 /* Home.vue */
-.home[data-v-55fd20d3] {
+.home[data-v-0d5bf6dc] {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -271,12 +271,15 @@
   border-left: 0;
   box-sizing: border-box;
 }
-.home[data-v-55fd20d3]:hover {
+.home[data-v-0d5bf6dc]:hover {
   background-color: var(--drop-hover);
   cursor: pointer;
 }
-.home.active[data-v-55fd20d3] {
+.home[data-v-0d5bf6dc]:active {
   background-color: var(--drop-active);
+}
+.home.active[data-v-0d5bf6dc] {
+  border-width: 2px;
 }
 /* InnerModal.vue */
 .inner-modal[data-v-462d7e6d] {
