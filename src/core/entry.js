@@ -229,7 +229,7 @@ export class SimpleEntry {
     getPathString(meta) {
         const names = this.path.map(e => e.name);
         let pathStr;
-        if (meta) {
+        if (meta?.path) {
             pathStr = [...meta.path, ...names].join(meta.separator || "/");
         } else {
             pathStr = names.join("/");
