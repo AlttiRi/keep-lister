@@ -9,9 +9,6 @@ import {home, openFolder, isHomeOpened, clearHome} from "../core/folders.js";
 import {computed} from "vue";
 
 const show = computed(() => {
-  console.log("show");
-  console.log(home.value);
-  console.log(home.value?.children?.length);
   return home.value?.children?.length > 1;
 });
 
