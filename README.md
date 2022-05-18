@@ -145,7 +145,9 @@ _BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#rea
 
 # Search in multiple scans
 
-While it currently does not support multiple scans selection you can open multiple tabs and add `searchSync=true` URLSearchParam, for example:
+It supports multiple scans selecting. Just open two (or more scans) with the file input, or just drag'n'drop multiple scan files into the site.
+
+Additionally you can open multiple tabs and add `searchSync=true` URLSearchParam, for example:
 - [...?filepath=.../windows-scan.json.gz&searchSync=true](https://alttiri.github.io/file-manager-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&searchSync=true)
 - [...?searchSync=true&filepath=.../ubuntu-scan.json.gz](https://alttiri.github.io/file-manager-snapshot-explorer/?searchSync=true&filepath=/json-flat-scans/ubuntu-admin.json.gz)
 
