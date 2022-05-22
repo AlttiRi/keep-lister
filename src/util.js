@@ -195,6 +195,12 @@ export function *iterateBlob(blob, chunkSize = 2 * 1024 * 1024) {
     }
 }
 
+/** @param {number} num */
+export function tripleSizeGroups(num) {
+    const str = num.toString();
+    return str.padStart(str.length + (3 - str.length % 3)).match(/(.{3})/g).join(" ").trimStart();
+}
+
 /**
  * Format bytes to human readable format.
  * Trims the tailing zeros.

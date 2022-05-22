@@ -14,6 +14,7 @@ import {
     dateToDayDateString,
     exists,
     listFiles,
+    tripleSizeGroups,
 } from "./util-node.js";
 import {fileURLToPath} from "url";
 import {Meta} from "./meta.js";
@@ -72,7 +73,7 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
 }
 clearInterval(timerId);
 restoreCursorPosition();
-process.stdout.write(`Processed: ${ANSI_CYAN(handled)} items, total size: ${ANSI_CYAN(bytesToSizeWinLike(size))} (${ANSI_CYAN(size)})`);
+process.stdout.write(`Processed: ${ANSI_CYAN(handled)} items, total size: ${ANSI_CYAN(bytesToSizeWinLike(size))} (${ANSI_CYAN(tripleSizeGroups(size))})`);
 console.log();
 
 meta.putErrorsMap(scanObject.errorsMap);
@@ -277,7 +278,9 @@ async function saveJSON(json) {
     const filename =
         "[.dir-scan]" +
         "[" + scanFolderAbsolutePath.replaceAll(path.sep, "/") + "]" +
-        " " + dateToDayDateString(new Date(), false);
+        " " + dateToDayDateString(new Date(), false) +
+        "—" + bytesToSizeWinLike(size)
+    ;
     const ext = doGZip ? ".json.gz" : ".json";
     const filenameEscaped = filename
         // .replaceAll("/", "⧸") .replaceAll(":", "：").replaceAll("#", "⋕")

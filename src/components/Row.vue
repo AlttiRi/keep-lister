@@ -9,7 +9,7 @@
   >
       <td class="icon">{{icon}}</td>
       <td class="name" :title="entry.getPathString(entry.root.meta)">{{entry.name}}</td>
-      <td class="size" :class="sizeClass" :title="tripleGroups(entry.size)">{{size}}</td>
+      <td class="size" :class="sizeClass" :title="tripleSizeGroups(entry.size)">{{size}}</td>
       <td class="time" :class="{[selectedTime]: true}">{{time}}</td>
 <!--      <td class="type">{{entry.type}}</td>-->
 <!--      <td class="filler"></td>-->
@@ -18,8 +18,8 @@
 
 <script setup>
 import {toRefs, computed} from "vue";
-import {rootMeta, openedFolder, openFolder} from "../core/folders.js";
-import {bytesToSizeWinLike, dateToDayDateTimeString, isImage, isVideo, isAudio} from "../util.js";
+import {openedFolder, openFolder} from "../core/folders.js";
+import {bytesToSizeWinLike, dateToDayDateTimeString, isImage, isVideo, isAudio, tripleSizeGroups} from "../util.js";
 import {hoveredEntry, selectedTime} from "../core/entries.js";
 import {debugMessageFromEntry} from "../core/debug.js";
 
@@ -117,11 +117,6 @@ function onMouseleave(event) {
   hoveredEntry.value = null;
 }
 
-/** @param {number} num */
-function tripleGroups(num) {
-  const str = num.toString();
-  return str.padStart(str.length + (3 - str.length % 3)).match(/(.{3})/g).join(" ").trimStart();
-}
 </script>
 
 <style lang="scss" scoped>
