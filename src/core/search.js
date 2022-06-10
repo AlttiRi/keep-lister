@@ -92,6 +92,7 @@ window.addEventListener("storage", event => {
     document.querySelector("input").dispatchEvent(new Event("input"));
 });
 
+// todo do not perform search if it already in run (for millions items cases) // or cancel it?
 //todo check linked list perf for large search
 const performSearchDebounced = debounce(performSearch, 300);
 async function performSearch() {
@@ -184,6 +185,7 @@ async function searcher(folder, search) {
     } else {
         strict = false;
         const normalized = simplify(search);
+        // todo? "red_cat" -> "red cat"
         if (normalized !== search) {
             console.log("[search][norm]", normalized);
             search = normalized;
