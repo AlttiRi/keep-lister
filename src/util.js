@@ -22,12 +22,13 @@ export function sleep(ms) {
 
 export const shuffle = () => Math.random() >= 0.5 ? -1 : 1;
 
+// todo: use Set
 const videoExtensions = ["mp4", "webm", "mkv", "avi", "mov", "m4v", "m4v", "mpg", "mpeg", "wmv", "flv"];
 export function isVideo(filename) {
     const {ext} = filename.match(/(?<ext>[^.]+)$/).groups;
     return videoExtensions.includes(ext.toLowerCase());
 }
-const imageExtensions = ["png", "jpg", "jpeg", "jfif", "gif", "tiff", "webp"];
+const imageExtensions = ["jpg", "png", "jpeg", "gif", "webp", "jfif", "jpe", "tiff"];
 export function isImage(filename) {
     const {ext} = filename.match(/(?<ext>[^.]+)$/).groups;
     return imageExtensions.includes(ext.toLowerCase());
