@@ -16,64 +16,64 @@ jobs:
           node-version: "16"
       - uses: actions/checkout@v2
       - name: Info
-        run: node -v && pwd && ls -la
+        run:  node -v && pwd && ls -la
       - name: Create Git user
-        run: git config --global user.email "${{github.actor}}@users.noreply.github.com" && git config --global user.name "${{github.actor}}"
+        run:  git config --global user.email "${{github.actor}}@users.noreply.github.com" && git config --global user.name "${{github.actor}}"
       - name: Github NPM log in
-        run: echo "//npm.pkg.github.com/:_authToken=${{secrets.GITHUB_TOKEN}}" > ~/.npmrc  
+        run:  echo "//npm.pkg.github.com/:_authToken=${{secrets.GITHUB_TOKEN}}" > ~/.npmrc  
       - name: Init && Build
-        run: npm ci && npm run build
+        run:  npm ci && npm run build
       - name: Init Git
-        run: mkdir $folder_name && cd $folder_name &&
-          echo "----------------";
-          echo "--- Init Git ---";
-          echo "----------------";
-          git init && git remote add origin https://github.com/${{github.repository}}.git &&
-          if [[ $(git ls-remote origin $branch_name | wc -w) -ne 0 ]]; then
-          echo "----------------";
-          echo "--- Git pull ---";
-          echo "----------------";
-          git pull origin $branch_name;
+        run:  mkdir $folder_name && cd $folder_name &&
+              echo "----------------";
+              echo "--- Init Git ---";
+              echo "----------------";
+              git init && git remote add origin https://github.com/${{github.repository}}.git &&
+              if [[ $(git ls-remote origin $branch_name | wc -w) -ne 0 ]]; then
+                  echo "----------------";
+                  echo "--- Git pull ---";
+                  echo "----------------";
+                  git pull origin $branch_name;
 
-          if [[ $(ls | wc -w) -ne 0 ]]; then
-          echo "-----------------------------";
-          echo "--- Remove files from Git ---";
-          echo "-----------------------------";
-          git rm -r --cached *;
-          echo "------------------------------------";
-          echo "--- Remove files from the folder ---";
-          echo "------------------------------------";
-          rm -r $(ls);
-          fi;
-          fi;
-          echo "--- Git status ---";
-          echo "------------------";
-          git status;
+                  if [[ $(ls | wc -w) -ne 0 ]]; then
+                      echo "-----------------------------";
+                      echo "--- Remove files from Git ---";
+                      echo "-----------------------------";
+                      git rm -r --cached *;
+                      echo "------------------------------------";
+                      echo "--- Remove files from the folder ---";
+                      echo "------------------------------------";
+                      rm -r $(ls);
+                  fi;
+              fi;
+              echo "--- Git status ---";
+              echo "------------------";
+              git status;
       - name: Move static and generated files && and check files
-        run: cp -r ./dist/* ./$folder_name/ &&
-          cd $folder_name && pwd && ls -l &&
-          echo "-------------------------";
-          echo "--- Files were copied ---";
-          echo "-------------------------";
+        run:  cp -r ./dist/* ./$folder_name/ &&
+              cd $folder_name && pwd && ls -l &&
+              echo "-------------------------";
+              echo "--- Files were copied ---";
+              echo "-------------------------";
       - name: Add README.MD
-        run: cd $folder_name && echo $readme_message > README.MD
+        run:  cd $folder_name && echo $readme_message > README.MD
       - name: Git push
-        run: cd $folder_name &&
-          git add . &&
-          if [[ $(git status) == *"nothing to commit, working tree clean"* ]]; then
-          echo "----------------------------------------------------";
-          echo "--- No changes. Skip deployment for this commit. ---";
-          echo "----------------------------------------------------";
-          elif [[ $(cd .. && git pull) != "Already up to date." ]]; then
-          echo "-----------------------------------------------------------------";
-          echo "--- There is a newer commit. Skip deployment for this commit. ---";
-          echo "-----------------------------------------------------------------";
-          else
-          echo "-------------------";
-          echo "--- Push commit ---";
-          echo "-------------------";
-          git commit -m "$commit_message" && git push "https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git" master:$branch_name;
-          echo "-------------------";
-          echo "---   Pushed    ---";
-          echo "-------------------";
-          fi;
+        run:  cd $folder_name &&
+              git add . &&
+              if [[ $(git status) == *"nothing to commit, working tree clean"* ]]; then
+                  echo "----------------------------------------------------";
+                  echo "--- No changes. Skip deployment for this commit. ---";
+                  echo "----------------------------------------------------";
+              elif [[ $(cd .. && git pull) != "Already up to date." ]]; then
+                  echo "-----------------------------------------------------------------";
+                  echo "--- There is a newer commit. Skip deployment for this commit. ---";
+                  echo "-----------------------------------------------------------------";
+              else
+                  echo "-------------------";
+                  echo "--- Push commit ---";
+                  echo "-------------------";
+                  git commit -m "$commit_message" && git push "https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git" master:$branch_name;
+                  echo "-------------------";
+                  echo "---   Pushed    ---";
+                  echo "-------------------";
+              fi;
