@@ -1,5 +1,5 @@
 import {ref, toRaw, isProxy} from "vue";
-import {bytesToSizeWinLike, dateToDayDateTimeString} from "../util.js";
+import {bytesToSizeWinLike, dateToDayDateTimeString, tripleSizeGroups} from "../util.js";
 
 export const debugMessage = ref("");
 export function addMessage(message) {
@@ -26,7 +26,7 @@ export function debugMessageFromEntry(entry) {
         if (entry.btime !== undefined) {
             messages.push("btime " + `"${dateToDayDateTimeString(entry.btime, false)}"`);
         }
-        messages = [...messages, name, `${entry.size} (${bytesToSizeWinLike(entry.size)})`];
+        messages = [...messages, name, `${tripleSizeGroups(entry.size)} (${bytesToSizeWinLike(entry.size)})`];
         debugMessage.value = messages.join(" — ");
     }
 }

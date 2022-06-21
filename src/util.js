@@ -196,7 +196,10 @@ export function *iterateBlob(blob, chunkSize = 2 * 1024 * 1024) {
     }
 }
 
-/** @param {number} num */
+/**
+ * Useful for file byte size formatting
+ * 34456909 -> 34 456 909
+ * @param {number} num */
 export function tripleSizeGroups(num) {
     const str = num.toString();
     return str.padStart(str.length + (3 - str.length % 3)).match(/(.{3})/g).join(" ").trimStart();
