@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import {clearHome, setScan} from "../core/folders.js";
+import {clearHome, home, openFolder, setScan} from "../core/folders.js";
 
 import {watch} from "vue";
 import FileInput from "./file-input/FileInput.vue";
@@ -16,6 +16,7 @@ watch(fileEntries, async () => {
   for (const {file} of fileEntries.value) {
     await setScan(file);
   }
+  openFolder(home.value);
 });
 </script>
 
