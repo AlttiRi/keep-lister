@@ -16,7 +16,9 @@ watch(fileEntries, async () => {
   for (const {file} of fileEntries.value) {
     await setScan(file);
   }
-  openFolder(home.value);
+  if (fileEntries.value.length > 1) {
+    openFolder(home.value);
+  }
 });
 </script>
 
