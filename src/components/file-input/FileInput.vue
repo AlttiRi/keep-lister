@@ -35,7 +35,7 @@
 import FileInputDefaultHoverText from "./FileInputDefaultHoverText.vue";
 import FileInputDefaultText from "./FileInputDefaultText.vue";
 
-import {ref, toRefs, onMounted, computed} from "vue";
+import {ref, toRefs, onMounted, computed, onBeforeUnmount} from "vue";
 import {
   parsing,
   file,
@@ -89,6 +89,9 @@ onMounted(() => {
   }
   initListeners();
 });
+onBeforeUnmount(() => {
+  removeListeners();
+});
 
 function stopEvent(event) {
   event.preventDefault();
@@ -96,6 +99,12 @@ function stopEvent(event) {
 }
 
 function initListeners() {
+  dropZone.value.addEventListener("drop", onDrop);
+  dropZone.value.addEventListener("dragover", onDragOver);
+  dropZone.value.addEventListener("dragleave", onDragLeave);
+  dropZone.value.addEventListener("dragenter", onDragEnter);
+}
+function removeListeners() {
   dropZone.value.addEventListener("drop", onDrop);
   dropZone.value.addEventListener("dragover", onDragOver);
   dropZone.value.addEventListener("dragleave", onDragLeave);
