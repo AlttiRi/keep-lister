@@ -119,6 +119,12 @@ function onMouseleave(event) {
 
 const hoveredLink = ref(false);
 watchEffect(() => {
+  if (hoveredEntry.value?.type === "symlink") {
+    const pathTo = hoveredEntry.value.pathTo;
+    const fullPath = entry.value.getPathString(entry.value.root.meta);
+    hoveredLink.value = pathTo === fullPath;
+    return;
+  }
   const noHardlinks = !hoveredEntry.value?.hardlinks;
   if (hoveredLink.value && noHardlinks) {
     hoveredLink.value = false;
