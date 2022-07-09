@@ -34,6 +34,7 @@
 </template>
 
 <script setup>
+//todo highlight the same sym/hard links on mouse over
 import Row from "./Row.vue";
 import IntersectionRow from "./IntersectionRow.vue";
 import {goBack, empty, openedFolder} from "../core/folders.js";
