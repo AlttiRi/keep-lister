@@ -117,6 +117,7 @@ function onMouseleave(event) {
   hoveredEntry.value = null;
 }
 
+// todo something for an infinite looped  folder
 const hoveredLink = ref(false);
 watchEffect(() => {
   if (hoveredEntry.value?.type === "symlink") {
