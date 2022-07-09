@@ -5,7 +5,7 @@
       @mouseover="onMouseover"
       @mouseleave="onMouseleave"
       :title="title"
-      :class="{error}"
+      :class="{error, hoveredSym}"
   >
       <td class="icon">{{icon}}</td>
       <td class="name" :title="entry.getPathString(entry.root.meta)">{{entry.name}}</td>
@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import {toRefs, computed} from "vue";
+import {toRefs, computed, watchEffect, ref} from "vue";
 import {openedFolder, openFolder} from "../core/folders.js";
 import {bytesToSizeWinLike, dateToDayDateTimeString, isImage, isVideo, isAudio, tripleSizeGroups} from "../util.js";
 import {hoveredEntry, selectedTime} from "../core/entries.js";
@@ -117,6 +117,18 @@ function onMouseleave(event) {
   hoveredEntry.value = null;
 }
 
+const hoveredSym = ref(false);
+watchEffect(() => {
+  const noHardlinks = !hoveredEntry.value?.hardlinks;
+  if (hoveredSym.value && noHardlinks) {
+    hoveredSym.value = false;
+  }
+  if (noHardlinks) {
+    return;
+  }
+  hoveredSym.value = hoveredEntry.value.hardlinks.includes(entry.value);
+});
+
 </script>
 
 <style lang="scss" scoped>
@@ -127,6 +139,9 @@ function onMouseleave(event) {
   align-items: center;
   &:hover {
     background-color: var(--blue-2);
+  }
+  &.hoveredSym:not(:hover) {
+    background-color: var(--blue-4);
   }
   * {
     text-overflow: ellipsis;
