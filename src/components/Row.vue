@@ -5,7 +5,7 @@
       @mouseover="onMouseover"
       @mouseleave="onMouseleave"
       :title="title"
-      :class="{error, hoveredSym}"
+      :class="{error, hoveredLink}"
   >
       <td class="icon">{{icon}}</td>
       <td class="name" :title="entry.getPathString(entry.root.meta)">{{entry.name}}</td>
@@ -117,16 +117,16 @@ function onMouseleave(event) {
   hoveredEntry.value = null;
 }
 
-const hoveredSym = ref(false);
+const hoveredLink = ref(false);
 watchEffect(() => {
   const noHardlinks = !hoveredEntry.value?.hardlinks;
-  if (hoveredSym.value && noHardlinks) {
-    hoveredSym.value = false;
+  if (hoveredLink.value && noHardlinks) {
+    hoveredLink.value = false;
   }
   if (noHardlinks) {
     return;
   }
-  hoveredSym.value = hoveredEntry.value.hardlinks.includes(entry.value);
+  hoveredLink.value = hoveredEntry.value.hardlinks.includes(entry.value);
 });
 
 </script>
@@ -140,7 +140,7 @@ watchEffect(() => {
   &:hover {
     background-color: var(--blue-2);
   }
-  &.hoveredSym:not(:hover) {
+  &.hoveredLink:not(:hover) {
     background-color: var(--blue-4);
   }
   * {
