@@ -51,10 +51,12 @@ const scanObject = new FlatScanObject(rootEntry, scanDirName);
 let handled = 0;
 let size = 0;
 saveCursorPosition();
-let timerId = setInterval(() => {
+function logProcess() {
     restoreCursorPosition();
-    process.stdout.write(`Processed: ${ANSI_CYAN(handled)} items, total size: ${ANSI_CYAN(bytesToSizeWinLike(size))} (${ANSI_CYAN(size)})`);
-}, 1000);
+    process.stdout.write(`Processed: ${ANSI_CYAN(handled)} items, total size: ${ANSI_CYAN(bytesToSizeWinLike(size))} (${ANSI_CYAN(tripleSizeGroups(size))})`);
+}
+
+let timerId = setInterval(logProcess, 1000);
 
 for await (const /** @type {ListEntry} */ listEntry of listFiles({
     filepath: scanFolderPath,
@@ -72,8 +74,7 @@ for await (const /** @type {ListEntry} */ listEntry of listFiles({
     size += scanEntry.statsInfo?.stats?.size || 0;
 }
 clearInterval(timerId);
-restoreCursorPosition();
-process.stdout.write(`Processed: ${ANSI_CYAN(handled)} items, total size: ${ANSI_CYAN(bytesToSizeWinLike(size))} (${ANSI_CYAN(tripleSizeGroups(size))})`);
+logProcess();
 console.log();
 
 meta.putErrorsMap(scanObject.errorsMap);
