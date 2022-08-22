@@ -19,6 +19,7 @@ import {
 import {fileURLToPath} from "url";
 import {Meta} from "./meta.js";
 import {FlatScanObject} from "./flat-scan-object.js";
+import {eraseCursorLine} from "@alttiri/util-node-js/src/console.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -52,6 +53,7 @@ let handled = 0;
 let size = 0;
 saveCursorPosition();
 function logProcess() {
+    eraseCursorLine();
     restoreCursorPosition();
     process.stdout.write(`Processed: ${ANSI_CYAN(handled)} items, total size: ${ANSI_CYAN(bytesToSizeWinLike(size))} (${ANSI_CYAN(tripleSizeGroups(size))})`);
 }
