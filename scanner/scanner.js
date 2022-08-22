@@ -53,8 +53,8 @@ let handled = 0;
 let size = 0;
 saveCursorPosition();
 function logProcess() {
-    eraseCursorLine();
     restoreCursorPosition();
+    eraseCursorLine();
     process.stdout.write(`Processed: ${ANSI_CYAN(handled)} items, total size: ${ANSI_CYAN(bytesToSizeWinLike(size))} (${ANSI_CYAN(tripleSizeGroups(size))})`);
 }
 
