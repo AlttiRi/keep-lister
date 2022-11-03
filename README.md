@@ -171,6 +171,11 @@ node %USERPROFILE%\Downloads\zz-dir-scanner.mjs
 ```
 - Don't forget to type enter.
 
+_If you use Linux your command looks like this:_
+```bash
+~/Downloads/zz-dir-scanner.mjs
+```
+
 In progress:
 
 ![Screenshot](https://user-images.githubusercontent.com/16310547/161448861-520b65d2-e2e6-4af3-88cb-01ded97fcc45.png)
