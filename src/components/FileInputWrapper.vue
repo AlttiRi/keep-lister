@@ -10,12 +10,15 @@ import {clearHome, home, openFolder, setScan} from "../core/folders.js";
 import {watch} from "vue";
 import FileInput from "./file-input/FileInput.vue";
 import {fileEntries} from "./file-input/file-input-state.js";
-import {allScansReady} from "../core/state.js";
+import {allScansReady, currentScansNum, scansCount} from "../core/state.js";
 
 watch(fileEntries, async () => {
   clearHome();
   allScansReady.value = false;
+  scansCount.value = fileEntries.value.length;
+  currentScansNum.value = 0;
   for (const {file} of fileEntries.value) {
+    currentScansNum.value++;
     await setScan(file, true);
   }
   if (fileEntries.value.length > 1) {
