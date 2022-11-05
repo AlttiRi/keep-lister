@@ -92,10 +92,15 @@ window.addEventListener("storage", event => {
     document.querySelector("input").dispatchEvent(new Event("input"));
 });
 
-// todo do not perform search if it already in run (for millions items cases) // or cancel it?
-//todo check linked list perf for large search
+// todo? cancel an already in run if a new search available
+// todo check a linked list perf for large search
 const performSearchDebounced = debounce(performSearch, 300);
 async function performSearch() {
+    if (searching.value) {
+        console.log("[already searching return]");
+        return;
+    }
+
     const searchSync = new URL(location.href).searchParams.get("searchSync");
     if (searchSync) {
         localStorage.setItem("search-sync", search.value);
@@ -117,6 +122,12 @@ async function performSearch() {
     searching.value = true;
     const {result, search: searchText} = await searcher(folderRaw, request);
     searching.value = false;
+
+    if (search.value !== request) {
+        console.log("[new search requested]");
+        return performSearch();
+    }
+
     searchAwaiting.value = false;
     if (!result) {
         return;
