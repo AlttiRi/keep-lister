@@ -121,6 +121,12 @@ async function performSearch() {
     const folder = openedFolder.value;
     const request = search.value;
 
+    if (request === "") { // was reset while scans setting
+        searching.value = false;
+        searchAwaiting.value = false;
+        return;
+    }
+
     // Do unProxy. Up to x40 in comparison with default reactive ref.
     const folderRaw = isReactive(folder) ? toRaw(folder) : folder;
 
