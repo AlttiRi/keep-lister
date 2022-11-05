@@ -4,12 +4,13 @@ import {openedFolder} from "./folders.js";
 import {comparator, limit, orderBy, reverseOrder, selectedTime} from "./entries.js";
 import * as debug from "./debug.js";
 import {entryTypes} from "./entry.js";
-import {scanParsing, searchAwaiting, searching} from "./state.js";
+import {allScansReady, searchAwaiting, searching} from "./state.js";
 import {handleMegaUrl} from "./mega-nz.js";
 
 /** @type {import("vue").Ref<string>} */
 export const search = ref(""); // [v-model]
 export function clearSearch() {
+    console.log("[clearSearch]");
     search.value = "";
 }
 
@@ -67,7 +68,7 @@ function addSearchResultToGlobalThis(rawResult) {
 let resolve = () => {};
 let scanParsingCompleted = Promise.resolve(true);
 watchEffect(() => {
-    if (scanParsing.value) {
+    if (!allScansReady.value) {
         resolve(false);
         scanParsingCompleted = new Promise(r => resolve = r);
     } else {
@@ -97,7 +98,7 @@ window.addEventListener("storage", event => {
 const performSearchDebounced = debounce(performSearch, 300);
 async function performSearch() {
     if (searching.value) {
-        console.log("[already searching return]");
+        console.log("[return][already searching]");
         return;
     }
 
@@ -107,9 +108,14 @@ async function performSearch() {
         document.title = `Search...`;
     }
 
+    searching.value = true;
+
     // Await while the scan parsing is completed, return `false` if there is a new `performSearch` call while parsing.
     if (false === await scanParsingCompleted) {
+        console.log("[return][scan parsing completed]");
         return;
+    } else {
+        console.log("[next][scan parsing completed]");
     }
 
     const folder = openedFolder.value;
@@ -119,12 +125,11 @@ async function performSearch() {
     const folderRaw = isReactive(folder) ? toRaw(folder) : folder;
 
     const time1 = performance.now();
-    searching.value = true;
     const {result, search: searchText} = await searcher(folderRaw, request);
     searching.value = false;
 
     if (search.value !== request) {
-        console.log("[new search requested]");
+        console.log("[return][new search requested]");
         return performSearch();
     }
 

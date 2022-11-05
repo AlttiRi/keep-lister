@@ -10,15 +10,18 @@ import {clearHome, home, openFolder, setScan} from "../core/folders.js";
 import {watch} from "vue";
 import FileInput from "./file-input/FileInput.vue";
 import {fileEntries} from "./file-input/file-input-state.js";
+import {allScansReady} from "../core/state.js";
 
 watch(fileEntries, async () => {
   clearHome();
+  allScansReady.value = false;
   for (const {file} of fileEntries.value) {
-    await setScan(file);
+    await setScan(file, true);
   }
   if (fileEntries.value.length > 1) {
-    openFolder(home.value);
+    openFolder(home.value, true);
   }
+  allScansReady.value = true;
 });
 </script>
 

@@ -71,9 +71,10 @@ class ExecutionState {
 const execution = new ExecutionState();
 /**
  * @param {Blob|Response} input
+ * @param {Boolean} keepSearch
  * @return {Promise<Boolean>}
  */
-export async function setScan(input) {
+export async function setScan(input, keepSearch = false) {
     if (scanParsing.value) {
         await execution.abort();
     }
@@ -106,7 +107,7 @@ export async function setScan(input) {
                 total = scanMeta.total;
                 processedTotal -= 1;
             }
-            openFolder(rootEntry);
+            openFolder(rootEntry, keepSearch);
             rootInited = true;
         }
         const now = Date.now();
@@ -149,9 +150,12 @@ export function resetFolderState() {
     globalThis.folder = null;
 }
 
-/** @param {SimpleEntry} entry */
-export function openFolder(entry) {
-    clearSearch();
+/** @param {SimpleEntry} entry
+ *  @param {Boolean} keepSearch  */
+export function openFolder(entry, keepSearch = false) {
+    if (!keepSearch) {
+        clearSearch();
+    }
     openedFolder.value = entry;
     limit.value = 50;
 
