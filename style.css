@@ -216,13 +216,13 @@
   text-overflow: ellipsis;
 }
 /* FileInputWrapper.vue */
-[data-v-a30ebc26] .file-input {
+[data-v-60a5f691] .file-input {
   border-right: 0;
   border-left: 0;
   outline-width: 1px;
   outline-color: var(--blue-1);
 }
-.file-input-wrapper[data-v-a30ebc26] {
+.file-input-wrapper[data-v-60a5f691] {
   display: grid;
   justify-content: center;
   grid-template-columns: 100%;
@@ -296,7 +296,7 @@
 }
 
 /* Main.vue */
-.main[data-v-57b64cc5] {
+.main[data-v-36db2d2c] {
   grid-template-areas: "switch address search " "tabs   content content" "status status  status " "debug  debug   debug  ";
   display: grid;
   grid-template-columns: 7em 2fr 1fr;
@@ -310,10 +310,10 @@
   border: 1px solid var(--gray-2);
   background-color: var(--gray-2);
 }
-.main *[data-v-57b64cc5] {
+.main *[data-v-36db2d2c] {
   background-color: white;
 }
-.readme[data-v-57b64cc5] {
+.readme[data-v-36db2d2c] {
   position: absolute;
   bottom: 0;
   right: 0;
