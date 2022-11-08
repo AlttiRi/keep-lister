@@ -92,3 +92,15 @@ export const count = computed(() => {
 
 /** @type {import("vue").Ref<SimpleEntry>} */
 export const hoveredEntry = ref(null);
+
+
+Object.defineProperty(globalThis, "list", {
+    get() {
+        return list.value;
+    }
+});
+Object.defineProperty(globalThis, "names", {
+    get() {
+        return list.value.map(entry => entry.name);
+    }
+});
