@@ -11,7 +11,7 @@ export function exists(path, followSymbol = true) {
 }
 
 /**
- * Is the passed sym link looped — if referrers to a parent directory.
+ * Is the passed symlink looped — if referrers to a parent directory.
  * @param {string} filepath
  * @return {Promise<boolean>}
  */

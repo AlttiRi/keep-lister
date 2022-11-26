@@ -1,6 +1,6 @@
-/** @type {ScanEntryType[]} */
 import {sleep} from "../util.js";
 
+/** @type {ScanEntryType[]} */
 export const entryTypes = ["folder", "file", "symlink", "fifo", "charDev", "blockDev", "socket"];
 
 export class SimpleEntry {
