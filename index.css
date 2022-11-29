@@ -421,28 +421,28 @@
 }
 /* Search.vue */
 /** reset */
-input[data-v-49f4f824] {
+input[data-v-5aed5c5d] {
   padding: 0 0;
 }
-button[data-v-49f4f824] {
+button[data-v-5aed5c5d] {
   padding: 0 0;
 }
-.fuck-off-lighthouse[data-v-49f4f824] {
+.fuck-off-lighthouse[data-v-5aed5c5d] {
   position: absolute;
   top: -1000px;
   left: -1000px;
 }
-.search-wrapper[data-v-49f4f824] {
+.search-wrapper[data-v-5aed5c5d] {
   display: contents;
 }
-.search[data-v-49f4f824] {
+.search[data-v-5aed5c5d] {
   display: flex;
   height: 100%;
 }
-.search label[data-v-49f4f824] {
+.search label[data-v-5aed5c5d] {
   display: contents;
 }
-.search input[data-v-49f4f824] {
+.search input[data-v-5aed5c5d] {
   height: 100%;
   flex-grow: 2;
   border: none;
@@ -450,11 +450,11 @@ button[data-v-49f4f824] {
   border-bottom: transparent solid 1px;
   box-sizing: border-box;
 }
-.search input[data-v-49f4f824]:focus, .search input[data-v-49f4f824]:hover {
+.search input[data-v-5aed5c5d]:focus, .search input[data-v-5aed5c5d]:hover {
   outline: none;
   border-bottom: var(--blue-1) solid 1px;
 }
-.search button[data-v-49f4f824] {
+.search button[data-v-5aed5c5d] {
   height: 100%;
   padding: 0 6px;
   outline-width: 1px;
@@ -465,11 +465,11 @@ button[data-v-49f4f824] {
   box-sizing: border-box;
   background-color: var(--gray-1);
 }
-.search button[data-v-49f4f824]:hover {
+.search button[data-v-5aed5c5d]:hover {
   border-bottom: var(--blue-1) solid 1px;
   background: var(--blue-2);
 }
-.search button[data-v-49f4f824]:active {
+.search button[data-v-5aed5c5d]:active {
   background: var(--blue-3);
 }
 /* Status.vue */
