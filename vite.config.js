@@ -14,12 +14,12 @@ const demoPath = `/?filepath=${demoScanFilepath}&sort=size&desc=true`;
 export default defineConfig({
   plugins: [
     vue(),
+    splitVendorChunkPlugin(),
     cssBundlePlugin({
       bundleToOverwrite: "index.css",
       importFromModule: false,
       ignoreFiles: ["index.html"]
     }),
-    splitVendorChunkPlugin(),
   ],
   server: {
     open: demoPath
