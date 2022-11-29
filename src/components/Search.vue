@@ -1,8 +1,16 @@
 <template>
   <div class="search-wrapper">
     <div class="search">
-      <input id="json-scan-search-input" type="text" v-model="search" ref="inputRef" @focus="onFocus">
-      <button @click="onClearClick" @contextmenu.prevent="onContextMenu">Clear</button>
+      <input id="json-scan-search-input" type="text"
+             v-model="search"
+             ref="inputRef"
+             @focus="onFocus"
+      >
+      <button
+          @click="onClearClick"
+          @contextmenu.prevent="onContextMenu"
+          title="Right click to clear and paste"
+      >Clear</button>
     </div>
     <label for="json-scan-search-input" class="fuck-off-lighthouse">.</label>
   </div>
