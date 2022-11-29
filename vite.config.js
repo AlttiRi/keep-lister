@@ -14,14 +14,30 @@ const demoPath = `/?filepath=${demoScanFilepath}&sort=size&desc=true`;
 export default defineConfig({
   plugins: [
     vue(),
+    cssBundlePlugin({
+      bundleToOverwrite: "index.css",
+      importFromModule: false,
+      ignoreFiles: ["index.html"]
+    }),
   ],
   server: {
     open: demoPath
   },
   base: "./",
+
+  // DOES NOT WORK
+  // esbuild: {
+  //   keepNames: true,
+  // },
+  // optimizeDeps: {
+  //   esbuildOptions: {
+  //     keepNames: true,
+  //   }
+  // },
+
   build: {
     target: "es2018",
-    cssCodeSplit: false,
+    //// cssCodeSplit: false,
     sourcemap: true,
     rollupOptions: {
       plugins: [
@@ -32,10 +48,10 @@ export default defineConfig({
           ["../src/", "source-maps:///"],
           ["../", "source-maps:///"],
         ]),
-        cssBundlePlugin({
-          bundleToOverwrite: "style.css",
-          importFromModule: true
-        }),
+        //// cssBundlePlugin({
+        ////   bundleToOverwrite: "style.css",
+        ////   importFromModule: true
+        //// }),
       ],
       output: {
         entryFileNames: `[name].js`, // `[name].[format].js`
@@ -43,8 +59,9 @@ export default defineConfig({
         assetFileNames: `[name].[ext]`
       }
     },
+    minify: "terser",
     terserOptions: {
-      // compress: false, // compress may broke source maps, but it looks working ok currently
+      // compress: false, // compress may break source maps, but it looks working ok currently
       mangle: {
         keep_classnames: true,
         keep_fnames: true,
@@ -92,8 +109,9 @@ function sourceMapsPathChangerPlugin(pathsMapping = []) {
  * for example: "index.css" even if the real file name will be: "assets/index.e2206225.css".
  * @param options.importFromModule - set to `true` to get CSS from module that exports it, or `false` if it is a pure CSS code.
  * @param options.removeCode - remove code after `transform` hook. Use it if you do not use `bundleToOverwrite` option.
+ * @param {String[]} options.ignoreFiles - ignore CSS from this files, for example, from `index.html`.
  */
-function cssBundlePlugin({callback, bundleToOverwrite, importFromModule, removeCode} = {}) {
+function cssBundlePlugin({callback, bundleToOverwrite, importFromModule, removeCode, ignoreFiles} = {}) {
   const btoa = str => Buffer.from(str, "binary").toString("base64");
 //const atob = b64 => Buffer.from(b64, "base64").toString("binary");
 
@@ -140,7 +158,7 @@ function cssBundlePlugin({callback, bundleToOverwrite, importFromModule, removeC
     name: "css-bundle-plugin",
     transform(code, id) {
       const isCss = [".css", ".sass", ".scss", ".less", ".stylus"].some(ext => id.endsWith(ext));
-      if (isCss) {
+      if (isCss && !(ignoreFiles || []).some(file => id.includes(file))) {
         entries.push({code, id});
         if (removeCode) {
           return {code: "", map: {mappings: ""}};
