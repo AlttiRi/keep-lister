@@ -4,7 +4,6 @@
       <input id="json-scan-search-input" type="text"
              v-model="search"
              ref="inputRef"
-             @focus="onFocus"
       >
       <button
           @click="onClearClick"
@@ -18,7 +17,7 @@
 
 <script setup>
 import {search, clearSearch} from "../core/search.js";
-import {ref} from "vue";
+import {ref, onMounted, onUnmounted} from "vue";
 
 const inputRef = ref();
 function onClearClick() {
@@ -36,10 +35,21 @@ async function onContextMenu() {
   }
 }
 
-//todo focus on double shift
-function onFocus() {
-  // todo
+let shiftTime = 0;
+function doubleShiftHandler(event) {
+  if (event.key !== "Shift") {
+    return;
+  }
+  const now = Date.now();
+  if (now - shiftTime < 250) {
+    inputRef.value.focus();
+  } else {
+    shiftTime = now;
+  }
 }
+onMounted(() => document.addEventListener("keydown", doubleShiftHandler));
+onUnmounted(() => document.removeEventListener("keydown", doubleShiftHandler));
+
 </script>
 
 <style lang="scss" scoped>
