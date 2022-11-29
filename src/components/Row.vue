@@ -88,6 +88,8 @@ const icon = computed(() => {
 function onClick(event) {
   debugMessageFromEntry(entry.value);
 
+  globalThis.c = globalThis.clicked = entry.value;
+
   if (entry.value.type === "folder") {
     openFolder(entry.value);
   }
