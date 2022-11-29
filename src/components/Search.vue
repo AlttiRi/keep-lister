@@ -2,7 +2,7 @@
   <div class="search-wrapper">
     <div class="search">
       <input id="json-scan-search-input" type="text" v-model="search" ref="inputRef" @focus="onFocus">
-      <button @click="onClearClick">Clear</button>
+      <button @click="onClearClick" @contextmenu.prevent="onContextMenu">Clear</button>
     </div>
     <label for="json-scan-search-input" class="fuck-off-lighthouse">.</label>
   </div>
@@ -18,7 +18,20 @@ function onClearClick() {
   inputRef.value.focus();
 }
 
+async function onContextMenu() {
+  try {
+    const text = await navigator.clipboard.readText();
+    console.log("[clipboard] readText:", text);
+    search.value = text;
+  } catch (err) {
+    console.error("[clipboard] read failed", err);
+  }
+}
+
 //todo focus on double shift
+function onFocus() {
+  // todo
+}
 </script>
 
 <style lang="scss" scoped>
