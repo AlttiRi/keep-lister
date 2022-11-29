@@ -1,4 +1,4 @@
-import {defineConfig} from "vite";
+import {defineConfig, splitVendorChunkPlugin} from "vite";
 import vue from "@vitejs/plugin-vue";
 
 import path from "path";
@@ -19,6 +19,7 @@ export default defineConfig({
       importFromModule: false,
       ignoreFiles: ["index.html"]
     }),
+    splitVendorChunkPlugin(),
   ],
   server: {
     open: demoPath
