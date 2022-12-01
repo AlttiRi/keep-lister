@@ -342,7 +342,7 @@ export const folderDummy = new SimpleEntry({
 }, null);
 
 
-export class SimpleBucketEntry extends SimpleEntry{
+export class SimpleBucketEntry extends SimpleEntry {
     constructor({name} = {name: ""}) {
         super({
             name,
@@ -351,6 +351,11 @@ export class SimpleBucketEntry extends SimpleEntry{
         }, null);
         this.addMeta({
             // path: [""]
-        })
+        });
+    }
+    get size() {
+        // Since _contentSize is wrong because of it's not a parent of children
+        // (It takes the child's size only once while child is being parsed)
+        return this.children.reduce((acc, child) => acc + child.size, 0);
     }
 }
