@@ -14,7 +14,7 @@ const show = computed(() => {
 });
 
 function onClick() {
-  debugMessageFromEntry(home.value)
+  debugMessageFromEntry(home.value);
   openFolder(home.value);
 }
 function onContextMenu(event) {

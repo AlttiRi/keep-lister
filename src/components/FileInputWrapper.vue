@@ -11,6 +11,7 @@ import {watch} from "vue";
 import FileInput from "./file-input/FileInput.vue";
 import {fileEntries} from "./file-input/file-input-state.js";
 import {allScansReady, currentScansNum, scansCount} from "../core/state.js";
+import {debugMessageFromEntry} from "../core/debug.js";
 
 watch(fileEntries, async () => {
   clearHome();
@@ -23,6 +24,7 @@ watch(fileEntries, async () => {
   }
   if (fileEntries.value.length > 1) {
     openFolder(home.value, true);
+    debugMessageFromEntry(home.value);
   }
   allScansReady.value = true;
 });
