@@ -214,13 +214,13 @@
   text-overflow: ellipsis;
 }
 /* FileInputWrapper.vue */
-[data-v-b04c6c07] .file-input {
+[data-v-de23cba1] .file-input {
   border-right: 0;
   border-left: 0;
   outline-width: 1px;
   outline-color: var(--blue-1);
 }
-.file-input-wrapper[data-v-b04c6c07] {
+.file-input-wrapper[data-v-de23cba1] {
   display: grid;
   justify-content: center;
   grid-template-columns: 100%;
@@ -259,7 +259,7 @@
 }
 }
 /* Home.vue */
-.home[data-v-dd726160] {
+.home[data-v-13363939] {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -270,14 +270,14 @@
   border-left: 0;
   box-sizing: border-box;
 }
-.home[data-v-dd726160]:hover {
+.home[data-v-13363939]:hover {
   background-color: var(--drop-hover);
   cursor: pointer;
 }
-.home[data-v-dd726160]:active {
+.home[data-v-13363939]:active {
   background-color: var(--drop-active);
 }
-.home.active[data-v-dd726160] {
+.home.active[data-v-13363939] {
   border-width: 2px;
 }
 /* InnerModal.vue */
