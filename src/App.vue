@@ -8,13 +8,13 @@ import Main from "./components/Main.vue";
 
 <style>
 :root {
-  --blue-1: #8CA0FFFF;
+  --blue-1: #8CA0FF;
   --blue-2: #E6F4FF;
-  --blue-3: #E6EEFFFF;
+  --blue-3: #E6EEFF;
   --blue-4: #F5FAFF;
   --white:  #FFF;
   --gray-1: #EEE;
-  --gray-2: #D4D4D4FF;
+  --gray-2: #D4D4D4;
   --red-1:  #EA214A;
 }
 
