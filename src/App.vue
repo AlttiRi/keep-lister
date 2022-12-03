@@ -10,8 +10,8 @@ import Main from "./components/Main.vue";
 :root {
   --blue-1: #8ca0ff;
   --blue-2: aliceblue;
-  --blue-4: rgba(240, 244, 255, 0.85);
   --blue-3: #e6eeff;
+  --blue-4: rgba(240, 244, 255, 0.85);
   --white:  white;
   --gray-1: #eee;
   --gray-2: #d4d4d4;
