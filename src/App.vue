@@ -8,14 +8,14 @@ import Main from "./components/Main.vue";
 
 <style>
 :root {
-  --blue-1: #8ca0ff;
-  --blue-2: aliceblue;
-  --blue-3: #e6eeff;
-  --blue-4: rgba(240, 244, 255, 0.85);
-  --white:  white;
-  --gray-1: #eee;
-  --gray-2: #d4d4d4;
-  --red-1: rgba(234, 33, 74, 0.88);
+  --blue-1: #8CA0FFFF;
+  --blue-2: #F0F8FFFF;
+  --blue-3: #E6EEFFFF;
+  --blue-4: #F0F4FFD8;
+  --white:  #FFF;
+  --gray-1: #EEE;
+  --gray-2: #D4D4D4FF;
+  --red-1:  #EA214AE0;
 }
 
 /* Default component colors. Do not change. */
