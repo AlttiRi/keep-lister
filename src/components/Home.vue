@@ -7,12 +7,14 @@
 <script setup>
 import {home, openFolder, isHomeOpened, clearHome} from "../core/folders.js";
 import {computed} from "vue";
+import {debugMessageFromEntry} from "../core/debug.js";
 
 const show = computed(() => {
   return home.value?.children?.length > 1;
 });
 
 function onClick() {
+  debugMessageFromEntry(home.value)
   openFolder(home.value);
 }
 function onContextMenu(event) {

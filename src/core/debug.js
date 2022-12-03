@@ -17,7 +17,7 @@ export function debugMessageFromEntry(entry) {
     if (entry.hasErrors) {
         debugMessage.value = "";
     } else {
-        const name = `"` + entry.name.slice(0, 20) + (entry.name.length < 20 ? "" : "...") + `"`;
+        const name = entry.name ? (`"` + entry.name.slice(0, 20) + (entry.name.length < 20 ? "" : "…") + `"`) : "";
 
         let messages = [];
         if (entry.mtime !== undefined) {
@@ -27,6 +27,6 @@ export function debugMessageFromEntry(entry) {
             messages.push("btime " + `"${dateToDayDateTimeString(entry.btime, false)}"`);
         }
         messages = [...messages, name, `${tripleSizeGroups(entry.size)} (${bytesToSizeWinLike(entry.size)})`];
-        debugMessage.value = messages.join(" — ");
+        debugMessage.value = messages.filter(m => m).join(" — ");
     }
 }
