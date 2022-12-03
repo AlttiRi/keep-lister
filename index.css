@@ -1,13 +1,13 @@
 /* App.vue */
 :root {
-  --blue-1: #8ca0ff;
-  --blue-2: aliceblue;
-  --blue-4: rgba(240, 244, 255, 0.85);
-  --blue-3: #e6eeff;
-  --white:  white;
-  --gray-1: #eee;
-  --gray-2: #d4d4d4;
-  --red-1: rgba(234, 33, 74, 0.88);
+  --blue-1: #8CA0FF;
+  --blue-2: #E6F4FF;
+  --blue-3: #E6EEFF;
+  --blue-4: #F5FAFF;
+  --white:  #FFF;
+  --gray-1: #EEE;
+  --gray-2: #D4D4D4;
+  --red-1:  #EA214A;
 }
 
 /* Default component colors. Do not change. */
