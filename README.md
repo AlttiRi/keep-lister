@@ -162,7 +162,7 @@ Just use this link for your scans:
 # How to use
 
 In short.
-- [Installed Node.js](https://nodejs.org/en/download/current/) is required,
+- [Installed Node.js](https://nodejs.org/en/download/) is required,
 - Download the scanner file — [zz-dir-scanner.mjs](https://github.com/AlttiRi/file-manager-snapshot-explorer/releases/download/0.2.7/zz-dir-scanner.mjs),
 - Open a terminal (CMD.exe, for example) in a folder you want to scan, 
 - Run the scanner (JS file) with Node.js — type in a terminal _(for Windows with CMD)_:
