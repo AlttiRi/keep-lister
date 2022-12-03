@@ -9,13 +9,13 @@ import Main from "./components/Main.vue";
 <style>
 :root {
   --blue-1: #8CA0FFFF;
-  --blue-2: #F0F8FFFF;
+  --blue-2: #E6F4FF;
   --blue-3: #E6EEFFFF;
-  --blue-4: #F0F4FFD8;
+  --blue-4: #F5FAFF;
   --white:  #FFF;
   --gray-1: #EEE;
   --gray-2: #D4D4D4FF;
-  --red-1:  #EA214AE0;
+  --red-1:  #EA214A;
 }
 
 /* Default component colors. Do not change. */
