@@ -1,6 +1,6 @@
 # File manager snapshot explorer
 
-You can create a meta snapshot of your external hard drive's content and use this explorer to look at the content of the hard drive when it's detached. For the local hard drives it is pretty too, it can be an alternative for Windows Explorer' search thing.
+You can create a meta snapshot of your external/local hard drive's content and use this explorer to look at the content of the hard drive when it's detached. For the local hard drives it is pretty too, it can be an alternative for Windows Explorer' search thing.
 
 There are two parts of the software:
 
