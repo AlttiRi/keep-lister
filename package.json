@@ -1,5 +1,5 @@
 {
-  "version": "0.2.7",
+  "version": "0.2.8",
   "type": "module",
   "name": "file-manager-snapshot-explorer",
   "description": "Local files index viewer. File explorer for JSON snapshots with meta information of local files. Scanner for creating snapshots is included.",
