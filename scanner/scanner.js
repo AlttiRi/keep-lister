@@ -55,7 +55,10 @@ saveCursorPosition();
 function logProcess() {
     restoreCursorPosition();
     eraseCursorLine();
-    process.stdout.write(`Processed: ${ANSI_CYAN(handled)} items, total size: ${ANSI_CYAN(bytesToSizeWinLike(size))} (${ANSI_CYAN(tripleSizeGroups(size))})`);
+    const processedText = ANSI_CYAN(handled);
+    const totalSizeText = ANSI_CYAN(bytesToSizeWinLike(size));
+    const totalSizeFormattedText = ANSI_CYAN(tripleSizeGroups(size));
+    process.stdout.write(`Processed: ${processedText} items, total size: ${totalSizeText} (${totalSizeFormattedText})`);
 }
 
 let timerId = setInterval(logProcess, 1000);
