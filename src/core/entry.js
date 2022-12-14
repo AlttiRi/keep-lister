@@ -29,6 +29,9 @@ export class SimpleEntry {
         if (entry.btime) {
             /** @type {Number|undefined} */
             this.btime = entry.btime;
+
+            // todo tag:COMPUTED_TIME
+            // this._btime = entry.btime;
         }
 
         if (entry.errors) {
@@ -86,6 +89,33 @@ export class SimpleEntry {
             this.parent.increaseContentSize(size);
         }
     }
+
+
+    // todo tag:COMPUTED_TIME
+    // getComputedTime(deep = 1) {
+    //     if (this.type === "folder" && this.children) {
+    //         let maxTime = Number.MIN_SAFE_INTEGER;
+    //         for (const child of this.children) {
+    //             const mtime = child.getComputedTime();
+    //             if (mtime > maxTime) {
+    //                 maxTime = mtime;
+    //             }
+    //         }
+    //         if (maxTime !== Number.MIN_SAFE_INTEGER) {
+    //             return maxTime;
+    //         }
+    //     } else {
+    //         return this._mtime;
+    //     }
+    // }
+    //
+    // /** @return {Number|undefined} */
+    // get btime() {
+    //     if (this._btime !== undefined) {
+    //         return this._btime;
+    //     }
+    //     return undefined;
+    // }
 
     /** @return {Number|undefined} */
     get mtime() {
@@ -239,6 +269,13 @@ export class SimpleEntry {
         }
         return pathStr;
     }
+
+    // todo tag:COMPUTED_TIME
+    // getChildTime() {
+    //     if (this.type !== "folder") {
+    //         return this.mtime;
+    //     }
+    // }
 }
 
 /**
