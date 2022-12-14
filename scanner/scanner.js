@@ -51,14 +51,29 @@ const scanObject = new FlatScanObject(rootEntry, scanDirName);
 
 let handled = 0;
 let size = 0;
+const moments = [{processed: 0, time: startTime}];
 saveCursorPosition();
 function logProcess() {
     restoreCursorPosition();
     eraseCursorLine();
+
+    const now = Date.now();
+    if (moments.length === 5) {
+        moments.shift();
+    }
+    moments.push({processed: handled, time: now});
+    const processedDiff = moments[moments.length - 1].processed - moments[0].processed;
+    const timeDiff      = moments[moments.length - 1].time - moments[0].time;
+    const currentSpeed = Math.trunc(processedDiff / timeDiff * 1000);
+    const processedPerSecStr = currentSpeed + "/s";
+
     const processedText = ANSI_CYAN(handled);
     const totalSizeText = ANSI_CYAN(bytesToSizeWinLike(size));
     const totalSizeFormattedText = ANSI_CYAN(tripleSizeGroups(size));
-    process.stdout.write(`Processed: ${processedText} items, total size: ${totalSizeText} (${totalSizeFormattedText})`);
+    process.stdout.write(
+        `Processed: ${processedText} items (${processedPerSecStr}), ` +
+        `total size: ${totalSizeText} (${totalSizeFormattedText})`
+    );
 }
 
 let timerId = setInterval(logProcess, 1000);
@@ -91,7 +106,9 @@ const scanEntries = scanObject.values;
 const json = createJSON(meta, scanEntries);
 await saveJSON(json);
 
-console.log("Executing time:\t", (Date.now() - startTime)/1000, "seconds");
+const timeTotal = (Date.now() - startTime)/1000;
+const itemPerSecondTotal = Math.trunc(handled/ timeTotal);
+console.log("Executing time:\t", timeTotal, "seconds", `(${itemPerSecondTotal} items/s)`);
 
 debugLinuxHID();
 // -------
