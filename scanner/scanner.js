@@ -106,9 +106,11 @@ const scanEntries = scanObject.values;
 const json = createJSON(meta, scanEntries);
 await saveJSON(json);
 
-const timeTotal = (Date.now() - startTime)/1000;
-const itemPerSecondTotal = Math.trunc(handled/ timeTotal);
-console.log("Executing time:\t", timeTotal, "seconds", `(${itemPerSecondTotal} items/s)`);
+const lastMoment = moments[moments.length - 1];
+const itemPerSecondTotal = Math.trunc(lastMoment.processed / (lastMoment.time - startTime) * 1000);
+const itemsPerSecText = `(${itemPerSecondTotal} items/s)`;
+const timeTotal = (Date.now() - startTime) / 1000;
+console.log("Executing time:\t", timeTotal, "seconds", itemsPerSecText);
 
 debugLinuxHID();
 // -------
