@@ -229,25 +229,25 @@
   min-height: 35px;
 }
 /* Guide.vue */
-.guide[data-v-d71f260c] {
+.guide[data-v-19ebf714] {
   animation: appear 2s;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.guide .text-wrapper[data-v-d71f260c] {
+.guide .text-wrapper[data-v-19ebf714] {
   min-width: 50%;
 }
-.guide div[data-v-d71f260c] {
+.guide div[data-v-19ebf714] {
   margin-top: 15px;
 }
-.guide .gray[data-v-d71f260c] {
+.guide .gray[data-v-19ebf714] {
   color: #666666;
 }
-.text-wrapper[data-v-d71f260c] {
-  animation: fadein-d71f260c 1.5s linear 1 forwards;
+.text-wrapper[data-v-19ebf714] {
+  animation: fadein-19ebf714 1.5s linear 1 forwards;
 }
-@keyframes fadein-d71f260c {
+@keyframes fadein-19ebf714 {
 0% {
     opacity: 0;
 }
@@ -294,7 +294,7 @@
 }
 
 /* Main.vue */
-.main[data-v-7380598d] {
+.main[data-v-2b40bd56] {
   grid-template-areas: "switch address search " "tabs   content content" "status status  status " "debug  debug   debug  ";
   display: grid;
   grid-template-columns: 7em 2fr 1fr;
@@ -308,10 +308,10 @@
   border: 1px solid var(--gray-2);
   background-color: var(--gray-2);
 }
-.main *[data-v-7380598d] {
+.main *[data-v-2b40bd56] {
   background-color: white;
 }
-.readme[data-v-7380598d] {
+.readme[data-v-2b40bd56] {
   position: absolute;
   bottom: 0;
   right: 0;
