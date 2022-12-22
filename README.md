@@ -1,6 +1,26 @@
-# File manager snapshot explorer
+# KeepLister
 
-You can create a meta snapshot of your external/local hard drive's content and use this explorer to look at the content of the hard drive when it's detached. For the local hard drives it is pretty too, it can be an alternative for Windows Explorer' search thing.
+It lists the files, that you keep on your storage drives, as a common file browser.
+It's aimed to help digital hoarders finding their files.
+
+In other words: it's a file manager snapshot explorer, or a file explorer for JSON snapshots with meta information of local files.
+
+The scanner for creating the snapshots is included.
+
+---
+
+Currently, it's implemented this way:
+- The website is used as the explorer. _(You can also run it locally.)_
+- JSON files (snapshots) are used as a database for the explorer.
+- The scanner, a JavaScript file, is used for creating snapshots. You need to run it with Node.js from a terminal.
+
+Yeah, it would much more convenient if it was a standalone GUI application, but anyway it's usable.
+
+---
+
+So, you can create a meta snapshot of your external/local hard drive's content and use this explorer to look at the 
+content of the hard drive when it's detached. For the local hard drives it is pretty too, it can be an alternative for 
+Windows Explorer's search thing.
 
 There are two parts of the software:
 
