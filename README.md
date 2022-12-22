@@ -41,7 +41,7 @@ Just look at the examples (click on the links to open the site with the demo sca
 **[Ubuntu scan (as Root)](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/ubuntu-admin.json.gz)** | 
 [Ubuntu scan](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/ubuntu.json.gz)
 
-![Screenshot Ubnt](https://user-images.githubusercontent.com/16310547/133657142-75f15c86-ce70-4ef6-a21b-cdc0310bbb7e.png)
+![Screenshot Ubuntu](https://user-images.githubusercontent.com/16310547/133657142-75f15c86-ce70-4ef6-a21b-cdc0310bbb7e.png)
 
 [Linux Source Code scan](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/linux-master.json.gz)
 
@@ -49,7 +49,7 @@ Just look at the examples (click on the links to open the site with the demo sca
 
 **Mega.nz folders**
 
-Also it supports mega.nz folder links (like this: `https://mega.nz/folder/ABcDE123#XXX`).
+Also, it supports mega.nz folder links (like this: `https://mega.nz/folder/ABcDE123#XXX`).
 
 Just paste them in the search field.
 
@@ -66,7 +66,7 @@ Some search examples:
 
 ![Screenshot Search](https://user-images.githubusercontent.com/16310547/133657172-685801b2-5895-4876-8730-b11b8553f168.png)
 
-For case sensitive search use `//`, for example: [//.EXE](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/windows-admin.json.gz&search=//.EXE)
+For case-sensitive search use `//`, for example: [//.EXE](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/windows-admin.json.gz&search=//.EXE)
 
 ### Search by type
 
@@ -159,7 +159,8 @@ Search `https://gfycat.com/incompletealarmedicelandichorse` will list:
 - [gfycat] blaze0044—2021.03.27—IncompleteAlarmedIcelandichorse—Space X rocket breakup.webm
 
 
-_BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#readme). It will CamelCase `incompletealarmedicelandichorse` to `IncompleteAlarmedIcelandichorse`._
+_BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#readme). 
+It will CamelCase `incompletealarmedicelandichorse` to `IncompleteAlarmedIcelandichorse`._
 
 ---
 
@@ -167,12 +168,12 @@ _BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#rea
 
 It supports multiple scans selecting. Just open two (or more scans) with the file input, or just drag'n'drop multiple scan files into the site.
 
-Additionally you can open multiple tabs and add `searchSync=true` URLSearchParam, for example:
+Additionally, you can open multiple tabs and add `searchSync=true` URLSearchParam, for example:
 - [...?filepath=.../windows-scan.json.gz&searchSync=true](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/windows-admin.json.gz&searchSync=true)
 - [...?searchSync=true&filepath=.../ubuntu-scan.json.gz](https://alttiri.github.io/keep-lister/?searchSync=true&filepath=/json-flat-scans/ubuntu-admin.json.gz)
 
 The search in one tab will trigger the search in other tabs with `searchSync=true` URLSearchParam. 
-Also each tab will display the search result count.
+Also, each tab will display the search result count.
 
 Just use this link for your scans:
 - https://alttiri.github.io/keep-lister/?searchSync=true
@@ -206,7 +207,7 @@ The result will be in your download folder.
 
 ---
 
-_Note: replace `%USERPROFILE%\Downloads\zz-dir-scanner.mjs` with the path to the scanner file if you have moved it from the download folder to an other place._
+_Note: replace `%USERPROFILE%\Downloads\zz-dir-scanner.mjs` with the path to the scanner file if you have moved it from the download folder to another place._
 
 ---
 
@@ -228,7 +229,7 @@ The site will be available on http://localhost:5000/. Use `Ctrl + C` in the cons
 # About
 
 
-### File size formating
+### File size formatting
 
 It uses Windows-like file size formatting (`1133158 bytes` → `1.08 MB`). 
 In most cases the result is equal to Windows Explorer result, but in very rare cases is not. See [the test file](https://github.com/AlttiRi/keep-lister/blob/master/tests/win-like-file-sizes.test.js).
@@ -236,7 +237,7 @@ In most cases the result is equal to Windows Explorer result, but in very rare c
 
 ### JSON size
 
-JSON scans can be noticeable in size, so they are gzipped to reduce the size in 5-10 times. 
+JSON scans can have a noticeable size, so they are gzipped to reduce the size in 5-10 times. 
 For example, [Windows' disk C scan](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/windows-admin.json.gz) (300k files, 90k folders) takes 5.8 MB gzipped (55 MB of raw JSON). 
 The explorer handles the scan in stream way, so it displays the result as soon as the first bytes of the scan are read.
 
@@ -343,7 +344,7 @@ new Set(
 
 [This site](https://alttiri.github.io/keep-lister/) is static, it has no backend to handle JSON snapshots, it handles them locally on your machine after your browser have downloaded the site's files (HTML, JS, CSS) hosted by GitHub Pages.
 
-So, you do not send your personal data (JSON snapshots) anywhere. Also the site has no analytics, it contains only code is necessary for the work.
+So, you do not send your personal data (JSON snapshots) anywhere. Also, the site has no analytics, it contains only code is necessary for the work.
 
 But it's just a text. If you don't trust it (it's OK) to be sure that your data in safety (without verifying of the source code, or inspecting the site with DevTools) you can just open the site in an incognito window, disable the Internet access, work with the site, then close the incognito window and only after that enable the Internet access.
 
