@@ -3,7 +3,7 @@
     <div class="text-wrapper">
       <h2>No scan selected</h2>
       <div>Use your own directory scan file (created with
-        <a href="https://github.com/AlttiRi/directory-snapshot-explorer#how-to-use" target="_blank">the scanner</a>).
+        <a href="https://github.com/AlttiRi/keep-lister#how-to-use" target="_blank">the scanner</a>).
       </div>
       <div class="">Or use the demo scans to take a look at the program's work <span class="gray">(just click on the link)</span>:
         <ul>
@@ -14,7 +14,7 @@
       </div>
       <div class="gray">Also it supports mega.nz folder links (https://mega.nz/folder/ABcd12#XXX).<br>
         Just paste them in the search field.</div>
-      <div>For more info see the <a href="https://github.com/AlttiRi/file-manager-snapshot-explorer#file-manager-snapshot-explorer" target="_blank">Readme</a>.</div>
+      <div>For more info see the <a href="https://github.com/AlttiRi/keep-lister#keeplister" target="_blank">Readme</a>.</div>
     </div>
   </div>
 </template>
