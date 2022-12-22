@@ -25,25 +25,25 @@ Windows Explorer's search thing.
 There are two parts of the software:
 
 - The scanner. It creates a JSON snapshots with meta information _(`name`, `type`, `size`, `mtime`, `crtime`, `hardlink`/`symlink` info)_ of your local files. (See: [how to use ↓](#how-to-use)))
-- [The explorer](https://alttiri.github.io/file-manager-snapshot-explorer/) to open these JSON snapshots. 
+- [The explorer](https://alttiri.github.io/keep-lister/) to open these JSON snapshots. 
 
 
 ---
 
 Just look at the examples (click on the links to open the site with the demo scans):
 
-**[Win 10 scan (as Admin)](https://alttiri.github.io/file-manager-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz)** | 
-[Win 10 scan](https://alttiri.github.io/file-manager-snapshot-explorer/?filepath=/json-flat-scans/windows.json.gz)
+**[Win 10 scan (as Admin)](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/windows-admin.json.gz)** | 
+[Win 10 scan](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/windows.json.gz)
 
 ![Screenshot Win](https://user-images.githubusercontent.com/16310547/133657123-d1547a7b-6497-4da6-88ec-6e4928b2b044.png)
 
 
-**[Ubuntu scan (as Root)](https://alttiri.github.io/file-manager-snapshot-explorer/?filepath=/json-flat-scans/ubuntu-admin.json.gz)** | 
-[Ubuntu scan](https://alttiri.github.io/file-manager-snapshot-explorer/?filepath=/json-flat-scans/ubuntu.json.gz)
+**[Ubuntu scan (as Root)](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/ubuntu-admin.json.gz)** | 
+[Ubuntu scan](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/ubuntu.json.gz)
 
 ![Screenshot Ubnt](https://user-images.githubusercontent.com/16310547/133657142-75f15c86-ce70-4ef6-a21b-cdc0310bbb7e.png)
 
-[Linux Source Code scan](https://alttiri.github.io/file-manager-snapshot-explorer/?filepath=/json-flat-scans/linux-master.json.gz)
+[Linux Source Code scan](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/linux-master.json.gz)
 
 ---
 
@@ -62,18 +62,18 @@ Only for a browsing, but even this is useful since you can use the advanced sear
 
 Some search examples:
 
-[.exe](https://alttiri.github.io/file-manager-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=.exe)
+[.exe](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/windows-admin.json.gz&search=.exe)
 
 ![Screenshot Search](https://user-images.githubusercontent.com/16310547/133657172-685801b2-5895-4876-8730-b11b8553f168.png)
 
-For case sensitive search use `//`, for example: [//.EXE](https://alttiri.github.io/file-manager-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=//.EXE)
+For case sensitive search use `//`, for example: [//.EXE](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/windows-admin.json.gz&search=//.EXE)
 
 ### Search by type
 
 Search by file type, for example: `/type:folder/query`
 (`folder`, `file`, `symlink` for Windows and `fifo`, `charDev`, `blockDev`, `socket` in additional for other platforms).
 
-[/type:folder/.exe](https://alttiri.github.io/file-manager-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=/type:folder/.exe)
+[/type:folder/.exe](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/windows-admin.json.gz&search=/type:folder/.exe)
 
 ![Screenshot Search Folder](https://user-images.githubusercontent.com/16310547/133657180-9fc03183-d50d-47ff-badc-252fcdfe6952.png)
 
@@ -81,7 +81,7 @@ Search by file type, for example: `/type:folder/query`
 
 ### List everything
 
-To list recursively all items of an opened folder use [`//`](https://alttiri.github.io/file-manager-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&search=//) search.
+To list recursively all items of an opened folder use [`//`](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/windows-admin.json.gz&search=//) search.
 
 ---
 
@@ -168,14 +168,14 @@ _BTW, looks at [this thing](https://github.com/AlttiRi/gfycat-id-camel-caser#rea
 It supports multiple scans selecting. Just open two (or more scans) with the file input, or just drag'n'drop multiple scan files into the site.
 
 Additionally you can open multiple tabs and add `searchSync=true` URLSearchParam, for example:
-- [...?filepath=.../windows-scan.json.gz&searchSync=true](https://alttiri.github.io/file-manager-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz&searchSync=true)
-- [...?searchSync=true&filepath=.../ubuntu-scan.json.gz](https://alttiri.github.io/file-manager-snapshot-explorer/?searchSync=true&filepath=/json-flat-scans/ubuntu-admin.json.gz)
+- [...?filepath=.../windows-scan.json.gz&searchSync=true](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/windows-admin.json.gz&searchSync=true)
+- [...?searchSync=true&filepath=.../ubuntu-scan.json.gz](https://alttiri.github.io/keep-lister/?searchSync=true&filepath=/json-flat-scans/ubuntu-admin.json.gz)
 
 The search in one tab will trigger the search in other tabs with `searchSync=true` URLSearchParam. 
 Also each tab will display the search result count.
 
 Just use this link for your scans:
-- https://alttiri.github.io/file-manager-snapshot-explorer/?searchSync=true
+- https://alttiri.github.io/keep-lister/?searchSync=true
 
 
 ---
@@ -183,7 +183,7 @@ Just use this link for your scans:
 
 In short.
 - [Installed Node.js](https://nodejs.org/en/download/) is required,
-- Download the scanner file — [zz-dir-scanner.mjs](https://github.com/AlttiRi/file-manager-snapshot-explorer/releases/download/0.2.7/zz-dir-scanner.mjs),
+- Download the scanner file — [zz-dir-scanner.mjs](https://github.com/AlttiRi/keep-lister/releases/download/0.2.7/zz-dir-scanner.mjs),
 - Open a terminal (CMD.exe, for example) in a folder you want to scan, 
 - Run the scanner (JS file) with Node.js — type in a terminal _(for Windows with CMD)_:
 ```cmd
@@ -210,12 +210,12 @@ _Note: replace `%USERPROFILE%\Downloads\zz-dir-scanner.mjs` with the path to the
 
 ---
 
-To explore the scan result use https://alttiri.github.io/file-manager-snapshot-explorer/ site.
+To explore the scan result use https://alttiri.github.io/keep-lister/ site.
 
 Or run it locally:
-- Download the source code [file-manager-snapshot-explorer-master.zip](https://github.com/AlttiRi/file-manager-snapshot-explorer/archive/refs/heads/master.zip),
+- Download the source code [keep-lister-master.zip](https://github.com/AlttiRi/keep-lister/archive/refs/heads/master.zip),
 - Unpack it,
-- Open terminal in `file-manager-snapshot-explorer-master` folder,
+- Open terminal in `keep-lister-master` folder,
 - Type `npm ci`,
 - Then `npm run build`,
 - Then `npm run serve`.
@@ -231,13 +231,13 @@ The site will be available on http://localhost:5000/. Use `Ctrl + C` in the cons
 ### File size formating
 
 It uses Windows-like file size formatting (`1133158 bytes` → `1.08 MB`). 
-In most cases the result is equal to Windows Explorer result, but in very rare cases is not. See [the test file](https://github.com/AlttiRi/file-manager-snapshot-explorer/blob/master/tests/win-like-file-sizes.test.js).
+In most cases the result is equal to Windows Explorer result, but in very rare cases is not. See [the test file](https://github.com/AlttiRi/keep-lister/blob/master/tests/win-like-file-sizes.test.js).
 
 
 ### JSON size
 
 JSON scans can be noticeable in size, so they are gzipped to reduce the size in 5-10 times. 
-For example, [Windows' disk C scan](https://alttiri.github.io/file-manager-snapshot-explorer/?filepath=/json-flat-scans/windows-admin.json.gz) (300k files, 90k folders) takes 5.8 MB gzipped (55 MB of raw JSON). 
+For example, [Windows' disk C scan](https://alttiri.github.io/keep-lister/?filepath=/json-flat-scans/windows-admin.json.gz) (300k files, 90k folders) takes 5.8 MB gzipped (55 MB of raw JSON). 
 The explorer handles the scan in stream way, so it displays the result as soon as the first bytes of the scan are read.
 
 
@@ -267,7 +267,7 @@ Just look at the example _(Note: some lines are trimmed to reduce size)_:
  "errorsMap": {}
 },
 
-{"type":"folder","name":"file-manager-snapshot-explorer-master","pid":null,"id":0,"mtime":1632527508334,"btime":1632527508312},
+{"type":"folder","name":"keep-lister-master","pid":null,"id":0,"mtime":1632527508334,"btime":1632527508312},
 {"type":"folder","name":".github","pid":0,"id":1,"mtime":1632526451000,"btime":1632527508312},
 {"type":"file","name":".gitignore","pid":0,"mtime":1632526451000,"btime":1632527508314,"size":53},
 {"type":"file","name":"index.html","pid":0,"mtime":1632526451000,"btime":1632527508315,"size":843},
@@ -341,7 +341,7 @@ new Set(
 
 ## Static site
 
-[This site](https://alttiri.github.io/file-manager-snapshot-explorer/) is static, it has no backend to handle JSON snapshots, it handles them locally on your machine after your browser have downloaded the site's files (HTML, JS, CSS) hosted by GitHub Pages.
+[This site](https://alttiri.github.io/keep-lister/) is static, it has no backend to handle JSON snapshots, it handles them locally on your machine after your browser have downloaded the site's files (HTML, JS, CSS) hosted by GitHub Pages.
 
 So, you do not send your personal data (JSON snapshots) anywhere. Also the site has no analytics, it contains only code is necessary for the work.
 
