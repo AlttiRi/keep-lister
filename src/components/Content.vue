@@ -38,7 +38,7 @@ import Row from "./Row.vue";
 import IntersectionRow from "./IntersectionRow.vue";
 import {goBack, empty, openedFolder} from "../core/folders.js";
 import {listLimited} from "../core/entries.js";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, onBeforeMount} from "vue";
 
 /** @type {import("vue").ComputedRef<ScanError>} */
 const error = computed(() => {
@@ -55,14 +55,21 @@ function onContextMenu(event) {
 
 const nameElemWidth = ref("880px");
 onMounted(() => {
+  resizeNameElem();
+  window.addEventListener("resize", resizeNameElem);
+});
+onBeforeMount(() => {
+  window.removeEventListener("resize", resizeNameElem);
+});
+function resizeNameElem() {
   const w = document.body.offsetWidth;
+  const tabsWidthOff = w <= 720 ? 113 : 0;
   if (w < 1280) {
-    let px = 880 - (1280 - w);
+    let px = 880 - (1280 - w) + tabsWidthOff;
     px = px < 140 ? 140 : px;
     nameElemWidth.value = `${px}px`;
   }
-});
-
+}
 </script>
 
 

@@ -62,9 +62,6 @@ button { padding: 0 0; }
   top:-1000px;
   left:-1000px;
 }
-.search-wrapper {
-  display: contents;
-}
 
 .search {
   display: flex;

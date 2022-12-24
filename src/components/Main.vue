@@ -85,6 +85,16 @@ onMounted(async () => {
   grid-template-columns: 7em 2fr 1fr;
   grid-template-rows:    2em 1fr;
 
+  @media screen and (max-width: 720px) {
+    grid-template-areas: "switch  search  search "
+                         "address address address"
+                         "content content content"
+                         "status  status  status "
+                         "debug   debug   debug  "
+                         "tabs    tabs    tabs   ";
+    grid-template-rows:  2em 2em 1fr;
+  }
+
   height: 720px;
   max-height: 100vh;
   width: 1280px;

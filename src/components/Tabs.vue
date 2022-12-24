@@ -17,6 +17,6 @@ import Home from "./Home.vue";
   align-items: center;
 }
 .tab {
-  padding: 6px;
+  margin: 6px;
 }
 </style>
