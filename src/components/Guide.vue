@@ -29,6 +29,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 15px;
   .text-wrapper {
     min-width: 50%;
   }
