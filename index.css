@@ -229,25 +229,26 @@
   min-height: 35px;
 }
 /* Guide.vue */
-.guide[data-v-19ebf714] {
+.guide[data-v-46aec482] {
   animation: appear 2s;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 15px;
 }
-.guide .text-wrapper[data-v-19ebf714] {
+.guide .text-wrapper[data-v-46aec482] {
   min-width: 50%;
 }
-.guide div[data-v-19ebf714] {
+.guide div[data-v-46aec482] {
   margin-top: 15px;
 }
-.guide .gray[data-v-19ebf714] {
+.guide .gray[data-v-46aec482] {
   color: #666666;
 }
-.text-wrapper[data-v-19ebf714] {
-  animation: fadein-19ebf714 1.5s linear 1 forwards;
+.text-wrapper[data-v-46aec482] {
+  animation: fadein-46aec482 1.5s linear 1 forwards;
 }
-@keyframes fadein-19ebf714 {
+@keyframes fadein-46aec482 {
 0% {
     opacity: 0;
 }
