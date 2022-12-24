@@ -171,7 +171,7 @@ watchEffect(() => {
     }
     &.size {
       text-align: end;
-      min-width: 80px;
+      min-width: 72px;
       &.Z {
         color: #888;
       }
@@ -193,7 +193,7 @@ watchEffect(() => {
     }
     &.time {
       text-align: end;
-      width: 145px;
+      width: 140px;
       color: #777;
     }
     &.type {

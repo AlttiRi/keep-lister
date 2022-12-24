@@ -55,7 +55,7 @@ function onContextMenu(event) {
   goBack();
 }
 
-const nameElemWidth = ref("880px");
+const nameElemWidth = ref();
 onMounted(() => {
   resizeNameElem();
   window.addEventListener("resize", resizeNameElem);
@@ -67,9 +67,11 @@ function resizeNameElem() {
   const w = document.body.offsetWidth;
   const tabsWidthOff = w <= 720 ? 113 : 0;
   if (w < 1280) {
-    let px = 880 - (1280 - w) + tabsWidthOff;
+    let px = 893 - (1280 - w) + tabsWidthOff;
     px = px < 140 ? 140 : px;
     nameElemWidth.value = `${px}px`;
+  } else {
+    nameElemWidth.value = "893px";
   }
 }
 </script>
