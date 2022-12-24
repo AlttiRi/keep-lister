@@ -15,18 +15,20 @@
       <div>
         <h2>Error</h2>
         <table>
-          <tr>
-            <td>syscall</td>
-            <td><pre>{{error.syscall}}</pre></td>
-          </tr>
-          <tr>
-            <td>code</td>
-            <td><pre>{{error.code}}</pre></td>
-          </tr>
-          <tr>
-            <td>errno</td>
-            <td><pre>{{error.errno}}</pre></td>
-          </tr>
+          <tbody>
+            <tr>
+              <td>syscall</td>
+              <td><pre>{{error.syscall}}</pre></td>
+            </tr>
+            <tr>
+              <td>code</td>
+              <td><pre>{{error.code}}</pre></td>
+            </tr>
+            <tr>
+              <td>errno</td>
+              <td><pre>{{error.errno}}</pre></td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
