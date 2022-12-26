@@ -301,7 +301,7 @@ function createJSON(meta, sEntries) {
 }
 async function saveJSON(json) {
     const filename =
-        "[.dir-scan]" +
+        "[.kl-scan]" +
         "[" + scanFolderAbsolutePath.replaceAll(path.sep, "/") + "]" +
         " " + dateToDayDateString(new Date(), false) +
         "—" + bytesToSizeWinLike(size)
