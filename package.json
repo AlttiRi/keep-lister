@@ -1,5 +1,5 @@
 {
-  "version": "0.3.0",
+  "version": "0.3.1",
   "type": "module",
   "name": "keep-lister",
   "description": "It lists the files, that you keep on your storage drives, as a common file browser. It's aimed to help digital hoarders finding their files. In other words: it's a file manager snapshot explorer, or a file explorer for JSON snapshots with meta information of local files. The scanner for creating the snapshots is included.",
@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
-    "build-scanner": "rollup ./scanner/scanner.js --file ./dist-scanner/zz-dir-scanner.mjs --format es --banner \"#!/usr/bin/env node\" --external=path,os,url,fs,fs/promises --plugin=node-resolve,commonjs",
+    "build-scanner": "rollup ./scanner/scanner.js --file ./dist-scanner/qq-keep-lister-scanner.mjs --format es --banner \"#!/usr/bin/env node\" --external=path,os,url,fs,fs/promises --plugin=node-resolve,commonjs",
     "serve": "vite preview",
     "test": "ava"
   },
