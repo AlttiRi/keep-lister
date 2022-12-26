@@ -186,7 +186,7 @@ Just use this link for your scans:
 
 In short.
 - [Installed Node.js](https://nodejs.org/en/download/) is required,
-- Download the scanner file — [qq-keep-lister-scanner.mjs](https://github.com/AlttiRi/keep-lister/releases/download/0.2.7/qq-keep-lister-scanner.mjs),
+- Download the scanner file — [qq-keep-lister-scanner.mjs](https://github.com/AlttiRi/keep-lister/releases/download/0.3.1/qq-keep-lister-scanner.mjs),
 - Open a terminal (CMD.exe, for example) in a folder you want to scan, 
 - Run the scanner (JS file) with Node.js — type in a terminal _(for Windows with CMD)_:
 ```cmd
