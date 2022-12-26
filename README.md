@@ -186,17 +186,17 @@ Just use this link for your scans:
 
 In short.
 - [Installed Node.js](https://nodejs.org/en/download/) is required,
-- Download the scanner file — [zz-dir-scanner.mjs](https://github.com/AlttiRi/keep-lister/releases/download/0.2.7/zz-dir-scanner.mjs),
+- Download the scanner file — [qq-keep-lister-scanner.mjs](https://github.com/AlttiRi/keep-lister/releases/download/0.2.7/qq-keep-lister-scanner.mjs),
 - Open a terminal (CMD.exe, for example) in a folder you want to scan, 
 - Run the scanner (JS file) with Node.js — type in a terminal _(for Windows with CMD)_:
 ```cmd
-node %USERPROFILE%\Downloads\zz-dir-scanner.mjs
+node %USERPROFILE%\Downloads\qq-keep-lister-scanner.mjs
 ```
 - Don't forget to type enter.
 
 _If you use Linux your command looks like this:_
 ```bash
-~/Downloads/zz-dir-scanner.mjs
+~/Downloads/qq-keep-lister-scanner.mjs
 ```
 
 In progress:
@@ -209,7 +209,7 @@ The result will be in your download folder.
 
 ---
 
-_Note: replace `%USERPROFILE%\Downloads\zz-dir-scanner.mjs` with the path to the scanner file if you have moved it from the download folder to another place._
+_Note: replace `%USERPROFILE%\Downloads\qq-keep-lister-scanner.mjs` with the path to the scanner file if you have moved it from the download folder to another place._
 
 ---
 
