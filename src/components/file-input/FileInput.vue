@@ -105,10 +105,10 @@ function initListeners() {
   dropZone.value.addEventListener("dragenter", onDragEnter);
 }
 function removeListeners() {
-  dropZone.value.addEventListener("drop", onDrop);
-  dropZone.value.addEventListener("dragover", onDragOver);
-  dropZone.value.addEventListener("dragleave", onDragLeave);
-  dropZone.value.addEventListener("dragenter", onDragEnter);
+  dropZone.value.removeEventListener("drop", onDrop);
+  dropZone.value.removeEventListener("dragover", onDragOver);
+  dropZone.value.removeEventListener("dragleave", onDragLeave);
+  dropZone.value.removeEventListener("dragenter", onDragEnter);
 }
 function onDrop(event) {
   stopEvent(event);
