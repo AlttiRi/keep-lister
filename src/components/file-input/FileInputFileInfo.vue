@@ -8,7 +8,7 @@
 
 <script setup>
 import {bytesToSizeWinLike, dateToDayDateTimeString} from "../../util.js";
-import {file} from "./file-input-state.js";
+import {file} from "./file-input-state-private.js";
 </script>
 
 <style lang="scss" scoped>

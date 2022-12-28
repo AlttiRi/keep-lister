@@ -44,7 +44,7 @@ import {
   setDataTransfer,
   setDataTransferHover,
   resetDataTransferHover, resetDtItems
-} from "./file-input-state.js";
+} from "./file-input-state-private.js";
 
 const props = defineProps({
   globalDropZone: {

@@ -10,7 +10,7 @@
 //todo split to 2 comps
 //todo use props
 
-import {count, fileEntries, parsing} from "./file-input-state.js";
+import {count, fileEntries, parsing} from "./file-input-state-private.js";
 import {computed} from "vue";
 const names = computed(() => {
   return fileEntries.value.slice(0, 50).map(file => file.name).join("\n");
