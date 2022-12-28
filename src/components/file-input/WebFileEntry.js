@@ -1,9 +1,9 @@
-export class FileEntry {
+export class WebFileEntry {
     /**
      * @param {Object} init
      * @param {File} [init.file]
      * @param {"file"|"folder"} init.type
-     * @param {FileEntry} [init.parent]
+     * @param {WebFileEntry} [init.parent]
      * @param {String} [init.name]
      */
     constructor({file, parent, type, name}) {
@@ -12,7 +12,7 @@ export class FileEntry {
             this.file = file;
         }
         if (parent) {
-            /** @type {FileEntry|undefined} */
+            /** @type {WebFileEntry|undefined} */
             this.parent = parent;
             parent.addChild(this);
         }
@@ -28,12 +28,12 @@ export class FileEntry {
         return this._name || this.file?.name;
     }
 
-    /** @param {FileEntry} entry */
+    /** @param {WebFileEntry} entry */
     addChild(entry) {
         if (!this.children) {
             /**
              * `undefined` if there is no child
-             * @type {FileEntry[]|undefined}
+             * @type {WebFileEntry[]|undefined}
              */
             this.children = [];
         }
@@ -73,7 +73,7 @@ export class FileEntry {
         return this.file?.lastModified || 0;
     }
 
-    /** @return {FileEntry[]} */
+    /** @return {WebFileEntry[]} */
     get path() {
         if (!this.parent) {
             return [this];
@@ -81,7 +81,7 @@ export class FileEntry {
         return [...this.parent.path, this];
     }
 
-    /** @return {Generator<FileEntry>} */
+    /** @return {Generator<WebFileEntry>} */
     *[Symbol.iterator]() {
         yield this;
         if (this.children) {
@@ -91,14 +91,14 @@ export class FileEntry {
         }
     }
 
-    /** @return {FileEntry[]} */
+    /** @return {WebFileEntry[]} */
     flat() {
         return [...this];
     }
 
     /**
-     * @param {FileEntry[]} entries
-     * @return {FileEntry[]}
+     * @param {WebFileEntry[]} entries
+     * @return {WebFileEntry[]}
      */
     static flat(entries) {
         return entries.map(e => [...e]).flat();
@@ -106,12 +106,12 @@ export class FileEntry {
 
     /**
      * @param {DataTransferItem[]} dtItems
-     * @return {Promise<FileEntry[]>}
+     * @return {Promise<WebFileEntry[]>}
      */
     static async fromDataTransferItems(dtItems) {
         const fileSystemEntries = await dtItemsToFileSystemEntries(dtItems);
         console.log("[fileSystemEntries]:", fileSystemEntries);
-        /** @type {FileEntry[]} */
+        /** @type {WebFileEntry[]} */
         const result = [];
         for (const fileSystemEntry of fileSystemEntries) {
             result.push(await fromFileSystemEntry(fileSystemEntry));
@@ -121,13 +121,13 @@ export class FileEntry {
 
     /**
      * @param {File[]} files
-     * @return {FileEntry[]}
+     * @return {WebFileEntry[]}
      */
     static fromFiles(files) {
-        /** @type {FileEntry[]} */
+        /** @type {WebFileEntry[]} */
         const result = [];
         for (const file of files) {
-            result.push(new FileEntry({file, type: "file"}));
+            result.push(new WebFileEntry({file, type: "file"}));
         }
         return result;
     }
@@ -135,20 +135,20 @@ export class FileEntry {
 
 /**
  * @param {FileSystemEntry} fsEntry
- * @param {FileEntry|null} parent
- * @return {Promise<FileEntry|null>}
+ * @param {WebFileEntry|null} parent
+ * @return {Promise<WebFileEntry|null>}
  */
 async function fromFileSystemEntry(fsEntry, parent = null) {
     if (fsEntry.isFile) {
         try {
             const file = await toFile(/** @type {FileSystemFileEntry} */ fsEntry);
-            return new FileEntry({file, type: "file", parent});
+            return new WebFileEntry({file, type: "file", parent});
         } catch (e) { // For example, for long path \\?\M:\...
             console.error("[fromFileSystemEntry][error]", fsEntry.name, e);
             return null;
         }
     } else if (fsEntry.isDirectory) {
-        const dirEntry = new FileEntry({type: "folder", parent, name: fsEntry.name});
+        const dirEntry = new WebFileEntry({type: "folder", parent, name: fsEntry.name});
         /** @type {AsyncGenerator<FileSystemEntry>} */
         const entries = readFileSystemDirectoryEntry(/** @type {FileSystemDirectoryEntry} */ fsEntry);
         for await (const entry of entries) {

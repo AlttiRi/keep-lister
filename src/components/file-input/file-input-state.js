@@ -1,5 +1,5 @@
 import {ref, computed, watchEffect, toRaw} from "vue";
-import {FileEntry} from "./FileEntry.js";
+import {WebFileEntry} from "./WebFileEntry.js";
 
 /** @type {import("vue").Ref<File[]>} */
 const files = ref([]);
@@ -13,7 +13,7 @@ export const dropHoverItemCount = ref(0);
 /** @type {import("vue").Ref<String[]>} */
 export const dropHoverTypes = ref([]);
 
-/** @type {import("vue").Ref<FileEntry[]>} */
+/** @type {import("vue").Ref<WebFileEntry[]>} */
 export const fileEntries = ref([]);
 /** @type {import("vue").Ref<Boolean>} */
 export const parsing = ref(false);
@@ -21,16 +21,16 @@ watchEffect(async () => {
     const time = Date.now();
     parsing.value = true;
     if (dtItems.value.length) {
-        fileEntries.value = await FileEntry.fromDataTransferItems(dtItems.value);
+        fileEntries.value = await WebFileEntry.fromDataTransferItems(dtItems.value);
     } else {
-        fileEntries.value = FileEntry.fromFiles(files.value);
+        fileEntries.value = WebFileEntry.fromFiles(files.value);
     }
     parsing.value = false;
-    console.log("[FileEntry parsing][time]:", Date.now() - time, "ms");
+    console.log("[WebFileEntry parsing][time]:", Date.now() - time, "ms");
     console.log("[fileEntries]", toRaw(fileEntries.value));
 });
 
-/** @type {import("vue").ComputedRef<FileEntry>} */
+/** @type {import("vue").ComputedRef<WebFileEntry>} */
 export const file = computed(() => {
     return fileEntries.value[0];
 });
