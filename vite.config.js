@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-const demoScanFilepath = "./demo-scans/2021.09.18.json.gz";
+const demoScanFilepath = "./demo-scans/2022.12.17.json.gz";
 const demoPath = `/?filepath=${demoScanFilepath}&sort=size&desc=true`;
 
 export default defineConfig({

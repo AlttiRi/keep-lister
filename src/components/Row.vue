@@ -50,6 +50,18 @@ const time = computed(() => {
   if (entry.value[selectedTime.value] === undefined) {
     return "";
   }
+
+  // todo tag:COMPUTED_TIME
+  // fucking slow on parsing
+  //
+  // let timeValue;
+  // if (computedFolderTime.value) {
+  //   timeValue = getMaxChildPropertyValue(entry.value, "_" + selectedTime.value, 128);
+  // } else {
+  //   timeValue = entry.value[selectedTime.value];
+  // }
+  // const time = dateToDayDateTimeString(timeValue, false);
+
   const time = dateToDayDateTimeString(entry.value[selectedTime.value], false);
   return time.slice(0, -3); // trim seconds
 });

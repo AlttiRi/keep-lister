@@ -92,21 +92,12 @@ export class SimpleEntry {
 
 
     // todo tag:COMPUTED_TIME
-    // getComputedTime(deep = 1) {
-    //     if (this.type === "folder" && this.children) {
-    //         let maxTime = Number.MIN_SAFE_INTEGER;
-    //         for (const child of this.children) {
-    //             const mtime = child.getComputedTime();
-    //             if (mtime > maxTime) {
-    //                 maxTime = mtime;
-    //             }
-    //         }
-    //         if (maxTime !== Number.MIN_SAFE_INTEGER) {
-    //             return maxTime;
-    //         }
-    //     } else {
+    // /** @return {Number|undefined} */
+    // get mtime() {
+    //     if (this._mtime !== undefined) {
     //         return this._mtime;
     //     }
+    //     return getMaxChildPropertyValue(this, "_mtime", 16);
     // }
     //
     // /** @return {Number|undefined} */
@@ -114,7 +105,7 @@ export class SimpleEntry {
     //     if (this._btime !== undefined) {
     //         return this._btime;
     //     }
-    //     return undefined;
+    //     return getMaxChildPropertyValue(this, "_btime", 16);
     // }
 
     /** @return {Number|undefined} */
@@ -277,6 +268,25 @@ export class SimpleEntry {
     //     }
     // }
 }
+
+// todo tag:COMPUTED_TIME
+// export function getMaxChildPropertyValue(object, property, deep = 1) {
+//     if (object.type === "folder" && object.children && deep) {
+//         deep--;
+//         let maxTime = Number.MIN_SAFE_INTEGER;
+//         for (const child of object.children) {
+//             const time = getMaxChildPropertyValue(child, property, deep);
+//             if (time > maxTime) {
+//                 maxTime = time;
+//             }
+//         }
+//         if (maxTime !== Number.MIN_SAFE_INTEGER) {
+//             return maxTime;
+//         }
+//     } else {
+//         return object[property];
+//     }
+// }
 
 /**
  * Like `ScanError`, but without `path`.

@@ -21,6 +21,7 @@ export function toggleOrder() {
 
 // todo tag:COMPUTED_TIME
 // export const computedFolderTime = ref(true);
+// globalThis.computedFolderTime = computedFolderTime;
 
 const {compare} = new Intl.Collator(undefined, {
     numeric: true,
