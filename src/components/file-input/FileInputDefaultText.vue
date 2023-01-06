@@ -2,18 +2,25 @@
   <div class="default-prompt-text" :title="names">
     <div class="parsing" v-if="parsing">Parsing...</div>
     <div v-else-if="count">{{count}} file{{count > 1 ? "s" : ""}}</div>
-    <div v-else style="display: contents"><slot>Select file</slot></div>
+    <div v-else style="display: contents">
+      <slot>Select file</slot>
+    </div>
   </div>
 </template>
 
-<script setup>
-//todo split to 2 comps
-//todo use props
-
-import {count, fileEntries, parsing} from "./file-input-state-private.js";
+<script setup lang="ts">
 import {computed} from "vue";
+import {FileInputState} from "./file-input-state";
+
+const props = defineProps<{state: FileInputState}>();
+const {
+  count, fileEntries, parsing
+} = props.state.private;
+
 const names = computed(() => {
-  return fileEntries.value.slice(0, 50).map(file => file.name).join("\n");
+  /** @type {WebFileEntry[]} */
+  const entries = fileEntries.value;
+  return entries.slice(0, 50).map(file => file.name).join("\n");
 });
 </script>
 

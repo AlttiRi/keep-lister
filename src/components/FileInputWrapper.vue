@@ -1,33 +1,12 @@
 <template>
   <div class="file-input-wrapper">
-    <FileInput :accept="`application/json,application/gzip`" :multiple="true"/>
+    <FileInput :accept="`application/json,application/gzip`" :multiple="true" :state="fileInputState"/>
   </div>
 </template>
 
 <script setup>
-import {clearHome, home, openFolder, setScan} from "../core/folders.js";
-
-import {watch} from "vue";
 import FileInput from "./file-input/FileInput.vue";
-import {fileEntries} from "./file-input/file-input-state.js";
-import {allScansReady, currentScansNum, scansCount} from "../core/state.js";
-import {debugMessageFromEntry} from "../core/debug.js";
-
-watch(fileEntries, async () => {
-  clearHome();
-  allScansReady.value = false;
-  scansCount.value = fileEntries.value.length;
-  currentScansNum.value = 0;
-  for (const {file} of fileEntries.value) {
-    currentScansNum.value++;
-    await setScan(file, true);
-  }
-  if (fileEntries.value.length > 1) {
-    openFolder(home.value, true);
-    debugMessageFromEntry(home.value);
-  }
-  allScansReady.value = true;
-});
+import {fileInputState} from "../core/file-input-state";
 </script>
 
 <style lang="scss" scoped>
