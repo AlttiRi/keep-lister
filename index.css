@@ -158,26 +158,26 @@
 }
 
 /* FileInput.vue */
-.file-input[data-v-c792e914] {
+.file-input[data-v-9b6ec8ff] {
   transition: background-color 0.1s;
   border: solid 1px var(--file-input-border);
   box-sizing: border-box;
 }
-.file-input.drop-hover[data-v-c792e914] {
+.file-input.drop-hover[data-v-9b6ec8ff] {
   background-color: var(--drop-file-hover);
   transition: background-color 0.1s;
 }
-.file-input[data-v-c792e914]:hover {
+.file-input[data-v-9b6ec8ff]:hover {
   background-color: var(--drop-hover);
 }
-.file-input[data-v-c792e914]:active {
+.file-input[data-v-9b6ec8ff]:active {
   background-color: var(--drop-active);
 }
-.file-input[data-v-c792e914], label[data-v-c792e914], .content[data-v-c792e914] {
+.file-input[data-v-9b6ec8ff], label[data-v-9b6ec8ff], .content[data-v-9b6ec8ff] {
   width: 100%;
   height: 100%;
 }
-.file-input-hover-modal[data-v-c792e914] {
+.file-input-hover-modal[data-v-9b6ec8ff] {
   height: 50px;
   width: 100%;
   position: fixed;
@@ -188,11 +188,11 @@
   transition: opacity 0.25s ease-out;
   opacity: 0;
 }
-.file-input-hover-modal.drop-hover[data-v-c792e914] {
+.file-input-hover-modal.drop-hover[data-v-9b6ec8ff] {
   opacity: 1;
 }
 /* FileInputDefaultHoverText.vue */
-.default-hover-text[data-v-61bd8bf1] {
+.default-hover-text[data-v-9b03a604] {
   width: 100%;
   height: 100%;
   display: flex;
@@ -201,7 +201,7 @@
 }
 
 /* FileInputDefaultText.vue */
-.default-prompt-text[data-v-5b4e0371] {
+.default-prompt-text[data-v-8a3ffe49] {
   width: inherit;
   height: inherit;
   max-width: 100%;
@@ -350,66 +350,66 @@
   height: 3px;
 }
 /* Row.vue */
-.row[data-v-cb179c65] {
+.row[data-v-261ad697] {
   width: 100%;
   min-height: 28px;
   display: flex;
   align-items: center;
 }
-.row[data-v-cb179c65]:hover {
+.row[data-v-261ad697]:hover {
   background-color: var(--blue-2);
 }
-.row.hoveredLink[data-v-cb179c65]:not(:hover) {
+.row.hoveredLink[data-v-261ad697]:not(:hover) {
   background-color: var(--blue-4);
 }
-.row *[data-v-cb179c65] {
+.row *[data-v-261ad697] {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
-.row td.icon[data-v-cb179c65] {
+.row td.icon[data-v-261ad697] {
   border-left: 2px solid transparent;
   width: 24px;
   text-align: center;
   user-select: none;
 }
-.row td.name[data-v-cb179c65] {
+.row td.name[data-v-261ad697] {
   display: block;
   white-space: pre;
 }
-.row td.size[data-v-cb179c65] {
+.row td.size[data-v-261ad697] {
   text-align: end;
   min-width: 72px;
 }
-.row td.size.Z[data-v-cb179c65] {
+.row td.size.Z[data-v-261ad697] {
   color: #888;
 }
-.row td.size.B[data-v-cb179c65] {
+.row td.size.B[data-v-261ad697] {
   color: #666;
 }
-.row td.size.KB[data-v-cb179c65] {
+.row td.size.KB[data-v-261ad697] {
   color: #0b0;
 }
-.row td.size.MB[data-v-cb179c65] {
+.row td.size.MB[data-v-261ad697] {
   color: #0070dd;
 }
-.row td.size.GB[data-v-cb179c65] {
+.row td.size.GB[data-v-261ad697] {
   color: #a335ee;
 }
-.row td.size.TB[data-v-cb179c65] {
+.row td.size.TB[data-v-261ad697] {
   color: #ff8000;
 }
-.row td.time[data-v-cb179c65] {
+.row td.time[data-v-261ad697] {
   text-align: end;
   width: 140px;
   color: #777;
 }
-.row td.type[data-v-cb179c65] {
+.row td.type[data-v-261ad697] {
   text-align: end;
   width: 58px;
   user-select: none;
 }
-.row.error .icon[data-v-cb179c65] {
+.row.error .icon[data-v-261ad697] {
   border-left: 2px solid red;
 }
 /* ScanProgressBar.vue */
