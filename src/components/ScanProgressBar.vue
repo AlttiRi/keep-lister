@@ -8,9 +8,9 @@
 </template>
 
 <script setup>
-import {scanParsing, scanParsingProgress} from "../core/state.js";
 import {ref, watchEffect} from "vue";
 import {sleep} from "../util.js";
+import {scanParsing, scanParsingProgress} from "../core/state";
 
 const show100 = ref(false);
 watchEffect(async () => {

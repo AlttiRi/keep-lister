@@ -4,7 +4,7 @@ import {openedFolder} from "./folders.js";
 import {comparator, limit, orderBy, reverseOrder, selectedTime} from "./entries.js";
 import * as debug from "./debug.js";
 import {entryTypes} from "./entry.js";
-import {allScansReady, searchAwaiting, searching} from "./state.js";
+import {allScansReady, searchAwaiting, searching} from "./state";
 import {handleMegaUrl} from "./mega-nz.js";
 
 /** @type {import("vue").Ref<string>} */

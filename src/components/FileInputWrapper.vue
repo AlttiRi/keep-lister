@@ -6,7 +6,8 @@
 
 <script setup>
 import FileInput from "./file-input/FileInput.vue";
-import {fileInputState} from "../core/file-input-state";
+import {fileInputState} from "../core/state";
+import "../core/file-input-handler";
 </script>
 
 <style lang="scss" scoped>

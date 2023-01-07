@@ -33,10 +33,9 @@ import {computed, onMounted} from "vue";
 import {rootMeta, setScan} from "../core/folders.js";
 import {search} from "../core/search.js";
 import {bytesToSize, bytesToSizeWinLike} from "../util.js";
-import {scanParsing, searchAwaiting} from "../core/state.js";
 import {orderBy, toggleOrder} from "../core/entries.js";
 import {handleMegaUrl} from "../core/mega-nz.js";
-import {scansCount, currentScansNum} from "../core/state.js";
+import {scanParsing, searchAwaiting, scansCount, currentScansNum} from "../core/state";
 
 globalThis.bytesToSize = bytesToSize;
 globalThis.bytesToSizeWinLike = bytesToSizeWinLike;
