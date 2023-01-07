@@ -30,10 +30,12 @@ export class WebFileEntry {
         this.type = type;
     }
 
+    /** @return {String|undefined} */
     get nativePath() {
-        return this.file?.["path"];
+        return this.file?.path;
     }
 
+    /** @return {String} */
     get name() {
         return this._name || this.file?.name;
     }
@@ -80,6 +82,7 @@ export class WebFileEntry {
         return this.file?.size || 0;
     }
 
+    /** @return {Number} */
     get mtime() {
         return this.file?.lastModified || 0;
     }
