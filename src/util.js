@@ -53,48 +53,6 @@ export function debounce(runnable, ms = 50) {
     }
 }
 
-export function isString(input) {
-    return typeof input === "string" || input instanceof String;
-}
-
-export function firefoxDateFix(dateValue) {
-    return isString(dateValue) ? dateValue.replace(/(?<y>\d{4})\.(?<m>\d{2})\.(?<d>\d{2})/, "$<y>-$<m>-$<d>") : dateValue;
-}
-
-// "Sun, 10 Jan 2021 22:22:22 GMT" -> "2021.01.10"
-export function dateToDayDateString(dateValue, utc = true) {
-    dateValue = firefoxDateFix(dateValue);
-    const _date = new Date(dateValue);
-    if (_date.toString() === "Invalid Date") {
-        console.warn("Invalid Date value: ", dateValue);
-    }
-    function pad2(str) {
-        return str.toString().padStart(2, "0");
-    }
-    const _utc = utc ? "UTC" : "";
-    const year  = _date[`get${_utc}FullYear`]();
-    const month = _date[`get${_utc}Month`]() + 1;
-    const date  = _date[`get${_utc}Date`]();
-
-    return year + "." + pad2(month) + "." + pad2(date);
-}
-
-// "Sun, 10 Jan 2021 22:22:22 GMT" -> "2021.01.10 22:22:22Z"
-export function dateToDayDateTimeString(dateValue, utc = true) {
-    dateValue = firefoxDateFix(dateValue);
-    const _date = new Date(dateValue);
-    function pad2(str) {
-        return str.toString().padStart(2, "0");
-    }
-    const _utc = utc ? "UTC" : "";
-    const hours    = _date[`get${_utc}Hours`]();
-    const minutes  = _date[`get${_utc}Minutes`]();
-    const seconds  = _date[`get${_utc}Seconds`]();
-
-    const time = pad2(hours)+ ":" + pad2(minutes) + ":" + pad2(seconds);
-    return dateToDayDateString(_date, utc) + " " + time + (utc ? "Z" : "");
-}
-
 
 export function structuredClone(object) {
     return new Promise(resolve => {
@@ -294,4 +252,57 @@ export function cyan(text) {
 }
 export function blue(text) {
     return [`%c${text}`,  "color: #2196f3; font-weight: bold;"];
+}
+
+
+
+
+// "Sun, 10 Jan 2021 22:22:22 GMT" -> "2021.01.10"
+export function dateToDayDateString(dateValue, utc = true) {
+    return formatDate(dateValue, "YYYY.MM.DD", utc);
+}
+
+// "Sun, 10 Jan 2021 22:22:22 GMT" -> "2021.01.10 22:22:22Z"
+export function dateToDayDateTimeString(dateValue, utc = true) {
+    return formatDate(dateValue, "YYYY.MM.DD HH:mm:SS", utc) + (utc ? "Z" : "");
+}
+
+/**
+ * Formats date. Supports: YY.YYYY.MM.DD HH:mm:SS.
+ * Default format: "YYYY.MM.DD". formatDate() -> "2022.01.07"
+ * @param {Date|String|Number?} dateValue
+ * @param {String?} pattern
+ * @param {Boolean?} utc
+ */
+export function formatDate(dateValue = new Date(), pattern = "YYYY.MM.DD", utc = true) {
+    function isString(input) {
+        return typeof input === "string" || input instanceof String;
+    }
+    function firefoxDateFix(dateValue) {
+        return isString(dateValue) ? dateValue.replace(/(?<y>\d{4})\.(?<m>\d{2})\.(?<d>\d{2})/, "$<y>-$<m>-$<d>") : dateValue;
+    }
+    function pad0(value, count = 2) {
+        return value.toString().padStart(count, "0");
+    }
+    class DateFormatter {
+        constructor(date = new Date(), utc = true) {
+            this.date = date;
+            this.utc = utc ? "UTC" : "";
+        }
+        get SS()   {return pad0(this.date[`get${this.utc}Seconds`]())}
+        get mm()   {return pad0(this.date[`get${this.utc}Minutes`]())}
+        get HH()   {return pad0(this.date[`get${this.utc}Hours`]())}
+
+        get MM()   {return pad0(this.date[`get${this.utc}Month`]() + 1)}
+        get DD()   {return pad0(this.date[`get${this.utc}Date`]())}
+        get YYYY() {return pad0(this.date[`get${this.utc}FullYear`](), 4)}
+        get YY()   {return this.YYYY.slice(2);}
+    }
+    dateValue = firefoxDateFix(dateValue);
+    const date = new Date(dateValue);
+    if (date.toString() === "Invalid Date") {
+        console.warn("Invalid Date value: ", dateValue);
+    }
+    const formatter = new DateFormatter(date, utc);
+    return pattern.replaceAll(/YYYY|YY|MM|DD|HH|mm|SS/g, (...args) => formatter[args[0]]);
 }
