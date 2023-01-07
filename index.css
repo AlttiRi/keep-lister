@@ -214,13 +214,13 @@
   text-overflow: ellipsis;
 }
 /* FileInputWrapper.vue */
-[data-v-f800e039] .file-input {
+[data-v-817e62b1] .file-input {
   border-right: 0;
   border-left: 0;
   outline-width: 1px;
   outline-color: var(--blue-1);
 }
-.file-input-wrapper[data-v-f800e039] {
+.file-input-wrapper[data-v-817e62b1] {
   display: grid;
   justify-content: center;
   grid-template-columns: 100%;
@@ -295,7 +295,7 @@
 }
 
 /* Main.vue */
-.main[data-v-5fd82f84] {
+.main[data-v-ae447501] {
   grid-template-areas: "switch address search " "tabs   content content" "status status  status " "debug  debug   debug  ";
   display: grid;
   grid-template-columns: 7em 2fr 1fr;
@@ -310,15 +310,15 @@
   background-color: var(--gray-2);
 }
 @media screen and (max-width: 720px) {
-.main[data-v-5fd82f84] {
+.main[data-v-ae447501] {
     grid-template-areas: "switch  search  search " "address address address" "content content content" "status  status  status " "debug   debug   debug  " "tabs    tabs    tabs   ";
     grid-template-rows: 2em 2em 1fr;
 }
 }
-.main *[data-v-5fd82f84] {
+.main *[data-v-ae447501] {
   background-color: white;
 }
-.readme[data-v-5fd82f84] {
+.readme[data-v-ae447501] {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -413,16 +413,16 @@
   border-left: 2px solid red;
 }
 /* ScanProgressBar.vue */
-.scan-parsing-progress-component[data-v-0026d99a] {
+.scan-parsing-progress-component[data-v-803fb0d2] {
   pointer-events: none;
   position: absolute;
   left: 0;
   top: 0;
 }
-.scan-parsing-progress-component > div[data-v-0026d99a] {
+.scan-parsing-progress-component > div[data-v-803fb0d2] {
   width: 100%;
 }
-.scan-parsing-progress-component .visible[data-v-0026d99a] {
+.scan-parsing-progress-component .visible[data-v-803fb0d2] {
   background-color: var(--blue-1);
   height: 4px;
 }
