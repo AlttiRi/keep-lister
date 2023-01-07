@@ -22,7 +22,8 @@ export class WebFileEntry {
             parent.addChild(this);
         }
         if (name) {
-            /** @type {String} */
+            /** @type {String}
+             *  @private  */
             this._name = name;
         }
         /** @type {"file"|"folder"} */
@@ -37,7 +38,8 @@ export class WebFileEntry {
         return this._name || this.file?.name;
     }
 
-    /** @param {WebFileEntry} entry */
+    /** @private
+     *  @param {WebFileEntry} entry  */
     addChild(entry) {
         if (!this.children) {
             /**
