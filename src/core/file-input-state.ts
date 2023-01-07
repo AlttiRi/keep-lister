@@ -7,7 +7,7 @@ import {WebFileEntry} from "../components/file-input/WebFileEntry";
 
 export const fileInputState: FileInputState = getStateInstance({recursive: false});
 
-const fileEntries: DeepReadonly<Ref<WebFileEntry[]>> = toRaw(fileInputState.fileEntries);
+const fileEntries: DeepReadonly<Ref<WebFileEntry[]>> = fileInputState.fileEntries;
 
 watch(fileEntries, async () => {
     clearHome();
